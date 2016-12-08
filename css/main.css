@@ -283,7 +283,7 @@ a {
   word-wrap: break-word;
 }
 a:hover {
-  color: #222;
+  color: #34537e;
   border-bottom-color: #222;
 }
 ul {
@@ -1425,7 +1425,7 @@ pre .javascript .function {
   margin-top: 50px;
 }
 .post-more-link .btn {
-  color: #555;
+  color: #5584c5;
   font-size: 14px;
   background: #fff;
   border-radius: 2px;
@@ -1465,7 +1465,7 @@ pre .javascript .function {
   border-bottom: none;
 }
 .post-nav-item a:hover {
-  color: #222;
+  color: #34537e;
   border-bottom: none;
 }
 .post-nav-item a:active {
@@ -1682,7 +1682,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ffff7a;
+  background: #ff1dff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -1757,7 +1757,7 @@ pre .javascript .function {
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
   transition-property: all;
-  color: #666;
+  color: #5584c5;
   border-bottom-color: #ccc;
 }
 .post-toc ol a:hover {
@@ -2235,7 +2235,7 @@ a.search-result {
   width: 10px;
   height: 10px;
   opacity: 0.5;
-  background: #555;
+  background: #5584c5;
   border: 1px solid #fff;
   border-radius: 50%;
 }
