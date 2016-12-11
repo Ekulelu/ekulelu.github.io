@@ -1,0 +1,819 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="ReactiveCocoa框架是Github开源的一个应用于iOS和MacOS开发的新框架，使用它能大幅度改变在“苹果体系”里面的编程习惯。所以如果是有一些iOS编程经验的人来看这个框架的使用方法可能倒会觉得不习惯。这里不想从比较两种编程的区别来引入ReactiveCocoa，因为这样会让人觉得更混乱。希望读者能把iOS的编程套路忘记后来看这篇文章，以免造成不习惯或混乱，毕竟ReactiveCoc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactiveCocoa入门教程一">
+<meta property="og:url" content="https://ekulelu.github.io/2016/12/11/ReactiveCocoa入门教程一/index.html">
+<meta property="og:site_name" content="Ekulelu's Blog">
+<meta property="og:description" content="ReactiveCocoa框架是Github开源的一个应用于iOS和MacOS开发的新框架，使用它能大幅度改变在“苹果体系”里面的编程习惯。所以如果是有一些iOS编程经验的人来看这个框架的使用方法可能倒会觉得不习惯。这里不想从比较两种编程的区别来引入ReactiveCocoa，因为这样会让人觉得更混乱。希望读者能把iOS的编程套路忘记后来看这篇文章，以免造成不习惯或混乱，毕竟ReactiveCoc">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/804bc176gw1famrabldh5j20lc06kwf1.jpg">
+<meta property="og:updated_time" content="2016-12-11T06:29:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactiveCocoa入门教程一">
+<meta name="twitter:description" content="ReactiveCocoa框架是Github开源的一个应用于iOS和MacOS开发的新框架，使用它能大幅度改变在“苹果体系”里面的编程习惯。所以如果是有一些iOS编程经验的人来看这个框架的使用方法可能倒会觉得不习惯。这里不想从比较两种编程的区别来引入ReactiveCocoa，因为这样会让人觉得更混乱。希望读者能把iOS的编程套路忘记后来看这篇文章，以免造成不习惯或混乱，毕竟ReactiveCoc">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/mw690/804bc176gw1famrabldh5j20lc06kwf1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ekulelu.github.io/2016/12/11/ReactiveCocoa入门教程一/"/>
+
+
+
+
+
+  <title> ReactiveCocoa入门教程一 | Ekulelu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f31c6baa24838cd36f68f42d6187a455";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ekulelu's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2016/12/11/ReactiveCocoa入门教程一/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ReactiveCocoa入门教程一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-11T13:15:00+08:00">
+                2016-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ReactiveCocoa/" itemprop="url" rel="index">
+                    <span itemprop="name">ReactiveCocoa</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/12/11/ReactiveCocoa入门教程一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/11/ReactiveCocoa入门教程一/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/11/ReactiveCocoa入门教程一/" class="leancloud_visitors" data-flag-title="ReactiveCocoa入门教程一">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ReactiveCocoa框架是Github开源的一个应用于iOS和MacOS开发的新框架，使用它能大幅度改变在“苹果体系”里面的编程习惯。所以如果是有一些iOS编程经验的人来看这个框架的使用方法可能倒会觉得不习惯。这里不想从比较两种编程的区别来引入ReactiveCocoa，因为这样会让人觉得更混乱。希望读者能把iOS的编程套路忘记后来看这篇文章，以免造成不习惯或混乱，毕竟ReactiveCocoa的编程习惯更加接近我们所追求的编程套路。<br><a id="more"></a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>先讲ReactiveCocoa的安装，顺道给出github地址，注意这个仓库里面有多个分支：<br><a href="https://github.com/ReactiveCocoa/ReactiveCocoa/tree/v2.5" target="_blank" rel="external">https://github.com/ReactiveCocoa/ReactiveCocoa/tree/v2.5</a><br>ReactiveCocoa分为Objective-C和Swift两个不同的语言版本，OC版本的只到V2.5。所以安装的时候不要选错版本。<br>虽然上面的网址有给出安装的方法，但是不能用。运行script/bootstrap会提示xctool找不到。还是乖乖用cocoapod安装吧。Cocoapod的使用这里不介绍，<br>在Podfile里面输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod &apos;ReactiveCocoa&apos;, &apos;2.5&apos;</div></pre></td></tr></table></figure></p>
+<p>然后install即可。这样就完成了安装。</p>
+<h3 id="入门例子"><a href="#入门例子" class="headerlink" title="入门例子"></a>入门例子</h3><blockquote>
+<p>本篇文章的代码可以在这里下载<br><a href="https://github.com/Ekulelu/ReactiveCocoaLogin" target="_blank" rel="external">https://github.com/Ekulelu/ReactiveCocoaLogin</a></p>
+</blockquote>
+<p>先通过一个最简单的登录例子来认识ReactiveCocoa，这里只有一个用户名、密码输入框和一个登录按钮。有两个规则：1、只有用户名和密码的长度都大于5的时候，登录按钮才可用。2、登录成功的条件为账户和密码都是aahuang。</p>
+<p>先从人的思考方式来考虑第一个规则。这个规则可以这样处理：每当用户名框和密码框有输入的时候，都告诉一下按钮，用户名和密码的长度是否都大于5，其他的事情登录按钮都可以不用去理。<br>分解一下这个处理方法需要的要素：1、两个事件：用户名框输入事件和密码框输入事件。2、一个信息：用户名和密码的长度都大于5。3、当事件产生的时候，需要把这个信息传递给登录按钮。画图就是这样：<br><img src="http://ww1.sinaimg.cn/mw690/804bc176gw1famrabldh5j20lc06kwf1.jpg" alt=""></p>
+<p>这个图很简单，需要的东西也少。在ReactiveCocoa框架下，我们可以用很少的代码将上面的图描述出来。关键代码如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//loginBtn是一个登录按钮</span></div><div class="line"><span class="comment">//accountTV是用户名输入框，passwordTV是密码输入框</span></div><div class="line">RAC(<span class="keyword">self</span>.loginBtn, enabled) = </div><div class="line">      [RACSignal combineLatest:@[<span class="keyword">self</span>.accountTV.rac_textSignal,</div><div class="line">                              <span class="keyword">self</span>.passwordTV.rac_textSignal]</div><div class="line">             reduce:^<span class="keyword">id</span>&#123;</div><div class="line">                 <span class="keyword">return</span> @(<span class="keyword">self</span>.accountTV.text.length &gt; <span class="number">5</span> &amp;&amp;  </div><div class="line">                         <span class="keyword">self</span>.passwordTV.text.length &gt; <span class="number">5</span>);</div><div class="line">  &#125;];</div></pre></td></tr></table></figure></p>
+<p>下面来解析一下上面代码：<br>rac_textSignal代表文字输入的<strong>信号</strong>，每当有文字输入事件产生的时候，就会产生“动静”。这个方法是ReactiveCocoa给UITextView和UITextField添加的分类。<br>有了这两个信号之后，使用combineLatest方法将两个信号连接组合起来，创建一个新的信号，这个新信号当两个旧的信号任意一个有“动静”的时候都会产生“动静”。<br>这里吐槽一下ReactiveCocoa的命名，它的signal更像我们所说的信号源，而不是信号（值），他的信号里面所包含的值就是我们日常所认为的信号。所以上面所说的“动静”，你可以理解为是这个信号产生了新的值。<br>在reduce的block里面，可以对信号值做转换，这里直接返回了登录按钮可用条件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">self.accountTV.text.length &gt; 5 &amp;&amp; self.passwordTV.text.length &gt; 5</div></pre></td></tr></table></figure></p>
+<p>然后这个返回值通过RAC(…)这个宏直接绑定到loginBtn的enable属性上面。就这一段的代码就可以完成了规则1的要求，是不是很简单。</p>
+<blockquote>
+<p>这里补充一下combineLasest的规则：<br>1、必须当combine的所有信号都发出了一个值，reduce才会调用。<br>2、此后，任何combine的信号只要有值发出，reduce就会调用一次，但这些信号的值都是各个信号最后一次发出的值。</p>
+</blockquote>
+<p>除了combine方法，RAC还有其他合并信号的方法，可以参考这篇博客：<a href="http://www.jianshu.com/p/ebf08debb325" target="_blank" rel="external">http://www.jianshu.com/p/ebf08debb325</a></p>
+<p>规则2的要求涉及到登录功能，这就要响应登录按钮的按下。代码如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[[<span class="keyword">self</span>.loginBtn rac_signalForControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>]</div><div class="line">        subscribeNext:^(<span class="keyword">id</span> x) &#123;</div><div class="line">        <span class="keyword">if</span> ([<span class="keyword">self</span>.accountTV.text isEqualToString:<span class="string">@"aahuang"</span>]</div><div class="line">            &amp;&amp; [<span class="keyword">self</span>.passwordTV.text isEqualToString:<span class="string">@"aahuang"</span>]) &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"login!"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"Invaild account or password "</span>);</div><div class="line">        &#125;</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<p>下面分析代码：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.loginBtn rac_signalForControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>]</div></pre></td></tr></table></figure></p>
+<p>这一句从按钮的TouchUpInside事件中产生了一个信号，也就是说只要有按钮被按下，这个信号就会产生值，但如何获取到这个值呢？这里有一个订阅的概念，所谓的订阅和订报纸一样，只要信号有了新值，就会发送给订阅者。（这里说明一下，如果一个信号没有订阅者，这称为冷信号，那么它是不会发送值的。）还有，这里虽然说订阅者，但是RAC把它封装好了，我们需要告诉RAC的是我们需要对这个值做什么事情。所以创建订阅者并请阅信号这件事情变为了给RAC一个block就行了，block的参数就是这个值。这个过程通过调用RACSignal的subscribeNext方法来实现。注意到这里block的参数是id类型，其实可以自己改的。</p>
+<blockquote>
+<p><strong>理一下思路：</strong>我们对按钮按下事件做了监听（创建了信号），每当有按钮被按下，就会有新值传给订阅者（调用我们写的block）。但现在按钮按下事件传来的值对我们并没有什么用。所以我们在block里面检查用户名和密码的正确性就行了。<br>这样满足规则1、2的登录框就完成了。</p>
+</blockquote>
+<h3 id="改进的入门例子"><a href="#改进的入门例子" class="headerlink" title="改进的入门例子"></a>改进的入门例子</h3><p>再提一个需求：当用户名或者密码不合法的时候，将输入框的背景颜色变为红色。<br>这个需求应该很简单，只要将输入框的背景色和输入的信号绑定，然后在每次按钮按下的时候判断输入框的内容是否合法，返回相应的颜色就行了。但是留意到判断输入框是否合法这件事情对登录按钮也有影响，最好把它抽出来复用。但前面我们是用combineLatest:reduce:来将按下事件产生的信号值转换为输入是否合法的值的。对于单个的信号，需要使用map方法来对信号值进行转换。代码如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">RACSignal *accountValidSignal =</div><div class="line">   [<span class="keyword">self</span>.accountTV.rac_textSignal map:^<span class="keyword">id</span>(<span class="keyword">id</span> value) &#123;</div><div class="line">       <span class="keyword">return</span> @(<span class="keyword">self</span>.accountTV.text.length &gt; <span class="number">5</span>);<span class="comment">//转化为是否合法布尔值</span></div><div class="line">&#125;];</div><div class="line">    </div><div class="line">RACSignal *passwordValidSignal =</div><div class="line">   [<span class="keyword">self</span>.passwordTV.rac_textSignal map:^<span class="keyword">id</span>(<span class="keyword">id</span> value) &#123;</div><div class="line">     <span class="keyword">return</span> @(<span class="keyword">self</span>.passwordTV.text.length &gt; <span class="number">5</span>); <span class="comment">//转化为是否合法布尔值</span></div><div class="line">&#125;];</div><div class="line">    </div><div class="line">RAC(<span class="keyword">self</span>.accountTV, backgroundColor) =</div><div class="line">   [accountValidSignal map:^<span class="keyword">id</span>(<span class="built_in">NSNumber</span>* accountValid) &#123;</div><div class="line">  <span class="keyword">return</span> accountValid.boolValue ? [<span class="built_in">UIColor</span> whiteColor] : [<span class="built_in">UIColor</span> redColor]; <span class="comment">//转化为UIColor</span></div><div class="line">&#125;];</div><div class="line">    </div><div class="line">RAC(<span class="keyword">self</span>.passwordTV, backgroundColor) =</div><div class="line">   [passwordValidSignal map:^<span class="keyword">id</span>(<span class="built_in">NSNumber</span>* passwordValid) &#123;</div><div class="line">        <span class="keyword">return</span> passwordValid.boolValue ? [<span class="built_in">UIColor</span> whiteColor] : [<span class="built_in">UIColor</span> redColor]; <span class="comment">//转化为UIColor</span></div><div class="line">&#125;];</div><div class="line">    </div><div class="line">RAC(<span class="keyword">self</span>.loginBtn, enabled) =</div><div class="line">   [RACSignal combineLatest:@[accountValidSignal, passwordValidSignal]</div><div class="line">  reduce:^<span class="keyword">id</span>(<span class="built_in">NSNumber</span>* accountValid, <span class="built_in">NSNumber</span>* passwordValid)&#123;</div><div class="line">        <span class="keyword">return</span> @(accountValid.boolValue &amp;&amp; passwordValid.boolValue);</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<p>map方法，用来将信号的值进行转换，在block里面返回一个值进行了。上面的例子里面，将文字输入的信号产生的值转换成了输入内容是否合法的布尔变量。另外在文字背景色的代码上，将输入是否合法的信号值转换为了UIColor返回。<br>另外需要留意的是reduce的block里面我们添加了参数，一般是你将几个信号进行combine，就有几个参数。<br>留意到之前写的登录的判断是很简单的，但实际中一般都是异步调用的。我们把登录验证封装为一个方法，里面用延时模拟网络调用：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)signInWithAccount:(<span class="built_in">NSString</span> *)account password:(<span class="built_in">NSString</span> *)password complete:(<span class="keyword">void</span>(^)(Boolean success))completeBlock &#123;</div><div class="line">dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW,</div><div class="line">                                (int64_t)(<span class="number">2.0</span> * <span class="built_in">NSEC_PER_SEC</span>));</div><div class="line">dispatch_after(popTime, dispatch_get_main_queue(), ^(<span class="keyword">void</span>)&#123;</div><div class="line">   <span class="built_in">BOOL</span> success = [account isEqualToString:<span class="string">@"aahuang"</span>]</div><div class="line">                 &amp;&amp; [password isEqualToString:<span class="string">@"aahuang"</span>];</div><div class="line">   completeBlock(success);</div><div class="line"> &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个方法可以在按钮按下信号的subscribeNext的block直接调用，但还有另外一种做法，将这个方法包装为一个信号，代码如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (RACSignal*)signInSignal&#123;</div><div class="line">    <span class="keyword">return</span> [RACSignal createSignal:^RACDisposable </div><div class="line">                     *(<span class="keyword">id</span>&lt;RACSubscriber&gt; subscriber) &#123;</div><div class="line">        [<span class="keyword">self</span> signInWithAccount:<span class="keyword">self</span>.accountTV.text</div><div class="line">              password:<span class="keyword">self</span>.passwordTV.text</div><div class="line">              complete:^(Boolean success)&#123;</div><div class="line">                 [subscriber sendNext:@(success)];</div><div class="line">                 [subscriber sendCompleted];</div><div class="line">         &#125;];</div><div class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</div><div class="line">&#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里使用了RACSignal 的createSignal方法创建一个信号，这个方法需要一个block，这个block的返回值是一个RACDisposable对象，这个对象允许你在一个订阅被取消时执行一些清理工作，但这里不需要，所以返回nil。这个block会在这个信号被订阅的时候调用，如果这个信号被订阅两次，那么就会调用两次。如何防止这种情况，可以参考下面这篇博客，里面用到一个类叫RACMulticastConnection。<br><a href="http://blog.csdn.net/sjcode/article/details/48027089" target="_blank" rel="external">http://blog.csdn.net/sjcode/article/details/48027089</a></p>
+<p>这里还有一个RACSubscriber类，这个类就是订阅者，调用它的sendNext方法，就能执行到订阅之后传入在subscribeNext的block。<br>另外还有一个sendCompleted方法，这个方法执行后，这个订阅者就再也接收不到信号了，会调用订阅时候的传递给complete的block（这里订阅的时候没有选用带complete的方法，同样还有sendError方法）。<br>然后我们更改按钮按下信号那段代码如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[[[<span class="keyword">self</span>.loginBtn rac_signalForControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>]</div><div class="line">      flattenMap:^<span class="keyword">id</span>(<span class="keyword">id</span> value) &#123;</div><div class="line">        <span class="keyword">return</span> [<span class="keyword">self</span> signInSignal];</div><div class="line">    &#125;] subscribeNext:^(<span class="built_in">NSNumber</span>* isLogin) &#123;</div><div class="line">        <span class="keyword">if</span> (isLogin.boolValue) &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"login!"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"Invaild account or password "</span>);</div><div class="line">        &#125;</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<p>这里同样是要将信号进行转换，将按钮按下信号转换为登陆的信号，注意，这里使用的是flattenMap方法。这和map方法的区别在于：map方法返回的值返回的是信号的值，它会将该值进行包装成信号，但是flattenMap方法不会将返回的结果进行包装，而是将返回值当做信号。因为这里return [self signInSignal];返回的就是信号了，所以用flattenMap方法。<br>最后一点细节，登陆按钮在登陆的时候应该是不可用的。其实这个就叫做“副作用”，换句话说就是在一个next事件发生时执行的逻辑，而该逻辑并不改变事件本身。这个通过对信号使用doNext方法实现，修改登陆按钮信号代码如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[[[[<span class="keyword">self</span>.loginBtn  rac_signalForControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>]</div><div class="line">    doNext:^(<span class="keyword">id</span> x) &#123;</div><div class="line">    <span class="keyword">self</span>.loginBtn.enabled = <span class="literal">NO</span>;</div><div class="line">    &#125;]</div><div class="line">    flattenMap:^<span class="keyword">id</span>(<span class="keyword">id</span> value) &#123;</div><div class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> signInSignal];</div><div class="line">    &#125;] </div><div class="line">    subscribeNext:^(<span class="built_in">NSNumber</span>* isLogin) &#123;</div><div class="line">    <span class="keyword">self</span>.loginBtn.enabled = <span class="literal">YES</span>;</div><div class="line">    <span class="keyword">if</span> (isLogin.boolValue) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"login!"</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"Invaild account or password "</span>);</div><div class="line">    &#125;</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<p>至此，这个简单的登录框就算完成了，和界面交互的代码量比用iOS框架要少不少，而且思路清晰。下篇文章可以和大家谈谈注册框。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/07/iOS的UINavigationViewController 相关/" rel="next" title="iOS的UINavigationViewController 相关">
+                <i class="fa fa-chevron-left"></i> iOS的UINavigationViewController 相关
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/11/ReactiveCocoa入门教程二/" rel="prev" title="ReactiveCocoa入门教程二">
+                ReactiveCocoa入门教程二 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/11/ReactiveCocoa入门教程一/"
+           data-title="ReactiveCocoa入门教程一" data-url="https://ekulelu.github.io/2016/12/11/ReactiveCocoa入门教程一/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Ekulelu" />
+          <p class="site-author-name" itemprop="name">Ekulelu</p>
+          <p class="site-description motion-element" itemprop="description">一緒に世界の果てまでへ</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#入门例子"><span class="nav-number">2.</span> <span class="nav-text">入门例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改进的入门例子"><span class="nav-number">3.</span> <span class="nav-text">改进的入门例子</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ekulelu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ekulelu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p37OqcP9nSbFoEPRagTgkWvI-gzGzoHsz", "IQiHmijzoKs8VMnp6oRleKsS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>
