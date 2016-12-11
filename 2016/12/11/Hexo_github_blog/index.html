@@ -1,0 +1,852 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前两周学着用Hexo搭建博客，且在github上部署。这里把里面的过程记录一下。
+
+使用的系统是Mac，但是windows也是基本一致。
+
+安装Node.js下载地址
+安装完成后，进入终端，使用下面命令可以查询到安装的版本号，验证一下有没安装成功。12$ node -v$ npm -v">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Hexo搭建blog并在github上部署">
+<meta property="og:url" content="https://ekulelu.github.io/2016/12/11/Hexo_github_blog/index.html">
+<meta property="og:site_name" content="Ekulelu's Blog">
+<meta property="og:description" content="前两周学着用Hexo搭建博客，且在github上部署。这里把里面的过程记录一下。
+
+使用的系统是Mac，但是windows也是基本一致。
+
+安装Node.js下载地址
+安装完成后，进入终端，使用下面命令可以查询到安装的版本号，验证一下有没安装成功。12$ node -v$ npm -v">
+<meta property="og:updated_time" content="2016-12-11T14:19:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Hexo搭建blog并在github上部署">
+<meta name="twitter:description" content="前两周学着用Hexo搭建博客，且在github上部署。这里把里面的过程记录一下。
+
+使用的系统是Mac，但是windows也是基本一致。
+
+安装Node.js下载地址
+安装完成后，进入终端，使用下面命令可以查询到安装的版本号，验证一下有没安装成功。12$ node -v$ npm -v">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ekulelu.github.io/2016/12/11/Hexo_github_blog/"/>
+
+
+
+
+
+  <title> 使用Hexo搭建blog并在github上部署 | Ekulelu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f31c6baa24838cd36f68f42d6187a455";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ekulelu's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2016/12/11/Hexo_github_blog/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用Hexo搭建blog并在github上部署
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-11T19:45:00+08:00">
+                2016-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/经验笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">经验笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/12/11/Hexo_github_blog/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/11/Hexo_github_blog/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/11/Hexo_github_blog/" class="leancloud_visitors" data-flag-title="使用Hexo搭建blog并在github上部署">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前两周学着用Hexo搭建博客，且在github上部署。这里把里面的过程记录一下。</p>
+<blockquote>
+<p>使用的系统是Mac，但是windows也是基本一致。</p>
+</blockquote>
+<h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p><a href="https://nodejs.org/en/download/" target="_blank" rel="external">下载地址</a></p>
+<p>安装完成后，进入终端，使用下面命令可以查询到安装的版本号，验证一下有没安装成功。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ node -v</div><div class="line">$ npm -v</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>由于Mac都是自带安装了git的，所以这一步就可以省略了。</p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>先新建一个文件夹，这个文件夹就当做以后blog的目录。然后终端移动到这个文件夹里，键入下面的命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-cli -g # 安装Hexo</div><div class="line">$ hexo init # 初始化Hexo</div><div class="line">$ npm install # npm会自动安装需要的组件</div></pre></td></tr></table></figure></p>
+<p>至此，hexo的安装就完成了。目录下面已经生成了一个blog系统。</p>
+<h3 id="部署到github"><a href="#部署到github" class="headerlink" title="部署到github"></a>部署到github</h3><p>github为每个账号都提供了一个300M的免费空间作为blog，其实这个blog也是一个仓库，只不过仓库的名字有要求。<br>仓库必须和用户名一致如ekulelu.github.io，创建后即可访问静态主页如<a href="http://ekulelu.github.io">http://ekulelu.github.io</a><br>为了使Hexo能上传至这个仓库，需要进行ssh的公私钥部署。登入github，进入Settings，左边菜单选择SSH and GPC keys，这个就是配置用户SSH key的界面，点击下面的generating SSH keys链接，就可以进入创建上传SSH key的教程。<br>一般来讲，Mac的key都是放在 ~/.ssh目录下面，使用下面命令就可以看到已经存在的key。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -al ~/.ssh</div></pre></td></tr></table></figure></p>
+<p>如果一对key都没有，那么就需要创建，当然，你也可以单独为github创建一对key，如果采用不是默认命名，每次上传的时候都需要重新添加到ssh-agent，好烦。</p>
+<h4 id="使用下面命令创建key"><a href="#使用下面命令创建key" class="headerlink" title="使用下面命令创建key"></a>使用下面命令创建key</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;</div></pre></td></tr></table></figure>
+<p>其中会出现下面提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Enter a file in which to save the key (/Users/you/.ssh/id_rsa): [Press enter]</div></pre></td></tr></table></figure></p>
+<p>这个是生成的key保存的位置和名称，默认就是id_rsa，但是如果你之前就有了这对key，会提示你是否覆盖，假如你之前的key有用的话，别覆盖了。我会说我就是没细看，然后不小心覆盖了，导致公司的仓库登不上去吗…<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Enter passphrase (empty for no passphrase): [Type a passphrase]</div></pre></td></tr></table></figure></p>
+<p>这个如果不需要的话，可以直接按回车，如果输入了的话，以后添加到key-agent就要输入这串东西。<br>继续enter之后，key就生成了。</p>
+<h4 id="添加到key-agent"><a href="#添加到key-agent" class="headerlink" title="添加到key-agent"></a>添加到key-agent</h4><p>先验证ssh-agent是否可用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ eval &quot;$(ssh-agent -s)&quot;</div><div class="line">//输出Agent pid 59566</div></pre></td></tr></table></figure></p>
+<p>然后添加ssh key，注意后面私钥的名字，如果你不是默认生成的，请换成你生成key的名字。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-add ~/.ssh/id_rsa</div></pre></td></tr></table></figure></p>
+<h4 id="添加公钥到github账号"><a href="#添加公钥到github账号" class="headerlink" title="添加公钥到github账号"></a>添加公钥到github账号</h4><p>在终端输入下面命令，注意key的名字。这下公钥已经拷贝到了剪贴板。或者也可以直接用编辑器打开公钥复制。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ pbcopy &lt; ~/.ssh/id_rsa.pub</div><div class="line"># Copies the contents of the id_rsa.pub file to your clipboard</div></pre></td></tr></table></figure></p>
+<p>打开github的ssh key的页面，点击上面的New SSH key，然后粘贴上去，写个名字，点击ok就行了。<br>4、测试SSH连接<br>在终端输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -T git@github.com</div></pre></td></tr></table></figure></p>
+<p>如果出现warning，继续下去<br>最后应该会出现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Hi username! You&apos;ve successfully authenticated, but GitHub does not</div><div class="line">provide shell access.</div></pre></td></tr></table></figure></p>
+<p>如果出现permission denied(publickey)，点击下面的页面看看<br><a href="https://help.github.com/articles/error-permission-denied-publickey" target="_blank" rel="external">https://help.github.com/articles/error-permission-denied-publickey</a></p>
+<h4 id="安装hexo-deployer-git"><a href="#安装hexo-deployer-git" class="headerlink" title="安装hexo-deployer-git"></a>安装hexo-deployer-git</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-deployer-git --save</div></pre></td></tr></table></figure>
+<h4 id="配置deploy"><a href="#配置deploy" class="headerlink" title="配置deploy"></a>配置deploy</h4><p>打开blog目录下面的config.yml文件（称为站点配置文件），找到deploy字段，按照下面的样式改你刚刚建立的仓库地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repo: git@github.com:xiangnan/xiangnan.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure></p>
+<p>此致，就打通了hexo和github仓库，后面就可以通过在blog目录下面输入下面指令将blog部署到github<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div></pre></td></tr></table></figure></p>
+<h3 id="安装Next主题"><a href="#安装Next主题" class="headerlink" title="安装Next主题"></a>安装Next主题</h3><p>进入blog目录，输入下面指令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure></p>
+<p>至于Next的使用，请参考官方教程，很详细<br><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">http://theme-next.iissnan.com/getting-started.html</a></p>
+<h3 id="创建文章"><a href="#创建文章" class="headerlink" title="创建文章"></a>创建文章</h3><p>输入下面的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new &quot;postName&quot; #新建文章</div></pre></td></tr></table></figure></p>
+<p>这就会在blog/source/_posts下面生成一个XXX.md文件。里面就可以用markdown语言进行blog撰写。<br>推荐一个在线编辑工具，所见即所得<br><a href="https://stackedit.io/editor" target="_blank" rel="external">https://stackedit.io/editor</a><br>文章编辑完之后，可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo g</div></pre></td></tr></table></figure></p>
+<p>生成blog，然后再使用下面命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo s</div></pre></td></tr></table></figure></p>
+<p>开启本地的服务器，安装里面提示的地址就可以看到博客了，方便修改。</p>
+<blockquote>
+<p>有时候，即使使用了hexo g命令，也没有生成最新的文章。这个时候，可以吧blog/public目录删除了。重新使用hexo g命令生成blog<br>在文章中使用 &lt;!– more –> 手动进行截断，Hexo 提供的方式</p>
+</blockquote>
+<h3 id="博客的图片"><a href="#博客的图片" class="headerlink" title="博客的图片"></a>博客的图片</h3><p>xiangnan推荐我用新浪微博的图床，感觉还不错。</p>
+<h3 id="Next主题修改的几个位置"><a href="#Next主题修改的几个位置" class="headerlink" title="Next主题修改的几个位置"></a>Next主题修改的几个位置</h3><p>Next的教程里面没有详细告知网页中元素的修改位置，且主题是黑色的，个人觉得一般般。所以自己摸索了一下一些控件颜色的修改位置。</p>
+<blockquote>
+<p>小tip：活用浏览器的右键检查元素的功能，可以快速定位元素的class。<br>主题配置文件是指themes/next下面的_config.yml，下面一般先指出修改的文件所在位置，代码内是文件要修改的地方，一般是color字段。</p>
+</blockquote>
+<h4 id="头像"><a href="#头像" class="headerlink" title="头像"></a>头像</h4><p>头像：主题配置文件<br>将头像放置主题目录下的 source/uploads/ （新建uploads目录若不存在）<br>配置为：avatar: /uploads/avatar.png<br>或者 放置在 source/images/ 目录下<br>配置为：avatar: /images/avatar.png</p>
+<h4 id="最上面一条颜色"><a href="#最上面一条颜色" class="headerlink" title="最上面一条颜色"></a>最上面一条颜色</h4><p>blog/themes/next/source/css/_common/components/header/headband.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">.headband &#123;</div><div class="line">  height: $headband-height;</div><div class="line">  background: $themeColor;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="头部背景颜色位置"><a href="#头部背景颜色位置" class="headerlink" title="头部背景颜色位置"></a>头部背景颜色位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">blog/themes/next/source/css/_schemes/Pisces/_brand.styl</div><div class="line">.site-meta &#123;</div><div class="line">  padding: 20px 0;</div><div class="line">  color: white;</div><div class="line">background: $themeColor;</div></pre></td></tr></table></figure>
+<h4 id="头部文字颜色"><a href="#头部文字颜色" class="headerlink" title="头部文字颜色"></a>头部文字颜色</h4><p>blog/themes/next/source/css/_common/components/header/site-meta.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">.brand &#123;</div><div class="line">  position: relative;</div><div class="line">  display: inline-block;</div><div class="line">  padding: 0 40px;</div><div class="line">  color: $brand-color;</div><div class="line">  background: $brand-bg;</div><div class="line">  border-bottom: none;</div><div class="line">  &amp;:hover &#123; color: $brand-hover-color; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="个人信息框的名字颜色"><a href="#个人信息框的名字颜色" class="headerlink" title="个人信息框的名字颜色"></a>个人信息框的名字颜色</h4><p>blog/themes/next/source/css/_common/components/sidebar/sidebar-author.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.site-author-name &#123;</div><div class="line">  margin: $site-author-name-margin;</div><div class="line">  text-align: $site-author-name-align;</div><div class="line">  color: $themeColor;</div><div class="line">  font-weight: $site-author-name-weight;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="文章标题颜色："><a href="#文章标题颜色：" class="headerlink" title="文章标题颜色："></a>文章标题颜色：</h4><p>blog/themes/next/source/css/_common/components/post/post-title.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">.posts-expand .post-title-link &#123;</div><div class="line">  display: inline-block;</div><div class="line">  position: relative;</div><div class="line">  color: $blue;</div><div class="line">  border-bottom: none;</div><div class="line">  line-height: 1.2;</div><div class="line">vertical-align: top;</div></pre></td></tr></table></figure></p>
+<h4 id="文章内容宽度"><a href="#文章内容宽度" class="headerlink" title="文章内容宽度"></a>文章内容宽度</h4><p>我现在只能调节整个页面的宽度，如果有发现怎么调节的，请告知<br>blog/themes/next/source/css/_variables/base.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$main-desktop                   = 1160px</div><div class="line">和</div><div class="line">$content-desktop                = 900px</div></pre></td></tr></table></figure></p>
+<h4 id="导航栏的激活标志"><a href="#导航栏的激活标志" class="headerlink" title="导航栏的激活标志"></a>导航栏的激活标志</h4><p>blog/themes/next/source/css/_schemes/Pisces/_menu.sytl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">.menu-item-active a &#123;</div><div class="line">  @extend .menu .menu-item a:hover;</div><div class="line"></div><div class="line">  &amp;:after &#123;</div><div class="line">    content: &quot; &quot;;</div><div class="line">    position: absolute;</div><div class="line">    top: 50%;</div><div class="line">    margin-top: -3px;</div><div class="line">    right: 15px;</div><div class="line">    width: 6px;</div><div class="line">    height: 6px;</div><div class="line">    border-radius: 50%;</div><div class="line">    background-color: $blue-bright;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="导航栏图标颜色"><a href="#导航栏图标颜色" class="headerlink" title="导航栏图标颜色"></a>导航栏图标颜色</h4><p>blog/themes/next/source/css/_common/scaffolding/base.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">a &#123;</div><div class="line">  color: $link-color;</div><div class="line">  text-decoration: none;</div><div class="line">  border-bottom: 1px solid $grey-dark;</div><div class="line">  word-wrap: break-word;</div><div class="line"></div><div class="line">  &amp;:hover &#123;</div><div class="line">    color: $link-hover-color;</div><div class="line">    border-bottom-color: $link-decoration-hover-color;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="背景图片"><a href="#背景图片" class="headerlink" title="背景图片"></a>背景图片</h4><p>blog/themes/next/source/css/_custom/custom.styl添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">#header &#123;</div><div class="line">    background: url(&quot;../images/background-header.jpg&quot;);</div><div class="line">    background-size: cover;</div><div class="line">&#125;</div><div class="line">body &#123;</div><div class="line">    background: url(&quot;../images/background-body.jpg&quot;);</div><div class="line">    background-size: cover;</div><div class="line">    background-attachment: fixed;  #防止图片滚动</div><div class="line">&#125;</div><div class="line">#footer &#123;</div><div class="line">    background: url(&quot;../images/background-footer.jpg&quot;);</div><div class="line">    background-size: cover;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="修改侧边导航栏颜色"><a href="#修改侧边导航栏颜色" class="headerlink" title="修改侧边导航栏颜色"></a>修改侧边导航栏颜色</h4><p>blog/themes/next/source/css/_common/components/sidebar/sidebar-nav.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.sidebar-nav .sidebar-nav-active &#123;</div><div class="line">  color: $themeColor;</div><div class="line">  border-bottom-color: $themeColor;</div><div class="line"></div><div class="line">  &amp;:hover &#123; color: $sidebar-highlight; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>blog/themes/next/source/css/_common/components/sidebar/sidebar-toc.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">.post-toc .nav .active &gt; a &#123;</div><div class="line">  color: $themeColor;</div><div class="line">  border-bottom-color: $themeColor;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.post-toc .nav .active-current &gt; a &#123;</div><div class="line">  color: $themeColor;</div><div class="line">  &amp;:hover &#123;</div><div class="line">    color: $toc-link-active-current-border-color;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="标题下划线颜色"><a href="#标题下划线颜色" class="headerlink" title="标题下划线颜色"></a>标题下划线颜色</h4><p>blog/themes/next/source/css/_common/components/post/post-title.styl<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&amp;::before &#123;</div><div class="line">  content: &quot;&quot;;</div><div class="line">  position: absolute;</div><div class="line">  width: 100%;</div><div class="line">  height: 2px;</div><div class="line">  bottom: 0;</div><div class="line">  left: 0;</div><div class="line">  background-color: $themeColor;</div><div class="line">  visibility: hidden;</div><div class="line">  transform: scaleX(0);</div><div class="line">  the-transition();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/11/ReactiveCocoa入门教程二/" rel="next" title="ReactiveCocoa入门教程二">
+                <i class="fa fa-chevron-left"></i> ReactiveCocoa入门教程二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/11/Hexo_github_blog/"
+           data-title="使用Hexo搭建blog并在github上部署" data-url="https://ekulelu.github.io/2016/12/11/Hexo_github_blog/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Ekulelu" />
+          <p class="site-author-name" itemprop="name">Ekulelu</p>
+          <p class="site-description motion-element" itemprop="description">一緒に世界の果てまでへ</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Node-js"><span class="nav-number">1.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Git"><span class="nav-number">2.</span> <span class="nav-text">安装Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Hexo"><span class="nav-number">3.</span> <span class="nav-text">安装Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署到github"><span class="nav-number">4.</span> <span class="nav-text">部署到github</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用下面命令创建key"><span class="nav-number">4.1.</span> <span class="nav-text">使用下面命令创建key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加到key-agent"><span class="nav-number">4.2.</span> <span class="nav-text">添加到key-agent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加公钥到github账号"><span class="nav-number">4.3.</span> <span class="nav-text">添加公钥到github账号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装hexo-deployer-git"><span class="nav-number">4.4.</span> <span class="nav-text">安装hexo-deployer-git</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置deploy"><span class="nav-number">4.5.</span> <span class="nav-text">配置deploy</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Next主题"><span class="nav-number">5.</span> <span class="nav-text">安装Next主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建文章"><span class="nav-number">6.</span> <span class="nav-text">创建文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#博客的图片"><span class="nav-number">7.</span> <span class="nav-text">博客的图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Next主题修改的几个位置"><span class="nav-number">8.</span> <span class="nav-text">Next主题修改的几个位置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#头像"><span class="nav-number">8.1.</span> <span class="nav-text">头像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最上面一条颜色"><span class="nav-number">8.2.</span> <span class="nav-text">最上面一条颜色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#头部背景颜色位置"><span class="nav-number">8.3.</span> <span class="nav-text">头部背景颜色位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#头部文字颜色"><span class="nav-number">8.4.</span> <span class="nav-text">头部文字颜色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#个人信息框的名字颜色"><span class="nav-number">8.5.</span> <span class="nav-text">个人信息框的名字颜色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文章标题颜色："><span class="nav-number">8.6.</span> <span class="nav-text">文章标题颜色：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文章内容宽度"><span class="nav-number">8.7.</span> <span class="nav-text">文章内容宽度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导航栏的激活标志"><span class="nav-number">8.8.</span> <span class="nav-text">导航栏的激活标志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导航栏图标颜色"><span class="nav-number">8.9.</span> <span class="nav-text">导航栏图标颜色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#背景图片"><span class="nav-number">8.10.</span> <span class="nav-text">背景图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改侧边导航栏颜色"><span class="nav-number">8.11.</span> <span class="nav-text">修改侧边导航栏颜色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标题下划线颜色"><span class="nav-number">8.12.</span> <span class="nav-text">标题下划线颜色</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ekulelu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ekulelu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p37OqcP9nSbFoEPRagTgkWvI-gzGzoHsz", "IQiHmijzoKs8VMnp6oRleKsS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>
