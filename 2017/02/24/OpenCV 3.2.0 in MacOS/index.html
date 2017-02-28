@@ -1,0 +1,803 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
+本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV 3.2.0 in MacOS">
+<meta property="og:url" content="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/index.html">
+<meta property="og:site_name" content="Ekulelu's Blog">
+<meta property="og:description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
+本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
+<meta property="og:updated_time" content="2017-02-28T14:09:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV 3.2.0 in MacOS">
+<meta name="twitter:description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
+本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/"/>
+
+
+
+
+
+  <title> OpenCV 3.2.0 in MacOS | Ekulelu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f31c6baa24838cd36f68f42d6187a455";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ekulelu's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                OpenCV 3.2.0 in MacOS
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-24T22:04:00+08:00">
+                2017-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/转角遇到坑-Note-for-development/" itemprop="url" rel="index">
+                    <span itemprop="name">转角遇到坑(Note for development)</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/02/24/OpenCV 3.2.0 in MacOS/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/24/OpenCV 3.2.0 in MacOS/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/24/OpenCV 3.2.0 in MacOS/" class="leancloud_visitors" data-flag-title="OpenCV 3.2.0 in MacOS">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。</p>
+<p>本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去，但是仍然报错。后面开窍去试了下3.1版本，cmake的generate过了。洗澡回来make，这次仍然报错，说找不到QTKit头文件。百度下来一看，都是说Seirra把某个库文件给改了，尝试了一种把QTKit文件扔进去的办法，根本不行。我想翻桌子！睡觉。。。。</p>
+<p>下面记录一下这个过程里面用到的东西和坑。<br><a id="more"></a></p>
+<h1 id="Cmake"><a href="#Cmake" class="headerlink" title="Cmake"></a>Cmake</h1><p>这里的Cmake是编译opencv用的，实际测试发现这种安装方法不可行。你可以尝试下不装的情况下，用homebrew能不能安装opencv。<br>这个上网去下了一个dmg，安装了，但是要终端里面可以用的话得另外配置。打开cmake，选择Tools菜单-&gt;How to install for command line use. 里面提到了三种方法，我试了第一种就可以用了。</p>
+<h1 id="OpenCV的Cmake安装"><a href="#OpenCV的Cmake安装" class="headerlink" title="OpenCV的Cmake安装"></a>OpenCV的Cmake安装</h1><p>首先安装3.2.0会卡在下载ippicv_macosx_20151201.tgz文件上面，如果你可以翻墙，那么可以试试，否则呵呵。尝试过下载这个文件后，仍在对应的目录，但是仍然报其他错误。GG<br>尝试安装3.1版本，这个make的时候找不到QTKit，系统是Seirra应该就会出现这个问题。网上的方法太困难了，需要找到Capitan的QTKit文件，然后在什么模式下进行替换。想想万一把电脑搞崩了就更惨了。所以没有继续尝试。至此Cmake安装OpenCV全部GG.</p>
+<h1 id="HomeBrew安装OpenCV"><a href="#HomeBrew安装OpenCV" class="headerlink" title="HomeBrew安装OpenCV"></a>HomeBrew安装OpenCV</h1><p>网上有另外一种安装OpenCV的方法，就是使用HomeBrew，但是家里的网 brew update失败。这就是我刚刚说的连不上github。所以只能第二天去公司尝试。还好，公司可以update。<br>首先要更新HomeBrew的一个tag，之前我这里的tag只有两个，根本找不到OpenCV。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew tap homebrew/science</div></pre></td></tr></table></figure></p>
+<p>更新成功之后，安装OpenCV3<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install opencv3</div></pre></td></tr></table></figure></p>
+<p>顺利的话，上面两个命令之后就可以安装完OpenCV了。安装成功之后，有几个配置的提示。按照需求配置一下，反正我是全配置的。省得以后又找不到command什么的。注意安装完后终端会有提示lib和header的位置，下面会提到。<br>昨晚上费了3个小时也没装上的OpenCV3.2，今天两个命令就搞定了，想死的心都有。今晚回去再看看家里的电脑行不行，毕竟Seirra的系统怕还是装不上。</p>
+<h1 id="OpenCV-in-XCode"><a href="#OpenCV-in-XCode" class="headerlink" title="OpenCV in XCode"></a>OpenCV in XCode</h1><p>作为一个iOS开发者，XCode必备了。所以想着就用它来玩OpenCV就好了。网上找了一些教程来搞，发现前面找的都不靠谱。首先是OpenCV的安装方法不一样，导致OpenCV库的位置根本不同，网上教程的把/usr/local/lib里面的dylib库都扔进工程，根本不行。编译会报链接错误，没定义cv::String之类的。</p>
+<p>这里说一下我的方法：<br>首先，根据HomeBrew安装OpenCV的时候，最后提示的链接库和头文件的位置来看（不排除以后版本会变换地址，所以一切以安装的时候提示为准）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">For compilers to find this software you may need to set:</div><div class="line">    LDFLAGS:  -L/usr/local/opt/opencv3/lib</div><div class="line">    CPPFLAGS: -I/usr/local/opt/opencv3/include</div></pre></td></tr></table></figure></p>
+<p>可以找到/usr/local/opt/opencv3的文件夹，但是发现这个文件夹只是一个链接，它指向的位置是/usr/local/Cellar/opencv3/3.2.0。打开这个文件夹，可以看到OpenCV的库和头文件之类的。<br>打开里面的lib文件夹，可以看到很多的dylib，但是有很多是链接文件，作用应该就是重命名定向。<br>include文件夹里面则是包含了所有的头文件。<br>下面用XCode玩OpenCV。<br>新建XCode的command Line工程。<br>这里只有一个main.m文件，因为OpenCV用到的是C和C++，所以要把.m文件改为.mm文件。直接重命名main.m就行了。<br>然后在main.mm里面改为下面的代码，这里为了简洁，删除了其他不必要的代码，比如Foundation之类的库。如果你需要加上Foundation，这里有一个坑。就是要把<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div></pre></td></tr></table></figure></p>
+<p>放到其他include的后面，否则会报错。之前弄OpenCV for iOS的时候，这个坑搞了好久。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.mm</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</div><div class="line">    <span class="comment">//get the image from the directed path</span></div><div class="line">    IplImage* img = cvLoadImage(<span class="string">"your image path"</span>, <span class="number">1</span>);<span class="comment">//这里要替换成你的图片地址</span></div><div class="line">    <span class="comment">//create a window to display the image</span></div><div class="line">    cvNamedWindow(<span class="string">"picture"</span>, <span class="number">1</span>);</div><div class="line">    <span class="comment">//show the image in the window</span></div><div class="line">    cvShowImage(<span class="string">"picture"</span>, img);</div><div class="line">    <span class="comment">//wait for the user to hit a key</span></div><div class="line">    cvWaitKey(<span class="number">0</span>);</div><div class="line">    <span class="comment">//delete the image and window</span></div><div class="line">    cvReleaseImage(&amp;img);</div><div class="line">    cvDestroyWindow(<span class="string">"picture"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后转到项目的Build Setting里面。在搜索里面搜head，下面列表里面找到Header Search Paths项目。在这个项目里面双击添加OpenCV头文件所在的目录，就是上面提到的/usr/local/Cellar/opencv3/3.2.0/include。<br>接下来是添加dylib到工程，这个不能在Library Search Paths里面添加目录了。貌似是动态库的原因？<br>为了好看，先转移到工程的finder下面，新建一个opencvLib目录来存放dylib。然后将/usr/local/Cellar/opencv3/3.2.0/lib里面的dylib（不包括链接文件）都拷贝到刚刚建立的目录，我这里一共是16个。然后再把这个opencvLib目录拖到XCode工程里面。这时可以在工程的Build Phases里面看到Link binary with libraries存在了刚刚添加的dylib库了。</p>
+<p>然后运行。这样就可以弹一个窗显示你的图片了。<br>至此，XCode可以运行起OpenCV。<br>下面就是慢慢学习了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/25/talkAboutLazyLoad/" rel="next" title="懒加载的坑">
+                <i class="fa fa-chevron-left"></i> 懒加载的坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/24/OpenCV 3.2.0 in MacOS/"
+           data-title="OpenCV 3.2.0 in MacOS" data-url="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Ekulelu" />
+          <p class="site-author-name" itemprop="name">Ekulelu</p>
+          <p class="site-description motion-element" itemprop="description">一緒に世界の果てまでへ</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cmake"><span class="nav-number">1.</span> <span class="nav-text">Cmake</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV的Cmake安装"><span class="nav-number">2.</span> <span class="nav-text">OpenCV的Cmake安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HomeBrew安装OpenCV"><span class="nav-number">3.</span> <span class="nav-text">HomeBrew安装OpenCV</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV-in-XCode"><span class="nav-number">4.</span> <span class="nav-text">OpenCV in XCode</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ekulelu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ekulelu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p37OqcP9nSbFoEPRagTgkWvI-gzGzoHsz", "IQiHmijzoKs8VMnp6oRleKsS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>
