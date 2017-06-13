@@ -84,19 +84,25 @@
 
 
 
-<meta name="description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
-本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
+<meta name="description" content="注：个人的swift2学习笔记，根据Swift4的更新做了更新。
+由于知识水平有限，如果有错误，欢迎指出。谢谢！本笔记是在有一定的编程语言基础之上写的。基础为0的朋友可能看得会有点吃力。建议可以看看C语言或OC的基础教程再来看本笔记。
+写在前面，swift有一个playground类型的项目，写代码后直接就能看到结果，还是挺好玩的。
+Swift和其他高级语言不同，它有变量类型的自动识别。在C语言中">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenCV 3.2.0 in MacOS">
-<meta property="og:url" content="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/index.html">
+<meta property="og:title" content="学Swift4之1——初见">
+<meta property="og:url" content="https://ekulelu.github.io/2017/06/13/学Swift4之1——初见/index.html">
 <meta property="og:site_name" content="Ekulelu's Blog">
-<meta property="og:description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
-本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
-<meta property="og:updated_time" content="2017-02-28T14:13:16.000Z">
+<meta property="og:description" content="注：个人的swift2学习笔记，根据Swift4的更新做了更新。
+由于知识水平有限，如果有错误，欢迎指出。谢谢！本笔记是在有一定的编程语言基础之上写的。基础为0的朋友可能看得会有点吃力。建议可以看看C语言或OC的基础教程再来看本笔记。
+写在前面，swift有一个playground类型的项目，写代码后直接就能看到结果，还是挺好玩的。
+Swift和其他高级语言不同，它有变量类型的自动识别。在C语言中">
+<meta property="og:updated_time" content="2017-06-13T12:56:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenCV 3.2.0 in MacOS">
-<meta name="twitter:description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
-本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
+<meta name="twitter:title" content="学Swift4之1——初见">
+<meta name="twitter:description" content="注：个人的swift2学习笔记，根据Swift4的更新做了更新。
+由于知识水平有限，如果有错误，欢迎指出。谢谢！本笔记是在有一定的编程语言基础之上写的。基础为0的朋友可能看得会有点吃力。建议可以看看C语言或OC的基础教程再来看本笔记。
+写在前面，swift有一个playground类型的项目，写代码后直接就能看到结果，还是挺好玩的。
+Swift和其他高级语言不同，它有变量类型的自动识别。在C语言中">
 
 
 
@@ -124,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/"/>
+  <link rel="canonical" href="https://ekulelu.github.io/2017/06/13/学Swift4之1——初见/"/>
 
 
 
 
 
-  <title> OpenCV 3.2.0 in MacOS | Ekulelu's Blog </title>
+  <title> 学Swift4之1——初见 | Ekulelu's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -251,7 +257,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/13/学Swift4之1——初见/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Ekulelu">
@@ -275,7 +281,7 @@
             
             
               
-                OpenCV 3.2.0 in MacOS
+                学Swift4之1——初见
               
             
           </h1>
@@ -288,8 +294,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-24T22:04:00+08:00">
-                2017-02-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-13T19:55:00+08:00">
+                2017-06-13
               </time>
             
 
@@ -307,8 +313,8 @@
               <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/转角遇到坑-Note-for-development/" itemprop="url" rel="index">
-                    <span itemprop="name">转角遇到坑(Note for development)</span>
+                  <a href="/categories/学习Swift4-Learn-Swift4/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Swift4(Learn Swift4)</span>
                   </a>
                 </span>
 
@@ -322,8 +328,8 @@
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
-                <a href="/2017/02/24/OpenCV 3.2.0 in MacOS/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/24/OpenCV 3.2.0 in MacOS/" itemprop="commentCount"></span>
+                <a href="/2017/06/13/学Swift4之1——初见/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/13/学Swift4之1——初见/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -333,7 +339,7 @@
 
           
           
-             <span id="/2017/02/24/OpenCV 3.2.0 in MacOS/" class="leancloud_visitors" data-flag-title="OpenCV 3.2.0 in MacOS">
+             <span id="/2017/06/13/学Swift4之1——初见/" class="leancloud_visitors" data-flag-title="学Swift4之1——初见">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -358,21 +364,18 @@
       
 
       
-        <p>这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。</p>
-<p>本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去，但是仍然报错。后面开窍去试了下3.1版本，cmake的generate过了。洗澡回来make，这次仍然报错，说找不到QTKit头文件。百度下来一看，都是说Seirra把某个库文件给改了，尝试了一种把QTKit文件扔进去的办法，根本不行。我想翻桌子！睡觉。。。。</p>
-<p>下面记录一下这个过程里面用到的东西和坑。<br><a id="more"></a></p>
-<h1 id="Cmake"><a href="#Cmake" class="headerlink" title="Cmake"></a>Cmake</h1><p>这里的Cmake是编译opencv用的，实际测试发现这种安装方法不可行。你可以尝试下不装的情况下，用homebrew能不能安装opencv。<br>这个上网去下了一个dmg，安装了，但是要终端里面可以用的话得另外配置。打开cmake，选择Tools菜单-&gt;How to install for command line use. 里面提到了三种方法，我试了第一种就可以用了。</p>
-<h1 id="OpenCV的Cmake安装"><a href="#OpenCV的Cmake安装" class="headerlink" title="OpenCV的Cmake安装"></a>OpenCV的Cmake安装</h1><p>首先安装3.2.0会卡在下载ippicv_macosx_20151201.tgz文件上面，如果你可以翻墙，那么可以试试，否则呵呵。尝试过下载这个文件后，仍在对应的目录，但是仍然报其他错误。GG<br>尝试安装3.1版本，这个make的时候找不到QTKit，系统是Seirra应该就会出现这个问题。网上的方法太困难了，需要找到Capitan的QTKit文件，然后在什么模式下进行替换。想想万一把电脑搞崩了就更惨了。所以没有继续尝试。至此Cmake安装OpenCV全部GG.</p>
-<h1 id="HomeBrew安装OpenCV"><a href="#HomeBrew安装OpenCV" class="headerlink" title="HomeBrew安装OpenCV"></a>HomeBrew安装OpenCV</h1><p>网上有另外一种安装OpenCV的方法，就是使用HomeBrew，但是家里的网 brew update失败。这就是我刚刚说的连不上github。所以只能第二天去公司尝试。还好，公司可以update。<br>首先要更新HomeBrew的一个tag，之前我这里的tag只有两个，根本找不到OpenCV。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew tap homebrew/science</div></pre></td></tr></table></figure></p>
-<p>更新成功之后，安装OpenCV3<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install opencv3</div></pre></td></tr></table></figure></p>
-<p>顺利的话，上面两个命令之后就可以安装完OpenCV了。安装成功之后，有几个配置的提示。按照需求配置一下，反正我是全配置的。省得以后又找不到command什么的。注意安装完后终端会有提示lib和header的位置，下面会提到。<br>昨晚上费了3个小时也没装上的OpenCV3.2，今天两个命令就搞定了，想死的心都有。今晚回去再看看家里的电脑行不行，毕竟Seirra的系统怕还是装不上。(Seirra测试可以装)</p>
-<h1 id="OpenCV-in-XCode"><a href="#OpenCV-in-XCode" class="headerlink" title="OpenCV in XCode"></a>OpenCV in XCode</h1><p>作为一个iOS开发者，XCode必备了。所以想着就用它来玩OpenCV就好了。网上找了一些教程来搞，发现前面找的都不靠谱。首先是OpenCV的安装方法不一样，导致OpenCV库的位置根本不同，网上教程的把/usr/local/lib里面的dylib库都扔进工程，根本不行。编译会报链接错误，没定义cv::String之类的。</p>
-<p>这里说一下我的方法：<br>首先，根据HomeBrew安装OpenCV的时候，最后提示的链接库和头文件的位置来看（不排除以后版本会变换地址，所以一切以安装的时候提示为准）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">For compilers to find this software you may need to set:</div><div class="line">    LDFLAGS:  -L/usr/local/opt/opencv3/lib</div><div class="line">    CPPFLAGS: -I/usr/local/opt/opencv3/include</div></pre></td></tr></table></figure></p>
-<p>可以找到/usr/local/opt/opencv3的文件夹，但是发现这个文件夹只是一个链接，它指向的位置是/usr/local/Cellar/opencv3/3.2.0。打开这个文件夹，可以看到OpenCV的库和头文件之类的。<br>打开里面的lib文件夹，可以看到很多的dylib，但是有很多是链接文件，作用应该就是重命名定向。<br>include文件夹里面则是包含了所有的头文件。<br>下面用XCode玩OpenCV。<br>新建XCode的command Line工程。<br>这里只有一个main.m文件，因为OpenCV用到的是C和C++，所以要把.m文件改为.mm文件。直接重命名main.m就行了。<br>然后在main.mm里面改为下面的代码，这里为了简洁，删除了其他不必要的代码，比如Foundation之类的库。如果你需要加上Foundation，这里有一个坑。就是要把<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div></pre></td></tr></table></figure></p>
-<p>放到其他include的后面，否则会报错。之前弄OpenCV for iOS的时候，这个坑搞了好久。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.mm</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</div><div class="line">    <span class="comment">//get the image from the directed path</span></div><div class="line">    IplImage* img = cvLoadImage(<span class="string">"your image path"</span>, <span class="number">1</span>);<span class="comment">//这里要替换成你的图片地址</span></div><div class="line">    <span class="comment">//create a window to display the image</span></div><div class="line">    cvNamedWindow(<span class="string">"picture"</span>, <span class="number">1</span>);</div><div class="line">    <span class="comment">//show the image in the window</span></div><div class="line">    cvShowImage(<span class="string">"picture"</span>, img);</div><div class="line">    <span class="comment">//wait for the user to hit a key</span></div><div class="line">    cvWaitKey(<span class="number">0</span>);</div><div class="line">    <span class="comment">//delete the image and window</span></div><div class="line">    cvReleaseImage(&amp;img);</div><div class="line">    cvDestroyWindow(<span class="string">"picture"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后转到项目的Build Setting里面。在搜索里面搜head，下面列表里面找到Header Search Paths项目。在这个项目里面双击添加OpenCV头文件所在的目录，就是上面提到的/usr/local/Cellar/opencv3/3.2.0/include。<br>接下来是添加dylib到工程，这个不能在Library Search Paths里面添加目录了。貌似是动态库的原因？<br>为了好看，先转移到工程的finder下面，新建一个opencvLib目录来存放dylib。然后将/usr/local/Cellar/opencv3/3.2.0/lib里面的dylib（不包括链接文件）都拷贝到刚刚建立的目录，我这里一共是16个。然后再把这个opencvLib目录拖到XCode工程里面。这时可以在工程的Build Phases里面看到Link binary with libraries存在了刚刚添加的dylib库了。</p>
-<p>然后运行。这样就可以弹一个窗显示你的图片了。<br>至此，XCode可以运行起OpenCV。<br>下面就是慢慢学习了。</p>
+        <p>注：个人的swift2学习笔记，根据Swift4的更新做了更新。</p>
+<p>由于知识水平有限，如果有错误，欢迎指出。谢谢！本笔记是在有一定的编程语言基础之上写的。基础为0的朋友可能看得会有点吃力。建议可以看看C语言或OC的基础教程再来看本笔记。</p>
+<p>写在前面，swift有一个playground类型的项目，写代码后直接就能看到结果，还是挺好玩的。</p>
+<p>Swift和其他高级语言不同，它有变量类型的自动识别。在C语言中，我们声明一个整形变量是用<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int a = <span class="number">1</span>;</div></pre></td></tr></table></figure></p>
+<p>这个变量是可以改变的，如果不能改变，那么在前面加上const，这个大家都熟悉。可以理解为先有了类型，接下来才是否可以变。<br>但是在swift中，它首先区别的是变量还是常量。<br><a id="more"></a><br>swift中用 var 表示变量，用 let 表示常量。所以我们可以用下面的方式声明一个整形变量或整形常量<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">1</span>  <span class="comment">//变量</span></div><div class="line"><span class="keyword">let</span> b = <span class="number">1</span>  <span class="comment">//常量</span></div></pre></td></tr></table></figure></p>
+<p>首先注意到，上面两句代码没有了;号（分号）。因为在swift中有“断句”机制，是可以省略分号的，但是如果在同一行写了几句代码，还是必须加上分号的，关于这个“断句”机制，下面会说几个注意点，现在让我们回到var 和 let 中来。<br>正如文章开头提到的swift有类型识别机制，所以在把1赋值给a、b的时候，它就明白了a、b是整形。同理的如果你是把1.2赋值给a，那么它就会变成了Double类型，注意这里的D是大写的，Int也是开头大写的。类似的还有<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str = <span class="string">"I am a string"</span>  <span class="comment">//声明一个字符串，这个字符串是可以append的</span></div></pre></td></tr></table></figure></p>
+<p>这里有个问题，如果我没有赋值的话，那么这个var 是什么类型呢？ 为了不要出现这种情况，你如果写下面的代码的话，就会报错<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a</div></pre></td></tr></table></figure></p>
+<p>那是不是一定要赋值呢？其实不是，你可以声明这个变量的类型就可以了，就像下面<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> d:<span class="type">Int</span></div><div class="line"><span class="keyword">var</span> str:<span class="type">String</span></div></pre></td></tr></table></figure></p>
+<p>接下来说一下这个自动”断句“的注意点，<br>第一个，上面说到了同一行写了两句代码的话，必须加分号来区分。（最后一句不用加分号也可以）<br>第二个，在这个 =，&gt;，&lt;等两旁不能只有一边加空格，要么不加，要么两边都要加。</p>
+<p>接下来说一说基本的输出，swift的输出还是挺方便的。不用想C语言那样记%d，%f等。请看下面的代码<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//输出的基本方法就是print，以前版本还有println的，现在没了。。。</span></div><div class="line"></div><div class="line"><span class="comment">//直接输出一个字符串</span></div><div class="line"><span class="built_in">print</span>(<span class="string">"Output a string"</span>)  <span class="comment">// 输出 Output a string ，这种输出后会换行</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> <span class="type">Tom</span> = <span class="string">"Tom"</span></div><div class="line"><span class="keyword">var</span> age = <span class="number">10</span></div><div class="line"><span class="keyword">var</span> height = <span class="number">1.6</span></div><div class="line"></div><div class="line"><span class="comment">//输出一个变量</span></div><div class="line"><span class="built_in">print</span>(<span class="type">Tom</span>) <span class="comment">// 输出 Tom ， 这种输出也会换行</span></div><div class="line"></div><div class="line"><span class="comment">//在字符串里面加上变量后输出，关键字 \()</span></div><div class="line"><span class="built_in">print</span>(<span class="string">"My name is <span class="subst">\(Tom)</span>"</span>) <span class="comment">// 输出 My name is Tom ， 这种输出也会换行</span></div><div class="line"></div><div class="line"><span class="comment">//输出几个变量</span></div><div class="line"><span class="built_in">print</span>(<span class="type">Tom</span>,age,height) <span class="comment">// 输出 Tom 10 1.6 ， 这种输出也会换行</span></div><div class="line"></div><div class="line"><span class="comment">//加强的输出几个变量，利用separator: 和 terminator: ，二者都是可选的</span></div><div class="line"><span class="built_in">print</span>(<span class="type">Tom</span>,age,height,separator:<span class="string">"-"</span>,terminator:<span class="string">"End\r"</span>) <span class="comment">//输出 Tom-10-1.6End</span></div></pre></td></tr></table></figure></p>
+<p>这里有个注意点，当你用了terminator:后，换行不见了，如果要换行，自行添加\n或\r.</p>
+<p>swift不带输入，所以要从控制台输入数据的话，得借用C语言，然后桥接一下。既然用到了C语言，那么就没那么方便了，用scanf的话，针对不同的数据类型，得写不同的函数。不知道有没其他更好的方法。关于这个输入的，我再开一篇博客写吧。见点击<a href="http://blog.csdn.net/a709314090/article/details/48751995" target="_blank" rel="external">打开链接</a></p>
 
       
     </div>
@@ -399,8 +402,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/25/talkAboutLazyLoad/" rel="next" title="懒加载的坑">
-                <i class="fa fa-chevron-left"></i> 懒加载的坑
+              <a href="/2017/02/24/OpenCV 3.2.0 in MacOS/" rel="next" title="OpenCV 3.2.0 in MacOS">
+                <i class="fa fa-chevron-left"></i> OpenCV 3.2.0 in MacOS
               </a>
             
           </div>
@@ -409,8 +412,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/13/学Swift4之1——初见/" rel="prev" title="学Swift4之1——初见">
-                学Swift4之1——初见 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/13/学Swift4之2——基本类型和基本运算/" rel="prev" title="学Swift4之2——基本类型和基本运算">
+                学Swift4之2——基本类型和基本运算 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -437,8 +440,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/02/24/OpenCV 3.2.0 in MacOS/"
-           data-title="OpenCV 3.2.0 in MacOS" data-url="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/">
+      <div class="ds-thread" data-thread-key="2017/06/13/学Swift4之1——初见/"
+           data-title="学Swift4之1——初见" data-url="https://ekulelu.github.io/2017/06/13/学Swift4之1——初见/">
       </div>
     
   </div>
@@ -462,17 +465,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -518,22 +512,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cmake"><span class="nav-number">1.</span> <span class="nav-text">Cmake</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV的Cmake安装"><span class="nav-number">2.</span> <span class="nav-text">OpenCV的Cmake安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HomeBrew安装OpenCV"><span class="nav-number">3.</span> <span class="nav-text">HomeBrew安装OpenCV</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV-in-XCode"><span class="nav-number">4.</span> <span class="nav-text">OpenCV in XCode</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
     </div>

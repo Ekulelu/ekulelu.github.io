@@ -84,19 +84,19 @@
 
 
 
-<meta name="description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
-本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
+<meta name="description" content="基本类型其实和C差不多，也就是那几个。多出来的是Tuple和可选类型这两个概念
+数字类型这里记录一下每个类型的大小。Int 在32位机器上是Int32 ，在64位机器上是Int64. 除了Int之外，还有Int，Int8，Int16，Int32，Int64.UInt在32位机器上是UInt32 ，在64位机器上是UInt64.   除了UInt之外，还有UInt8，UInt16，UInt32，UI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenCV 3.2.0 in MacOS">
-<meta property="og:url" content="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/index.html">
+<meta property="og:title" content="学Swift4之2——基本类型和基本运算">
+<meta property="og:url" content="https://ekulelu.github.io/2017/06/13/学Swift4之2——基本类型和基本运算/index.html">
 <meta property="og:site_name" content="Ekulelu's Blog">
-<meta property="og:description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
-本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
-<meta property="og:updated_time" content="2017-02-28T14:13:16.000Z">
+<meta property="og:description" content="基本类型其实和C差不多，也就是那几个。多出来的是Tuple和可选类型这两个概念
+数字类型这里记录一下每个类型的大小。Int 在32位机器上是Int32 ，在64位机器上是Int64. 除了Int之外，还有Int，Int8，Int16，Int32，Int64.UInt在32位机器上是UInt32 ，在64位机器上是UInt64.   除了UInt之外，还有UInt8，UInt16，UInt32，UI">
+<meta property="og:updated_time" content="2017-06-13T12:56:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenCV 3.2.0 in MacOS">
-<meta name="twitter:description" content="这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。
-本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去">
+<meta name="twitter:title" content="学Swift4之2——基本类型和基本运算">
+<meta name="twitter:description" content="基本类型其实和C差不多，也就是那几个。多出来的是Tuple和可选类型这两个概念
+数字类型这里记录一下每个类型的大小。Int 在32位机器上是Int32 ，在64位机器上是Int64. 除了Int之外，还有Int，Int8，Int16，Int32，Int64.UInt在32位机器上是UInt32 ，在64位机器上是UInt64.   除了UInt之外，还有UInt8，UInt16，UInt32，UI">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/"/>
+  <link rel="canonical" href="https://ekulelu.github.io/2017/06/13/学Swift4之2——基本类型和基本运算/"/>
 
 
 
 
 
-  <title> OpenCV 3.2.0 in MacOS | Ekulelu's Blog </title>
+  <title> 学Swift4之2——基本类型和基本运算 | Ekulelu's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -251,7 +251,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/13/学Swift4之2——基本类型和基本运算/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Ekulelu">
@@ -275,7 +275,7 @@
             
             
               
-                OpenCV 3.2.0 in MacOS
+                学Swift4之2——基本类型和基本运算
               
             
           </h1>
@@ -288,8 +288,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-24T22:04:00+08:00">
-                2017-02-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-13T20:15:00+08:00">
+                2017-06-13
               </time>
             
 
@@ -307,8 +307,8 @@
               <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/转角遇到坑-Note-for-development/" itemprop="url" rel="index">
-                    <span itemprop="name">转角遇到坑(Note for development)</span>
+                  <a href="/categories/学习Swift4-Learn-Swift4/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Swift4(Learn Swift4)</span>
                   </a>
                 </span>
 
@@ -322,8 +322,8 @@
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
-                <a href="/2017/02/24/OpenCV 3.2.0 in MacOS/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/24/OpenCV 3.2.0 in MacOS/" itemprop="commentCount"></span>
+                <a href="/2017/06/13/学Swift4之2——基本类型和基本运算/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/13/学Swift4之2——基本类型和基本运算/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -333,7 +333,7 @@
 
           
           
-             <span id="/2017/02/24/OpenCV 3.2.0 in MacOS/" class="leancloud_visitors" data-flag-title="OpenCV 3.2.0 in MacOS">
+             <span id="/2017/06/13/学Swift4之2——基本类型和基本运算/" class="leancloud_visitors" data-flag-title="学Swift4之2——基本类型和基本运算">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -358,21 +358,21 @@
       
 
       
-        <p>这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。</p>
-<p>本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去，但是仍然报错。后面开窍去试了下3.1版本，cmake的generate过了。洗澡回来make，这次仍然报错，说找不到QTKit头文件。百度下来一看，都是说Seirra把某个库文件给改了，尝试了一种把QTKit文件扔进去的办法，根本不行。我想翻桌子！睡觉。。。。</p>
-<p>下面记录一下这个过程里面用到的东西和坑。<br><a id="more"></a></p>
-<h1 id="Cmake"><a href="#Cmake" class="headerlink" title="Cmake"></a>Cmake</h1><p>这里的Cmake是编译opencv用的，实际测试发现这种安装方法不可行。你可以尝试下不装的情况下，用homebrew能不能安装opencv。<br>这个上网去下了一个dmg，安装了，但是要终端里面可以用的话得另外配置。打开cmake，选择Tools菜单-&gt;How to install for command line use. 里面提到了三种方法，我试了第一种就可以用了。</p>
-<h1 id="OpenCV的Cmake安装"><a href="#OpenCV的Cmake安装" class="headerlink" title="OpenCV的Cmake安装"></a>OpenCV的Cmake安装</h1><p>首先安装3.2.0会卡在下载ippicv_macosx_20151201.tgz文件上面，如果你可以翻墙，那么可以试试，否则呵呵。尝试过下载这个文件后，仍在对应的目录，但是仍然报其他错误。GG<br>尝试安装3.1版本，这个make的时候找不到QTKit，系统是Seirra应该就会出现这个问题。网上的方法太困难了，需要找到Capitan的QTKit文件，然后在什么模式下进行替换。想想万一把电脑搞崩了就更惨了。所以没有继续尝试。至此Cmake安装OpenCV全部GG.</p>
-<h1 id="HomeBrew安装OpenCV"><a href="#HomeBrew安装OpenCV" class="headerlink" title="HomeBrew安装OpenCV"></a>HomeBrew安装OpenCV</h1><p>网上有另外一种安装OpenCV的方法，就是使用HomeBrew，但是家里的网 brew update失败。这就是我刚刚说的连不上github。所以只能第二天去公司尝试。还好，公司可以update。<br>首先要更新HomeBrew的一个tag，之前我这里的tag只有两个，根本找不到OpenCV。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew tap homebrew/science</div></pre></td></tr></table></figure></p>
-<p>更新成功之后，安装OpenCV3<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install opencv3</div></pre></td></tr></table></figure></p>
-<p>顺利的话，上面两个命令之后就可以安装完OpenCV了。安装成功之后，有几个配置的提示。按照需求配置一下，反正我是全配置的。省得以后又找不到command什么的。注意安装完后终端会有提示lib和header的位置，下面会提到。<br>昨晚上费了3个小时也没装上的OpenCV3.2，今天两个命令就搞定了，想死的心都有。今晚回去再看看家里的电脑行不行，毕竟Seirra的系统怕还是装不上。(Seirra测试可以装)</p>
-<h1 id="OpenCV-in-XCode"><a href="#OpenCV-in-XCode" class="headerlink" title="OpenCV in XCode"></a>OpenCV in XCode</h1><p>作为一个iOS开发者，XCode必备了。所以想着就用它来玩OpenCV就好了。网上找了一些教程来搞，发现前面找的都不靠谱。首先是OpenCV的安装方法不一样，导致OpenCV库的位置根本不同，网上教程的把/usr/local/lib里面的dylib库都扔进工程，根本不行。编译会报链接错误，没定义cv::String之类的。</p>
-<p>这里说一下我的方法：<br>首先，根据HomeBrew安装OpenCV的时候，最后提示的链接库和头文件的位置来看（不排除以后版本会变换地址，所以一切以安装的时候提示为准）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">For compilers to find this software you may need to set:</div><div class="line">    LDFLAGS:  -L/usr/local/opt/opencv3/lib</div><div class="line">    CPPFLAGS: -I/usr/local/opt/opencv3/include</div></pre></td></tr></table></figure></p>
-<p>可以找到/usr/local/opt/opencv3的文件夹，但是发现这个文件夹只是一个链接，它指向的位置是/usr/local/Cellar/opencv3/3.2.0。打开这个文件夹，可以看到OpenCV的库和头文件之类的。<br>打开里面的lib文件夹，可以看到很多的dylib，但是有很多是链接文件，作用应该就是重命名定向。<br>include文件夹里面则是包含了所有的头文件。<br>下面用XCode玩OpenCV。<br>新建XCode的command Line工程。<br>这里只有一个main.m文件，因为OpenCV用到的是C和C++，所以要把.m文件改为.mm文件。直接重命名main.m就行了。<br>然后在main.mm里面改为下面的代码，这里为了简洁，删除了其他不必要的代码，比如Foundation之类的库。如果你需要加上Foundation，这里有一个坑。就是要把<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div></pre></td></tr></table></figure></p>
-<p>放到其他include的后面，否则会报错。之前弄OpenCV for iOS的时候，这个坑搞了好久。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.mm</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</div><div class="line">    <span class="comment">//get the image from the directed path</span></div><div class="line">    IplImage* img = cvLoadImage(<span class="string">"your image path"</span>, <span class="number">1</span>);<span class="comment">//这里要替换成你的图片地址</span></div><div class="line">    <span class="comment">//create a window to display the image</span></div><div class="line">    cvNamedWindow(<span class="string">"picture"</span>, <span class="number">1</span>);</div><div class="line">    <span class="comment">//show the image in the window</span></div><div class="line">    cvShowImage(<span class="string">"picture"</span>, img);</div><div class="line">    <span class="comment">//wait for the user to hit a key</span></div><div class="line">    cvWaitKey(<span class="number">0</span>);</div><div class="line">    <span class="comment">//delete the image and window</span></div><div class="line">    cvReleaseImage(&amp;img);</div><div class="line">    cvDestroyWindow(<span class="string">"picture"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后转到项目的Build Setting里面。在搜索里面搜head，下面列表里面找到Header Search Paths项目。在这个项目里面双击添加OpenCV头文件所在的目录，就是上面提到的/usr/local/Cellar/opencv3/3.2.0/include。<br>接下来是添加dylib到工程，这个不能在Library Search Paths里面添加目录了。貌似是动态库的原因？<br>为了好看，先转移到工程的finder下面，新建一个opencvLib目录来存放dylib。然后将/usr/local/Cellar/opencv3/3.2.0/lib里面的dylib（不包括链接文件）都拷贝到刚刚建立的目录，我这里一共是16个。然后再把这个opencvLib目录拖到XCode工程里面。这时可以在工程的Build Phases里面看到Link binary with libraries存在了刚刚添加的dylib库了。</p>
-<p>然后运行。这样就可以弹一个窗显示你的图片了。<br>至此，XCode可以运行起OpenCV。<br>下面就是慢慢学习了。</p>
+        <p>基本类型<br>其实和C差不多，也就是那几个。多出来的是Tuple和可选类型这两个概念</p>
+<p>数字类型<br>这里记录一下每个类型的大小。<br>Int 在32位机器上是Int32 ，在64位机器上是Int64. 除了Int之外，还有Int，Int8，Int16，Int32，Int64.<br>UInt在32位机器上是UInt32 ，在64位机器上是UInt64.   除了UInt之外，还有UInt8，UInt16，UInt32，UInt64.<br>Double  64位浮点数<br>Float  32位浮点数<br><a id="more"></a><br>Swift不支持数字类型之间的自动转换。必须显式手动转换。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> i: <span class="type">Int</span> = <span class="number">2_000</span>   <span class="comment">//这个表示2000</span></div><div class="line"><span class="keyword">var</span> d: <span class="type">Double</span> = <span class="number">5.3</span></div><div class="line"><span class="keyword">var</span> e = d * <span class="type">Double</span>(i)</div></pre></td></tr></table></figure></p>
+<p>不同进制的前缀<br>十进制       没有<br>二进制        0b<br>八进制        0o<br>十六进制     0x<br>科学计数<br>1.25e2 代表  1.25乘上10的2次方<br>0xFp2  代表   15乘上2的2次方<br>typealias 关键字，用来个类型起别名<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typealias</span> ii = <span class="type">Int8</span></div><div class="line"><span class="keyword">var</span> mm = ii.<span class="built_in">min</span> <span class="comment">//这里的ii代表了Int8</span></div></pre></td></tr></table></figure></p>
+<p>Boolean 类型<br>Swift和java一样，对boolean类型是强要求的，不能在if里面传一个整形用于判断。</p>
+<p>新类型——元组（Tuple）<br>其实就是一群数据组合，可以将其解出来输出。注意的是tuple不只是两个元素，你可以自己扩展成多个元素。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> menu = (<span class="string">"apple"</span>, <span class="number">20</span>)  <span class="comment">//定义一个Tuple</span></div><div class="line"><span class="keyword">var</span> menu2 = (name: <span class="string">"banana"</span>, price:<span class="number">10</span>)  <span class="comment">//可以在定义的时候指定元素名字</span></div><div class="line"><span class="keyword">let</span> (name,price) = menu   <span class="comment">//解Tuple，如果某个元素不想要的话，用 _ 代替</span></div><div class="line"><span class="built_in">print</span>(name, price)   <span class="comment">//输出  apple 20</span></div><div class="line"><span class="built_in">print</span>(menu.<span class="number">0</span>,menu.<span class="number">1</span>)  <span class="comment">//不解Tuple直接输出</span></div><div class="line"><span class="built_in">print</span>(menu2.name,menu2.price)  <span class="comment">//利用元素名字解Tuple</span></div></pre></td></tr></table></figure></p>
+<p>可选类型（Optionals）<br>当一个方法可以返回一个对象的时候，它有可能返回一个空值。比如将字符串转换为数字的方法。为了处理这种情况，有了可选类型。<br>可选类型表示一个数据，它可能有值，也可能为空。基本语法是在类型的后面加上问号 ？<br>比如下面的代码<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str:<span class="type">String</span></div><div class="line"><span class="built_in">print</span>(str)  <span class="comment">//这里报错说str没初始化</span></div></pre></td></tr></table></figure></p>
+<p>但是如果将str改为可选类型，那么这就可以输出了<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str:<span class="type">String</span>?</div><div class="line"><span class="built_in">print</span>(str)  <span class="comment">//输出 nil</span></div></pre></td></tr></table></figure></p>
+<p>那怎么将一个可选类型转换为对应的类型呢？这里有个强制解包的概念，使用 ! 对可选类型解包。请看下面代码。 强制解包有个注意点，就是如果这个可选类型是nil的话，那么强制解包的语句会在运行时报错。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str:<span class="type">String</span>? = <span class="string">"fe"</span></div><div class="line"><span class="keyword">var</span> s = str! <span class="comment">//将str解包为s，但是如果str没有赋值的话，那么这句会在运行时报错</span></div><div class="line"><span class="built_in">print</span>(s)</div></pre></td></tr></table></figure></p>
+<p>为了解决强制解包的时候，可选类型可能为nil的问题。if语句里面多了一个 Optional Binding 的概念。就是将可选类型解包后判断是否为nil，然后执行不同的分支代码<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//因为没给str赋值，所以输出  str为空</span></div><div class="line"><span class="keyword">var</span> str:<span class="type">String</span>?</div><div class="line"><span class="keyword">if</span> <span class="keyword">let</span> s = str &#123;</div><div class="line">    <span class="built_in">print</span>(<span class="string">"str有值"</span>)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="built_in">print</span>(<span class="string">"str为空"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果在编程中，我们可以确保可选类型一定不为nil的，那么每次要将可选类型解包都要加个 !，很麻烦。所以有了隐式可选类型，它是用 ! 代替了 ? 号。然后在需要将可选类型转换为对应类型的时候就不用加 ! 了<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str:<span class="type">String</span>! = <span class="string">"string"</span></div><div class="line"><span class="keyword">var</span> s = str</div></pre></td></tr></table></figure></p>
+<p>基本运算<br>一些和C完全一样的基本运算如下<br>加减乘除，负号，自增（++）自减（–），+=等， 判断大小之类（==，!=，&gt;=…），三元运算符，逻辑运算（!，&amp;&amp;，||）</p>
+<p>不一样的运算符<br>取模%，在C中，只能对整形进行运算，Swift中可以对浮点数进行运算。结果就是多出来的那部分<br>比如 7.1%2.5  得到2.1，因为7.1可以最多减去2个2.5，然后剩下2.1</p>
+<p>范围运算符 … 和 ..&lt; 这两个运算符可以用在for里面。比如<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//输出 1 2 3    包含最后一个元素3</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span>...<span class="number">3</span> &#123;</div><div class="line">    <span class="built_in">print</span>(i)</div><div class="line">&#125;</div><div class="line"><span class="comment">//输出 1 2  不包含最后一个元素3</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span>..&lt;<span class="number">3</span> &#123;</div><div class="line">    <span class="built_in">print</span>(i)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>单范围运算符<br>对于下标运算可以这样用。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> names = [<span class="string">"Anna"</span>, <span class="string">"Alex"</span>, <span class="string">"Brian"</span>, <span class="string">"Jack"</span>]</div><div class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names[<span class="number">2</span>...] &#123;</div><div class="line">    <span class="built_in">print</span>(name)</div><div class="line">&#125;</div><div class="line"><span class="comment">// Brian</span></div><div class="line"><span class="comment">// Jack</span></div><div class="line"> </div><div class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names[...<span class="number">2</span>] &#123;</div><div class="line">    <span class="built_in">print</span>(name)</div><div class="line">&#125;</div><div class="line"><span class="comment">// Anna</span></div><div class="line"><span class="comment">// Alex</span></div><div class="line"><span class="comment">// Brian</span></div><div class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names[..&lt;<span class="number">2</span>] &#123;</div><div class="line">    <span class="built_in">print</span>(name)</div><div class="line">&#125;</div><div class="line"><span class="comment">// Anna</span></div><div class="line"><span class="comment">// Alex</span></div></pre></td></tr></table></figure></p>
+<p>??<br>这是一个二元运算符，例子 a ?? b<br>它的意思是：如果可选类型a不是nil，那么解包a并返回解包值，如果a为nil，那么返回b<br>相当于 a != nil ? a! : b</p>
 
       
     </div>
@@ -399,8 +399,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/25/talkAboutLazyLoad/" rel="next" title="懒加载的坑">
-                <i class="fa fa-chevron-left"></i> 懒加载的坑
+              <a href="/2017/06/13/学Swift4之1——初见/" rel="next" title="学Swift4之1——初见">
+                <i class="fa fa-chevron-left"></i> 学Swift4之1——初见
               </a>
             
           </div>
@@ -409,8 +409,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/13/学Swift4之1——初见/" rel="prev" title="学Swift4之1——初见">
-                学Swift4之1——初见 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/13/学Swift4之3——String和Characters/" rel="prev" title="学Swift4之3——String和Characters">
+                学Swift4之3——String和Characters <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -437,8 +437,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/02/24/OpenCV 3.2.0 in MacOS/"
-           data-title="OpenCV 3.2.0 in MacOS" data-url="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/">
+      <div class="ds-thread" data-thread-key="2017/06/13/学Swift4之2——基本类型和基本运算/"
+           data-title="学Swift4之2——基本类型和基本运算" data-url="https://ekulelu.github.io/2017/06/13/学Swift4之2——基本类型和基本运算/">
       </div>
     
   </div>
@@ -462,17 +462,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -518,22 +509,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cmake"><span class="nav-number">1.</span> <span class="nav-text">Cmake</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV的Cmake安装"><span class="nav-number">2.</span> <span class="nav-text">OpenCV的Cmake安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HomeBrew安装OpenCV"><span class="nav-number">3.</span> <span class="nav-text">HomeBrew安装OpenCV</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV-in-XCode"><span class="nav-number">4.</span> <span class="nav-text">OpenCV in XCode</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
     </div>
