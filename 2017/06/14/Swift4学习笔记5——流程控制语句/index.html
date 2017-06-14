@@ -1,0 +1,806 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="if else语句if语句和其他语言中的使用是一样的，只是语法稍有不同。首先是不用括号，其次是即使是if后面只有一条语句，也必须加上大括号。123456var array1 = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]if array1.count &amp;gt; 1 &amp;#123;    print(&quot;array1 is not empty&quot;)  //这句会打印出来&amp;#125; else &amp;#123;    prin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift4学习笔记5——流程控制语句">
+<meta property="og:url" content="https://ekulelu.github.io/2017/06/14/Swift4学习笔记5——流程控制语句/index.html">
+<meta property="og:site_name" content="Ekulelu's Blog">
+<meta property="og:description" content="if else语句if语句和其他语言中的使用是一样的，只是语法稍有不同。首先是不用括号，其次是即使是if后面只有一条语句，也必须加上大括号。123456var array1 = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]if array1.count &amp;gt; 1 &amp;#123;    print(&quot;array1 is not empty&quot;)  //这句会打印出来&amp;#125; else &amp;#123;    prin">
+<meta property="og:updated_time" content="2017-06-14T14:35:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift4学习笔记5——流程控制语句">
+<meta name="twitter:description" content="if else语句if语句和其他语言中的使用是一样的，只是语法稍有不同。首先是不用括号，其次是即使是if后面只有一条语句，也必须加上大括号。123456var array1 = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]if array1.count &amp;gt; 1 &amp;#123;    print(&quot;array1 is not empty&quot;)  //这句会打印出来&amp;#125; else &amp;#123;    prin">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ekulelu.github.io/2017/06/14/Swift4学习笔记5——流程控制语句/"/>
+
+
+
+
+
+  <title> Swift4学习笔记5——流程控制语句 | Ekulelu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f31c6baa24838cd36f68f42d6187a455";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ekulelu's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/14/Swift4学习笔记5——流程控制语句/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Swift4学习笔记5——流程控制语句
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-14T21:33:00+08:00">
+                2017-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习Swift4-Learn-Swift4/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Swift4(Learn Swift4)</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/06/14/Swift4学习笔记5——流程控制语句/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/14/Swift4学习笔记5——流程控制语句/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/06/14/Swift4学习笔记5——流程控制语句/" class="leancloud_visitors" data-flag-title="Swift4学习笔记5——流程控制语句">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="if-else语句"><a href="#if-else语句" class="headerlink" title="if else语句"></a>if else语句</h2><p>if语句和其他语言中的使用是一样的，只是语法稍有不同。首先是不用括号，其次是即使是if后面只有一条语句，也必须加上大括号。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> array1 = [<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>]</div><div class="line"><span class="keyword">if</span> array1.<span class="built_in">count</span> &gt; <span class="number">1</span> &#123;</div><div class="line">    <span class="built_in">print</span>(<span class="string">"array1 is not empty"</span>)  <span class="comment">//这句会打印出来</span></div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="built_in">print</span>(<span class="string">"array1 is empty"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>还记得可选类型吗，if语句可以用来检测可选类型是否为空.<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str : <span class="type">String</span>?</div><div class="line"><span class="keyword">if</span> <span class="keyword">let</span> s = str &#123;</div><div class="line">    <span class="built_in">print</span>(<span class="string">"str is not nil"</span>)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="built_in">print</span>(<span class="string">"str is nil"</span>) <span class="comment">//这句会打印</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="for-语句"><a href="#for-语句" class="headerlink" title="for 语句"></a>for 语句</h2><p>Swift3中移除了传统C语言里面的for循环，就像下面那种<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> <span class="keyword">var</span> index = <span class="number">0</span>; index &lt; <span class="number">3</span>; index++ &#123; <span class="comment">//已经移除</span></div><div class="line">    <span class="built_in">print</span>(index)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="for-in-语句"><a href="#for-in-语句" class="headerlink" title="for-in 语句"></a>for-in 语句</h2><p>这个语句感觉在swift里面用得很爽，尤其是用来遍历集合。集合类的遍历方法请看我上一篇关于集合的文章。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> index <span class="keyword">in</span> <span class="number">1</span>...<span class="number">3</span> &#123;</div><div class="line">    <span class="built_in">print</span>(index)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的只能是每次加1，但是现在可能有需求每次增加的不是1，所以现在有了这个：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> tickMark <span class="keyword">in</span> <span class="built_in">stride</span>(from: <span class="number">0</span>, to: <span class="number">60</span>, by: <span class="number">5</span>) &#123;</div><div class="line">    <span class="built_in">print</span>(tickMark)</div><div class="line">    <span class="comment">// 打印 (0, 5, 10, 15 ... 45, 50, 55)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="while语句和-repeat-while语句"><a href="#while语句和-repeat-while语句" class="headerlink" title="while语句和 repeat-while语句"></a>while语句和 repeat-while语句</h2><p>把括号去掉就行了<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> index = <span class="number">3</span></div><div class="line"><span class="keyword">while</span> index &gt; <span class="number">0</span> &#123;</div><div class="line">    index--</div><div class="line">    <span class="built_in">print</span>(index)</div><div class="line">&#125;</div><div class="line"></div><div class="line">index = <span class="number">3</span></div><div class="line"><span class="keyword">repeat</span> &#123;</div><div class="line">    index--</div><div class="line">    <span class="built_in">print</span>(index)</div><div class="line">&#125; <span class="keyword">while</span> index &gt; <span class="number">0</span></div></pre></td></tr></table></figure></p>
+<h2 id="Break和continue"><a href="#Break和continue" class="headerlink" title="Break和continue"></a>Break和continue</h2><p>这个用法和C里面没差，不举例了</p>
+<h2 id="Switch语句"><a href="#Switch语句" class="headerlink" title="Switch语句"></a>Switch语句</h2><p>最多东西的一个。Swift里面的Switch语句不仅可以判断整形，而且还可以判断各种类型。注意的是执行了一个case后是不会继续往下面执行的，也就是不用添加break语句。相反如果你想要继续往下执行，你必须在这个case最后加上Fallthrough。另外就是default，对于不是枚举类型的变量，defalut必须加上。枚举类型的变量在完全枚举的时候才可以省略default。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str = <span class="string">"a"</span></div><div class="line"><span class="keyword">switch</span> str &#123;</div><div class="line">	<span class="keyword">case</span> <span class="string">"a"</span>:</div><div class="line">	    <span class="built_in">print</span>(<span class="string">"a"</span>)  <span class="comment">//这句会打印</span></div><div class="line">    <span class="keyword">fallthrough</span></div><div class="line">	<span class="keyword">case</span> <span class="string">"b"</span>:</div><div class="line">	    <span class="built_in">print</span>(<span class="string">"b"</span>)  <span class="comment">//这句会打印</span></div><div class="line">	<span class="keyword">case</span> <span class="string">"c"</span>:</div><div class="line">	    <span class="built_in">print</span>(<span class="string">"c"</span>)  <span class="comment">//不会打印</span></div><div class="line">	<span class="keyword">default</span>:</div><div class="line">	    <span class="built_in">print</span>(<span class="string">"nil"</span>)  <span class="comment">//不会打印</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>switch里面一个case可以对应多个选项，每个选项之间用逗号分开。这个用法是用来实现c里面的某个选项里面没有执行代码的情况。Swift不允许某个选项里面没有可执行的代码。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str = <span class="string">"s"</span></div><div class="line"><span class="keyword">switch</span> str &#123;</div><div class="line"><span class="keyword">case</span> <span class="string">"a"</span>,<span class="string">"s"</span>:</div><div class="line">	<span class="built_in">print</span>(<span class="string">"a"</span>)  <span class="comment">//只打印这句</span></div><div class="line"><span class="keyword">default</span>:</div><div class="line">	<span class="built_in">print</span>(<span class="string">"nil"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>case里面也可以是一个范围，在每个case之间的范围有重叠的话，只会匹配第一个<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> i = <span class="number">2</span></div><div class="line"><span class="keyword">switch</span> i &#123;</div><div class="line"><span class="keyword">case</span> <span class="number">1</span>...<span class="number">10</span>:</div><div class="line">	<span class="built_in">print</span>(<span class="string">"1-10"</span>)  <span class="comment">//只打印这句</span></div><div class="line"><span class="keyword">case</span> <span class="number">9</span>..&lt;<span class="number">20</span>:</div><div class="line">	<span class="built_in">print</span>(<span class="string">"10-20"</span>)  <span class="comment">//因为匹配了第一句，所以这句不会再匹配</span></div><div class="line"><span class="keyword">default</span>:</div><div class="line">	<span class="built_in">print</span>(<span class="string">"other"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对Tuple 的匹配<br>你可以匹配Tuple的两个值，也可以只匹配一个值，还可以匹配范围<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//下面case的条件都是可以匹配的，把前面的case注释掉的话就会匹配下一个case。</span></div><div class="line"><span class="keyword">var</span> tuple = (<span class="number">2</span>,<span class="number">1</span>)</div><div class="line"><span class="keyword">switch</span> tuple &#123;</div><div class="line"><span class="keyword">case</span> (<span class="number">2</span>,<span class="number">1</span>):</div><div class="line">	<span class="built_in">print</span>(<span class="string">"(2,1)"</span>)  <span class="comment">//因为自动添加break的机制，所以不会往下走</span></div><div class="line"><span class="keyword">case</span> (<span class="keyword">let</span> x,<span class="number">1</span>): <span class="comment">//可以用变量来自由化其中一个值，只需要另外一个值匹配了，就会匹配这个。如果你不关注x的值，你也可以把x换为_</span></div><div class="line">	<span class="built_in">print</span>(<span class="string">"x = <span class="subst">\(x)</span>"</span>)</div><div class="line"><span class="keyword">case</span> (-<span class="number">1</span>...<span class="number">3</span>,<span class="number">0</span>...<span class="number">4</span>):</div><div class="line">	<span class="built_in">print</span>(<span class="string">"(-1~3,0~4)"</span>)</div><div class="line"><span class="keyword">default</span> :</div><div class="line">	<span class="built_in">print</span>(<span class="string">"other"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Where语句在switch中"><a href="#Where语句在switch中" class="headerlink" title="Where语句在switch中"></a>Where语句在switch中</h3><p>where可以用来进一步对case添加约束<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> tuple = (<span class="number">2</span>,<span class="number">1</span>)</div><div class="line"><span class="keyword">switch</span> tuple &#123;</div><div class="line"><span class="keyword">case</span> <span class="keyword">var</span> (x,y) <span class="keyword">where</span> x == y:  <span class="comment">//这里用var 和 let 区别在于能不能在case里面修改解包的x，y值。但是即使修改也不会影响原来的tuple</span></div><div class="line">    <span class="built_in">print</span>(<span class="string">"x == y"</span>)</div><div class="line"><span class="keyword">case</span> <span class="keyword">let</span> (<span class="number">_</span>,x) <span class="keyword">where</span> x == <span class="number">4</span>:</div><div class="line">    <span class="built_in">print</span>(<span class="string">"x == 4"</span>)</div><div class="line"><span class="keyword">case</span> <span class="keyword">var</span> (x,y) <span class="keyword">where</span> x != y:  <span class="comment">//匹配了这个case</span></div><div class="line">    <span class="built_in">print</span>(<span class="string">"x != y"</span>)          <span class="comment">//打印 x != y</span></div><div class="line">    x = <span class="number">1</span></div><div class="line">    <span class="built_in">print</span>(x)                <span class="comment">//打印 1</span></div><div class="line"><span class="keyword">default</span> :</div><div class="line">    <span class="built_in">print</span>(<span class="string">"other"</span>)</div><div class="line">&#125;</div><div class="line"><span class="built_in">print</span>(tuple)  <span class="comment">//打印 （2，1）</span></div></pre></td></tr></table></figure></p>
+<h2 id="Labeled-Statements"><a href="#Labeled-Statements" class="headerlink" title="Labeled Statements"></a>Labeled Statements</h2><p>这个labeled statements就像goto语句，但是跳转比较有限，只能用于循环里面。虽然switch也可以加上去，但是并没有用。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> tuple = (<span class="number">2</span>,<span class="number">1</span>)</div><div class="line">second:<span class="keyword">for</span> <span class="number">_</span> <span class="keyword">in</span> <span class="number">0</span>...  &#123;   </div><div class="line">    frist : <span class="keyword">switch</span> tuple &#123;    <span class="comment">//这个first并没有什么用</span></div><div class="line">    <span class="keyword">case</span> <span class="keyword">var</span> (x,y) <span class="keyword">where</span> x == y:  <span class="comment">//这里用var 和 let 区别在于能不能在case里面修改解包的x，y值。但是即使修改也不会影响原来的tuple</span></div><div class="line">        <span class="built_in">print</span>(<span class="string">"x == y"</span>)</div><div class="line">        <span class="keyword">break</span> second</div><div class="line">    <span class="keyword">case</span> <span class="keyword">var</span> (x,y) <span class="keyword">where</span> x != y:  <span class="comment">//匹配了这个case</span></div><div class="line">        <span class="built_in">print</span>(<span class="string">"x != y"</span>)          <span class="comment">//打印 x != y</span></div><div class="line">        tuple = (<span class="number">1</span>,<span class="number">1</span>)</div><div class="line">        <span class="keyword">continue</span> second</div><div class="line">    <span class="keyword">default</span> :</div><div class="line">        <span class="built_in">print</span>(<span class="string">"other"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//上面的for循环依次打印了 x != y    x == y</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//注意下面的second，虽然前面也定义了，但是不会冲突。循环内的跳转只能针对循环</span></div><div class="line">second:<span class="keyword">repeat</span> &#123;      <span class="comment">//对于while也是可以用。</span></div><div class="line">    frist : <span class="keyword">switch</span> tuple &#123;        <span class="comment">//这个first并没有什么用</span></div><div class="line">    <span class="keyword">case</span> <span class="keyword">var</span> (x,y) <span class="keyword">where</span> x == y:  <span class="comment">//这里用var 和 let 区别在于能不能在case里面修改解包的x，y值。但是即使修改也不会影响原来的tuple</span></div><div class="line">        <span class="built_in">print</span>(<span class="string">"x == y"</span>)</div><div class="line">        <span class="keyword">break</span> second</div><div class="line">    <span class="keyword">case</span> <span class="keyword">var</span> (x,y) <span class="keyword">where</span> x != y:  <span class="comment">//匹配了这个case</span></div><div class="line">        <span class="built_in">print</span>(<span class="string">"x != y"</span>)          <span class="comment">//打印 x != y</span></div><div class="line">        tuple = (<span class="number">1</span>,<span class="number">1</span>)</div><div class="line">        <span class="keyword">continue</span> second</div><div class="line">    <span class="keyword">default</span> :</div><div class="line">        <span class="built_in">print</span>(<span class="string">"other"</span>)</div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">while</span> <span class="literal">true</span></div><div class="line"><span class="comment">//while循环只打印了  x == y，因为Tuple已经被修改为(1,1)</span></div></pre></td></tr></table></figure></p>
+<h2 id="Assertion和Precondition"><a href="#Assertion和Precondition" class="headerlink" title="Assertion和Precondition"></a>Assertion和Precondition</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">assert</span>(<span class="number">_</span>:<span class="number">_</span>:file:line:)</div></pre></td></tr></table></figure>
+<p>判断一个情况是否为true，不为true直接停止程序。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> i=<span class="number">1</span></div><div class="line"><span class="built_in">assert</span>(i &gt; <span class="number">10</span>)</div></pre></td></tr></table></figure></p>
+<p>如果你通过其他判断语句已经知道了当前的条件已经不符合需求了，那么可以用下面的语句直接结束程序。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">assertionFailure</span>(<span class="number">_</span>:file:line:)</div></pre></td></tr></table></figure></p>
+<p>Swift现在多了一个Preconditions，区别文档上说的是开发时候用Assertions，生产用Preconditions。(Assertions help you find mistakes and incorrect assumptions during development, and preconditions help you detect issues in production. )<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">precondition</span>(<span class="number">_</span>:<span class="number">_</span>:file:line:) </div><div class="line"><span class="built_in">preconditionFailure</span>(<span class="number">_</span>:file:line:)</div></pre></td></tr></table></figure></p>
+<p>文档上有两段话：<br>If you compile in unchecked mode (-Ounchecked), preconditions are not checked. The compiler assumes that preconditions are always true, and it optimizes your code accordingly. However, the fatalError(<em>:file:line:) function always halts execution, regardless of optimization settings.<br>You can use the fatalError(</em>:file:line:) function during prototyping and early development to create stubs for functionality that hasn’t been implemented yet, by writing fatalError(“Unimplemented”) as the stub implementation. Because fatal errors are never optimized out, unlike assertions or preconditions, you can be sure that execution always halts if it encounters a stub implementation.<br>但是没找到这个-Ounchecked模式，到时有一个选项是disable_safty_checks。<br>这个选项的关闭和Swift_OPTIMIZATION_LEVEL的模式有关系。如果你选择的是 -Onone，那么不管disable_safty_checks的值，都会检测precondition和assert。但是如果开启了优化，那么assert就再不检测，而precondition就会根据是否关闭安全检测来执行。</p>
+<h2 id="guard语句"><a href="#guard语句" class="headerlink" title="guard语句"></a>guard语句</h2><p>这个和assertions差不多，都是用来做判断的，不过这个要自己加上处理。用来在条件不满足的情况下跳出方法或循环。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> i = <span class="number">1</span></div><div class="line"><span class="keyword">while</span> <span class="literal">true</span> &#123;</div><div class="line">    <span class="keyword">guard</span> i &gt; <span class="number">1</span> <span class="keyword">else</span> &#123;</div><div class="line">        <span class="built_in">print</span>(<span class="string">"i &lt;= 1"</span>)</div><div class="line">        <span class="keyword">break</span>     <span class="comment">//else里面必须加上break或return</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="available"><a href="#available" class="headerlink" title="available"></a>available</h1><p>用来判断是否可以使用某个版本API<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> #available (iOS <span class="number">8</span>, <span class="type">OSX</span> <span class="number">10.10</span>, *) &#123;  <span class="comment">//括号里面表示的是最低的版本。这个*必须有，代表其他平台</span></div><div class="line">    </div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/14/学Swift4之4——集合类型/" rel="next" title="学Swift4之4——集合类型">
+                <i class="fa fa-chevron-left"></i> 学Swift4之4——集合类型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/06/14/Swift4学习笔记5——流程控制语句/"
+           data-title="Swift4学习笔记5——流程控制语句" data-url="https://ekulelu.github.io/2017/06/14/Swift4学习笔记5——流程控制语句/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Ekulelu" />
+          <p class="site-author-name" itemprop="name">Ekulelu</p>
+          <p class="site-description motion-element" itemprop="description">一緒に世界の果てまでへ</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#if-else语句"><span class="nav-number">1.</span> <span class="nav-text">if else语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#for-语句"><span class="nav-number">2.</span> <span class="nav-text">for 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#for-in-语句"><span class="nav-number">3.</span> <span class="nav-text">for-in 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#while语句和-repeat-while语句"><span class="nav-number">4.</span> <span class="nav-text">while语句和 repeat-while语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Break和continue"><span class="nav-number">5.</span> <span class="nav-text">Break和continue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Switch语句"><span class="nav-number">6.</span> <span class="nav-text">Switch语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Where语句在switch中"><span class="nav-number">6.1.</span> <span class="nav-text">Where语句在switch中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Labeled-Statements"><span class="nav-number">7.</span> <span class="nav-text">Labeled Statements</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Assertion和Precondition"><span class="nav-number">8.</span> <span class="nav-text">Assertion和Precondition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#guard语句"><span class="nav-number">9.</span> <span class="nav-text">guard语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#available"><span class="nav-number"></span> <span class="nav-text">available</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ekulelu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ekulelu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p37OqcP9nSbFoEPRagTgkWvI-gzGzoHsz", "IQiHmijzoKs8VMnp6oRleKsS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>
