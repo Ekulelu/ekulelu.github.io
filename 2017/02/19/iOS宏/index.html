@@ -1,0 +1,861 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="注明：本篇blog是参考多篇blog后的一个整理汇总，另外加上了自己常用的一些宏定义。如有冒犯，请会知，将删除该部分。
+求最小值宏在OC中使用是很多的，官方也定义了大量的宏。宏简单来讲就是替换。但是这个替换里面稍不注意还是很多坑的。比如举一个获取最小值的宏。
+12//Version 1.0 #define MIN(A,B) A &amp;lt; B ? A : B
+这样写你就惨了，比如遇到下面的情况：
+1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS宏">
+<meta property="og:url" content="https://ekulelu.github.io/2017/02/19/iOS宏/index.html">
+<meta property="og:site_name" content="Ekulelu's Blog">
+<meta property="og:description" content="注明：本篇blog是参考多篇blog后的一个整理汇总，另外加上了自己常用的一些宏定义。如有冒犯，请会知，将删除该部分。
+求最小值宏在OC中使用是很多的，官方也定义了大量的宏。宏简单来讲就是替换。但是这个替换里面稍不注意还是很多坑的。比如举一个获取最小值的宏。
+12//Version 1.0 #define MIN(A,B) A &amp;lt; B ? A : B
+这样写你就惨了，比如遇到下面的情况：
+1">
+<meta property="og:updated_time" content="2018-03-03T15:10:12.978Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS宏">
+<meta name="twitter:description" content="注明：本篇blog是参考多篇blog后的一个整理汇总，另外加上了自己常用的一些宏定义。如有冒犯，请会知，将删除该部分。
+求最小值宏在OC中使用是很多的，官方也定义了大量的宏。宏简单来讲就是替换。但是这个替换里面稍不注意还是很多坑的。比如举一个获取最小值的宏。
+12//Version 1.0 #define MIN(A,B) A &amp;lt; B ? A : B
+这样写你就惨了，比如遇到下面的情况：
+1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ekulelu.github.io/2017/02/19/iOS宏/"/>
+
+
+
+
+
+  <title> iOS宏 | Ekulelu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f31c6baa24838cd36f68f42d6187a455";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ekulelu's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/02/19/iOS宏/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS宏
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-19T12:12:00+08:00">
+                2017-02-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发技术杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/02/19/iOS宏/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/19/iOS宏/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/19/iOS宏/" class="leancloud_visitors" data-flag-title="iOS宏">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>注明：本篇blog是参考多篇blog后的一个整理汇总，另外加上了自己常用的一些宏定义。如有冒犯，请会知，将删除该部分。</p>
+<h2 id="求最小值"><a href="#求最小值" class="headerlink" title="求最小值"></a>求最小值</h2><p>宏在OC中使用是很多的，官方也定义了大量的宏。宏简单来讲就是替换。但是这个替换里面稍不注意还是很多坑的。比如举一个获取最小值的宏。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 1.0 </span></div><div class="line"><span class="meta">#define MIN(A,B) A <span class="meta-string">&lt; B ? A : B</span></span></div></pre></td></tr></table></figure>
+<p>这样写你就惨了，比如遇到下面的情况：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">2</span> * MIN(<span class="number">3</span>, <span class="number">4</span>);  <span class="comment">//输出a=4</span></div></pre></td></tr></table></figure>
+<p>具体自行将宏替换后就知道发生了什么，所以出了下面的版本。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 2.0       </span></div><div class="line"><span class="meta">#define MIN(A,B) (A <span class="meta-string">&lt; B ? A : B)</span></span></div></pre></td></tr></table></figure>
+<p>这个版本你依然继续崩溃吧，比如遇到下面的例子</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = MIN(<span class="number">3</span>, <span class="number">4</span> &lt; <span class="number">5</span> ? <span class="number">4</span> : <span class="number">5</span>);  <span class="comment">//a=4</span></div></pre></td></tr></table></figure>
+<p>好，再来</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 3.0       </span></div><div class="line"><span class="meta">#define MIN(A,B) ((A) <span class="meta-string">&lt; (B) ? (A) : (B))</span></span></div></pre></td></tr></table></figure>
+<p>看似应该完美了，但，总有刁民想害朕！如下：</p>
+<a id="more"></a>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">float</span> a = <span class="number">1.0</span>f;       </div><div class="line"><span class="keyword">float</span> b = MIN(a++, <span class="number">1.5</span>f);       </div><div class="line"><span class="comment">// =&gt; float b = ((a++) &lt; (1.5f) ? (a++) : (1.5f))</span></div></pre></td></tr></table></figure>
+<p>此时应该有翻桌子的图。<br>为了解决这个问题，需要用到GNU C的赋值扩展，即({})，会将括号里面的最后一个表达式的赋值返回。例子如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = (&#123;       </div><div class="line">    <span class="keyword">int</span> b = <span class="number">1</span>;       </div><div class="line">    <span class="keyword">int</span> c = <span class="number">2</span>;       </div><div class="line">    b + c;       </div><div class="line">&#125;);       </div><div class="line"><span class="comment">// =&gt; a is 3</span></div></pre></td></tr></table></figure>
+<p>然后就可以解决刚刚的min问题</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//GNUC MIN       </span></div><div class="line"><span class="meta">#define MIN(A,B) (&#123; __typeof__(A) __a = (A); __typeof__(B) __b = (B); __a <span class="meta-string">&lt; __b ? __a : __b;&#125;)</span></span></div></pre></td></tr></table></figure>
+<p>最后来看看clang中的MIN的写法，如下</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define __NSX_PASTE__(A,B) A##B</span></div><div class="line"><span class="meta">#if !defined(MIN)</span></div><div class="line">    <span class="meta">#define __NSMIN_IMPL__(A,B,L) (&#123; \</span></div><div class="line"> __typeof__(A) __NSX_PASTE__(__a,L) = (A);  \</div><div class="line"> __typeof__(B) __NSX_PASTE__(__b,L) = (B);  \</div><div class="line">(__NSX_PASTE__(__a,L) &lt; __NSX_PASTE__(__b,L)) ? __NSX_PASTE__(__a,L) : __NSX_PASTE__(__b,L); \ </div><div class="line">&#125;)</div><div class="line">    <span class="meta">#define MIN(A,B) __NSMIN_IMPL__(A,B,__COUNTER__)</span></div><div class="line"><span class="meta">#endif</span></div></pre></td></tr></table></figure>
+<p>你会发现这里是一大堆。先来解释一下，首先看第一个宏</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#define __NSX_PASTE__(A,B) A##B</div></pre></td></tr></table></figure>
+<p>“##”的意思是将A和B连接起来。因为宏中的参数都是有意义的，要把AB连起来不能直接写成AB。有时候你还会看到这样的语句：##A，也就是##前没有变量。这里需要提到##的另外一个特性，就是##后面的变量A为空的时候，那么它会将前面一个逗号吃掉。这里还有一个单井号#顺便提一下，这个的意思是将后面的参数字符串话，也就是替换之后在这个参数左右加上””，另外由于OC中的字符串是需要加@的。所以一般会看到写成这样@#expression。<br>现在我们明白了，这个宏就是一个拼接函数。<br>再来看最后一个宏</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define MIN(A,B) __NSMIN_IMPL__(A,B,__COUNTER__)</span></div></pre></td></tr></table></figure>
+<p><strong>COUNTER</strong>是一个预定义的宏，这个值在编译过程中将从0开始计数，每次被调用时加1。因为唯一性，所以很多时 候被用来构造独立的变量名称。这里的作用在这里（L就是<strong>COUNTER</strong>），也就是将定义的参数名字后面加了一个常数。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">__typeof__(A) __NSX_PASTE__(__a,L) = (A);</div></pre></td></tr></table></figure>
+<p>这确保了定义的参数名是会变的。有博客说这里是为了避免同一scope里面重复出现<strong>a，怕的是使用宏的语句之前有定义了</strong>a。但我手动测试发现(XCode8)，即使在前面定义了<strong>a，在宏的语句里面也不会出现问题。debug里面可以发现同时存在了两个变量</strong>a。我猜测是({})将宏限定在了一个scope里面。根据{}会屏蔽外部同名变量的原则，即使在宏里面定义同名变量也没问题。<br>好了，MIN的宏就到此为止。</p>
+<h2 id="while？"><a href="#while？" class="headerlink" title="while？"></a>while？</h2><p>如果有经常看宏的同学应该会发现这样的写法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define MyMacro(format, ...) do &#123;                            </span></div><div class="line">      .......    <span class="comment">//很多行语句</span></div><div class="line">    &#125; <span class="keyword">while</span> (<span class="number">0</span>)</div></pre></td></tr></table></figure>
+<p>先解释一下宏参数列表里面的…，这三个点代表的是可变参数，就是可以任意个，包括0个。然后你可以用<strong>VA_ARGS</strong>来代表这一堆的可变参数。当然你还可以写成  name…   ，这样的话，需要使用name来代替可变参数。<br>然后再来看这个写成while(0)的do…while是做什么用。<br>考虑一下下面的语句：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (a &gt; <span class="number">4</span>)</div><div class="line">   MyMacro(<span class="string">@"%d"</span>, a);</div></pre></td></tr></table></figure>
+<p>假如没有do…while，懂了吧，宏展开之后，if对应的执行语句就只有一行。如果if后面还有else的话，那么直接就报错了。<br>有人说，那么用括号吧宏括起来就好了吧，确实可以，但是宏后面那个分号，如果在有else的情况下，会成了下面的样子。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (a &gt; <span class="number">4</span>) &#123;</div><div class="line">......<span class="comment">//宏里面的语句</span></div><div class="line">&#125;; <span class="keyword">else</span> &#123;</div><div class="line">.....</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看到else前面那个分号没，此时应该有捂脸哭的表情。于是有了do…while的写法，这个语句可以把那个悲催的分号吃掉。这样就可以把这个宏当成一句语句来使用了。（此时想起了swift可以不用分号的好处，这不知能节省多少劳动力，但swift没宏，捂脸哭）</p>
+<h2 id="宏和常量的区别："><a href="#宏和常量的区别：" class="headerlink" title="宏和常量的区别："></a>宏和常量的区别：</h2><p>宏只是简单的替换，如果是字符串的话，建议使用常量定义，这样只有编译一次。<br>常量字符串定义：<br>在.h文件中</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> MY_TOKEN; <span class="comment">// UIKIT_EXTERN是苹果的宏，区分了C和C++。</span></div></pre></td></tr></table></figure>
+<p>在.m文件中</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> MY_TOKEN = <span class="string">@"xxxxx"</span>;</div></pre></td></tr></table></figure>
+<h2 id="常用宏"><a href="#常用宏" class="headerlink" title="常用宏"></a>常用宏</h2><p>最后举例一些常用宏：</p>
+<p>1、获取屏幕尺寸，横屏竖屏都可以。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define BOUNDS_WIDTH [UIScreen mainScreen].bounds.size.width</span></div><div class="line"><span class="meta">#define BOUNDS_HEIGHT [UIScreen mainScreen].bounds.size.height</span></div></pre></td></tr></table></figure>
+<p>2、状态栏和导航栏的高度</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define STATUS_BAR_HEIGHT CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame])</span></div><div class="line"><span class="meta">#define NAVIGATION_BAR_HEIGHT CGRectGetHeight(self.navigationController.navigationBar.frame)</span></div></pre></td></tr></table></figure>
+<p>3、颜色</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define UIColorFromRGB(rgbValue) \</span></div><div class="line">[<span class="built_in">UIColor</span> colorWithRed:((<span class="keyword">float</span>)((rgbValue &amp; <span class="number">0xFF0000</span>) &gt;&gt; <span class="number">16</span>))/<span class="number">255.0</span> \</div><div class="line">green:((<span class="keyword">float</span>)((rgbValue &amp; <span class="number">0x00FF00</span>) &gt;&gt;  <span class="number">8</span>))/<span class="number">255.0</span> \</div><div class="line">blue:((<span class="keyword">float</span>)((rgbValue &amp; <span class="number">0x0000FF</span>) &gt;&gt;  <span class="number">0</span>))/<span class="number">255.0</span> \</div><div class="line">alpha:<span class="number">1.0</span>]</div><div class="line"></div><div class="line"><span class="meta">#define UIColorFromRGBWithAlpha(rgbValue,alphaValue) \</span></div><div class="line">[<span class="built_in">UIColor</span> colorWithRed:((<span class="keyword">float</span>)((rgbValue &amp; <span class="number">0xFF0000</span>) &gt;&gt; <span class="number">16</span>))/<span class="number">255.0</span> \</div><div class="line">green:((<span class="keyword">float</span>)((rgbValue &amp; <span class="number">0x00FF00</span>) &gt;&gt;  <span class="number">8</span>))/<span class="number">255.0</span> \</div><div class="line">blue:((<span class="keyword">float</span>)((rgbValue &amp; <span class="number">0x0000FF</span>) &gt;&gt;  <span class="number">0</span>))/<span class="number">255.0</span> \</div><div class="line">alpha:alphaValue]</div></pre></td></tr></table></figure>
+<p>4、设备类型</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)</span></div><div class="line"><span class="meta">#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)</span></div><div class="line"><span class="meta">#define IS_RETINA ([[UIScreen mainScreen] scale] &gt;= 2.0)</span></div><div class="line"><span class="meta">#define iOS8Later ([UIDevice currentDevice].systemVersion.floatValue &gt;= 8.0f)</span></div><div class="line"><span class="meta">#define iOS9Later ([UIDevice currentDevice].systemVersion.floatValue &gt;= 9.0f)</span></div><div class="line"><span class="meta">#define IS_IPHONE_4_OR_LESS (IS_IPHONE &amp;&amp; SCREEN_MAX_LENGTH <span class="meta-string">&lt; 568.0)</span></span></div><div class="line">#define IS_IPHONE_5 (IS_IPHONE &amp;&amp; SCREEN_MAX_LENGTH == 568.0)</div><div class="line">#define IS_IPHONE_6 (IS_IPHONE &amp;&amp; SCREEN_MAX_LENGTH == 667.0)</div><div class="line">#define IS_IPHONE_6P_OR_MORE (IS_IPHONE &amp;&amp; SCREEN_MAX_LENGTH &gt;= 736.0)</div></pre></td></tr></table></figure>
+<p>5、iOS版本</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define iOS8Later ([UIDevice currentDevice].systemVersion.floatValue &gt;= 8.0f)</span></div><div class="line"><span class="meta">#define iOS9Later ([UIDevice currentDevice].systemVersion.floatValue &gt;= 9.0f)</span></div></pre></td></tr></table></figure>
+<p>6、弱引用宏，这个用得很多。这里很巧妙地用autoreleasepool和try来加了一个@。注意着两对宏要同时使用，在block外面用@weakify(A)后，在block里面使用@strongify(A)。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#ifndef weakify</span></div><div class="line"><span class="meta">#define weakify</span></div><div class="line"><span class="meta">#if DEBUG</span></div><div class="line"><span class="meta">#if __has_feature(objc_arc)</span></div><div class="line"><span class="meta">#define weakify(object) autoreleasepool&#123;&#125; __weak __typeof__(object) weak##_##object = object;</span></div><div class="line"><span class="meta">#else</span></div><div class="line"><span class="meta">#define weakify(object) autoreleasepool&#123;&#125; __block __typeof__(object) block##_##object = object;</span></div><div class="line"><span class="meta">#endif</span></div><div class="line"><span class="meta">#else</span></div><div class="line"><span class="meta">#if __has_feature(objc_arc)</span></div><div class="line"><span class="meta">#define weakify(object) try&#123;&#125; @finally&#123;&#125; &#123;&#125; __weak __typeof__(object) weak##_##object = object;</span></div><div class="line"><span class="meta">#else</span></div><div class="line"><span class="meta">#define weakify(object) try&#123;&#125; @finally&#123;&#125; &#123;&#125; __block __typeof__(object) block##_##object = object;</span></div><div class="line"><span class="meta">#endif</span></div><div class="line"><span class="meta">#endif</span></div><div class="line"><span class="meta">#endif</span></div><div class="line"></div><div class="line"><span class="meta">#ifndef strongify</span></div><div class="line"><span class="meta">#define strongify</span></div><div class="line"><span class="meta">#if DEBUG</span></div><div class="line"><span class="meta">#if __has_feature(objc_arc)</span></div><div class="line"><span class="meta">#define strongify(object) autoreleasepool&#123;&#125; __typeof__(object) object = weak##_##object;</span></div><div class="line"><span class="meta">#else</span></div><div class="line"><span class="meta">#define strongify(object) autoreleasepool&#123;&#125; __typeof__(object) object = block##_##object;</span></div><div class="line"><span class="meta">#endif</span></div><div class="line"><span class="meta">#else</span></div><div class="line"><span class="meta">#if __has_feature(objc_arc)</span></div><div class="line"><span class="meta">#define strongify(object) try&#123;&#125; @finally&#123;&#125; __typeof__(object) object = weak##_##object;</span></div><div class="line"><span class="meta">#else</span></div><div class="line"><span class="meta">#define strongify(object) try&#123;&#125; @finally&#123;&#125; __typeof__(object) object = block##_##object;</span></div><div class="line"><span class="meta">#endif</span></div><div class="line"><span class="meta">#endif</span></div><div class="line"><span class="meta">#endif</span></div></pre></td></tr></table></figure>
+<p>7、单例宏，再也不用写一堆代码了</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// .h文件</span></div><div class="line"><span class="meta">#define RYSingletonH + (instancetype)sharedInstance;</span></div><div class="line"></div><div class="line"><span class="meta">#define RYSingletonHWithNonnull + (nonnull instancetype)sharedInstance;</span></div><div class="line"><span class="comment">// .m文件</span></div><div class="line"><span class="meta">#define RYSingletonM \</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">id</span> _instance = <span class="literal">nil</span>; \</div><div class="line">+ (<span class="keyword">id</span>)allocWithZone:(<span class="keyword">struct</span> _NSZone *)zone \</div><div class="line">&#123; \</div><div class="line"><span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken; \</div><div class="line"><span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123; \</div><div class="line">_instance = [<span class="keyword">super</span> allocWithZone:zone]; \</div><div class="line">&#125;); \</div><div class="line"><span class="keyword">return</span> _instance; \</div><div class="line">&#125; \</div><div class="line">+ (<span class="keyword">instancetype</span>)sharedInstance \</div><div class="line">&#123; \</div><div class="line"><span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken; \</div><div class="line"><span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123; \</div><div class="line">_instance = [[<span class="keyword">self</span> alloc] init]; \</div><div class="line">&#125;); \</div><div class="line"><span class="keyword">return</span> _instance; \</div><div class="line">&#125; \</div><div class="line">- (<span class="keyword">id</span>)copyWithZone:(<span class="built_in">NSZone</span> *)zone \</div><div class="line">&#123; \</div><div class="line"><span class="keyword">return</span> _instance; \</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">#define RYSingletonMWithNonnull \</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">id</span> _instance = <span class="literal">nil</span>; \</div><div class="line">+ (<span class="keyword">id</span>)allocWithZone:(<span class="keyword">struct</span> _NSZone *)zone \</div><div class="line">&#123; \</div><div class="line"><span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken; \</div><div class="line"><span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123; \</div><div class="line">_instance = [<span class="keyword">super</span> allocWithZone:zone]; \</div><div class="line">&#125;); \</div><div class="line"><span class="keyword">return</span> _instance; \</div><div class="line">&#125; \</div><div class="line">+ (<span class="keyword">nonnull</span> <span class="keyword">instancetype</span>)sharedInstance \</div><div class="line">&#123; \</div><div class="line"><span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken; \</div><div class="line"><span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123; \</div><div class="line">_instance = [[<span class="keyword">self</span> alloc] init]; \</div><div class="line">&#125;); \</div><div class="line"><span class="keyword">return</span> _instance; \</div><div class="line">&#125; \</div><div class="line">- (<span class="keyword">id</span>)copyWithZone:(<span class="built_in">NSZone</span> *)zone \</div><div class="line">&#123; \</div><div class="line"><span class="keyword">return</span> _instance; \</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>8、懒加载宏，只针对能简单init的类。至于为啥不在这里addSubview，见我另外一篇博客《iOS懒加载的坑》。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#define LazyLoad(Type, name) \</span></div><div class="line">- (Type *)name&#123; \</div><div class="line">    <span class="keyword">if</span> (_<span class="meta">##name == nil) &#123; \</span></div><div class="line">        _<span class="meta">##name = [[Type alloc] init]; \</span></div><div class="line">    &#125; \</div><div class="line">    <span class="keyword">return</span> _<span class="meta">##name; \</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>9、获取沙盒路径</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//获取temp</span></div><div class="line"><span class="meta">#define kPathTemp NSTemporaryDirectory()</span></div><div class="line"><span class="comment">//获取沙盒 Document</span></div><div class="line"><span class="meta">#define kPathDocument [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]</span></div><div class="line"><span class="comment">//获取沙盒 Cache</span></div><div class="line"><span class="meta">#define kPathCache [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]</span></div></pre></td></tr></table></figure>
+<p>10、Log。Release版本不编译打印语句，而且打印语句有类、方法、文件的第几行信息。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#ifdef DEBUG</span></div><div class="line"><span class="meta">#   define DLog(fmt, ...) NSLog((@<span class="meta-string">"%s [Line %d] "</span> fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);</span></div><div class="line"><span class="meta">#else</span></div><div class="line"><span class="meta">#   define DLog(...)</span></div><div class="line"><span class="meta">#endif</span></div></pre></td></tr></table></figure>
+<p>RAC里面还有一个能判断参数有多少个的宏，可以参考这篇博客<br><a href="http://www.cocoachina.com/ios/20140621/8905.html" target="_blank" rel="external">http://www.cocoachina.com/ios/20140621/8905.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/23/iOS懒加载的坑/" rel="next" title="iOS懒加载的坑">
+                <i class="fa fa-chevron-left"></i> iOS懒加载的坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/24/OpenCV 3.2.0 in MacOS/" rel="prev" title="OpenCV 3.2.0 in MacOS">
+                OpenCV 3.2.0 in MacOS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/19/iOS宏/"
+           data-title="iOS宏" data-url="https://ekulelu.github.io/2017/02/19/iOS宏/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Ekulelu" />
+          <p class="site-author-name" itemprop="name">Ekulelu</p>
+          <p class="site-description motion-element" itemprop="description">一緒に世界の果てまでへ</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#求最小值"><span class="nav-number">1.</span> <span class="nav-text">求最小值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#while？"><span class="nav-number">2.</span> <span class="nav-text">while？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#宏和常量的区别："><span class="nav-number">3.</span> <span class="nav-text">宏和常量的区别：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用宏"><span class="nav-number">4.</span> <span class="nav-text">常用宏</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ekulelu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ekulelu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p37OqcP9nSbFoEPRagTgkWvI-gzGzoHsz", "IQiHmijzoKs8VMnp6oRleKsS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>

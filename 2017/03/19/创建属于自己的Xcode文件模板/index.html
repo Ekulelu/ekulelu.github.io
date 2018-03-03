@@ -1,0 +1,793 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="所谓的模版，就是用XCode新建工程或文件的时候，XCode提供给我们的选择项。在实际开发中，有些代码是十分重复的，基本上某一类的类都会用到，这样就很有必要自定义一个模板，这样每次新建这种文件的时候，这些代码都可以自动生成。之前有提到建立一个ViewManager来对UIViewController进行瘦身，那么这里就新建一个这种UIViewController的模板，每次新建这种UIViewCo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建属于自己的Xcode文件模板">
+<meta property="og:url" content="https://ekulelu.github.io/2017/03/19/创建属于自己的Xcode文件模板/index.html">
+<meta property="og:site_name" content="Ekulelu's Blog">
+<meta property="og:description" content="所谓的模版，就是用XCode新建工程或文件的时候，XCode提供给我们的选择项。在实际开发中，有些代码是十分重复的，基本上某一类的类都会用到，这样就很有必要自定义一个模板，这样每次新建这种文件的时候，这些代码都可以自动生成。之前有提到建立一个ViewManager来对UIViewController进行瘦身，那么这里就新建一个这种UIViewController的模板，每次新建这种UIViewCo">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/804bc176gy1fp00i03hc3j207g02lglt.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/804bc176gy1fp00i4fbznj20er04e75j.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00i97lhaj20bm0i4ted.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00ic5sx0j20o00a2gou.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ietlcfj20gy055q3f.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00ocrnnsj20co03ggmk.jpg">
+<meta property="og:updated_time" content="2018-03-03T15:05:34.314Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="创建属于自己的Xcode文件模板">
+<meta name="twitter:description" content="所谓的模版，就是用XCode新建工程或文件的时候，XCode提供给我们的选择项。在实际开发中，有些代码是十分重复的，基本上某一类的类都会用到，这样就很有必要自定义一个模板，这样每次新建这种文件的时候，这些代码都可以自动生成。之前有提到建立一个ViewManager来对UIViewController进行瘦身，那么这里就新建一个这种UIViewController的模板，每次新建这种UIViewCo">
+<meta name="twitter:image" content="http://wx3.sinaimg.cn/mw690/804bc176gy1fp00i03hc3j207g02lglt.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ekulelu.github.io/2017/03/19/创建属于自己的Xcode文件模板/"/>
+
+
+
+
+
+  <title> 创建属于自己的Xcode文件模板 | Ekulelu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f31c6baa24838cd36f68f42d6187a455";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ekulelu's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/03/19/创建属于自己的Xcode文件模板/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                创建属于自己的Xcode文件模板
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-19T22:04:00+08:00">
+                2017-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发技术杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/03/19/创建属于自己的Xcode文件模板/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/19/创建属于自己的Xcode文件模板/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/19/创建属于自己的Xcode文件模板/" class="leancloud_visitors" data-flag-title="创建属于自己的Xcode文件模板">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>所谓的模版，就是用XCode新建工程或文件的时候，XCode提供给我们的选择项。<br>在实际开发中，有些代码是十分重复的，基本上某一类的类都会用到，这样就很有必要自定义一个模板，这样每次新建这种文件的时候，这些代码都可以自动生成。<br>之前有提到建立一个ViewManager来对UIViewController进行瘦身，那么这里就新建一个这种UIViewController的模板，每次新建这种UIViewController的时候，都会自动生成它的ViewManager，并且已经完成了这两个类之间的绑定。</p>
+<p>1、找到XCode的模板目录<br>来到 “应用程序” 目录，对XCode右击，选择”显示包内容”。 然后在打开的文件夹里面找到下面目录</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Templates/File Templates</div></pre></td></tr></table></figure>
+<p>在这个目录里面可以看到有</p>
+<a id="more"></a>
+<p><img src="http://wx3.sinaimg.cn/mw690/804bc176gy1fp00i03hc3j207g02lglt.jpg" alt=""></p>
+<p>留意到路径里面的iPhoneOS.platform和File Templates这两个目录。有兴趣的可以自行看看。<br>这里的目录对应了你在新建文件时候看到的标签，由于我是要新建Source文件，来的Source文件下面，</p>
+<p><img src="http://wx2.sinaimg.cn/mw690/804bc176gy1fp00i4fbznj20er04e75j.jpg" alt=""></p>
+<p>选择Cocoa Touch Class。在下面我们看到了很多的模板文件，XCode根据你的输入的子类去选择不同的文件夹下面的模板来建立文件，如果该子类没有对应的文件夹，那么会使用NSObject的。如果连NSObject都没，那么不会创建文件。</p>
+<p><img src="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00i97lhaj20bm0i4ted.jpg" alt=""> </p>
+<p>我们照猫画虎，先在Cocoa Touch Class.xctemplate的文件夹下面新建一个文件夹，名字改为</p>
+<p><code>VCClass.xctemplate</code></p>
+<p>（应该要你输入密码）进入该文件夹，把<code>Cocoa Touch Class.xctemplate</code>里面的<code>UIViewControllerObjective-C</code>和<code>UIViewControllerXIBObjective-C</code>文件夹拷贝过来。这两个文件夹看名字应该知道了，一个是对应有xib，一个是木有的。另外把<code>TemplateIcon.png</code>和那个@2x的图片也拷贝过来，这个就是模板显示的图片，你可以进行PS一下。最后拷贝的是<code>TemplateInfo.plist</code>。<br>下面解释一下<code>TemplateInfo.plist</code>。</p>
+<p><img src="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00ic5sx0j20o00a2gou.jpg" alt=""> </p>
+<p><strong>Platforms</strong>  :  对应是在哪个平台，也就是新建时候的标签，这里由于是从iphoneOS里面拷贝过来的，所以显示的是iPhoneos。</p>
+<p><strong>Item0 - item3</strong> : 依次对应下面的显示框。具体的展开就不介绍了，自行打开一下就知道里面的属性的意思了。因为我们没有写swift的，所以记得改一下item3的属性。</p>
+<p><img src="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ietlcfj20gy055q3f.jpg" alt=""> </p>
+<p>然后进入到刚刚拷贝的<code>UIViewControllerObjective-C</code>目录。里面有两个文件<code>___FILEBASENAME___.h/.m</code>，我们将它们都复制一下后改名，得到下面的文件。</p>
+<p><img src="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00ocrnnsj20co03ggmk.jpg" alt=""> </p>
+<p>主要到后面新加的ViewManager，这个会自动加在你输入的Class名字后面。然后我们可以在这四个文件里面进行编辑，举个例子，<code>___FILEBASENAME___.m</code>可以改为这样。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"___FILEBASENAME___.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"___FILEBASENAME___ViewManager.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">___FILEBASENAMEASIDENTIFIER___</span> ()</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>) ___FILEBASENAMEASIDENTIFIER___ViewManager *viewManager;</div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">___FILEBASENAMEASIDENTIFIER___</span></span></div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">    [<span class="keyword">self</span> setupSubviews];</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)setupSubviews &#123;</div><div class="line">    <span class="keyword">self</span>.viewManager = [[___FILEBASENAMEASIDENTIFIER___ViewManager alloc] initWithView:<span class="keyword">self</span>.view];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>稍微留意一下引入其他新建文件和创建类的语句就好了。<br>ViewManager的模板代码这里就不贴了。<br>将这些文件保存之后，不用重启XCode就可以看到刚刚建立的文件模板了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/19/UIViewController瘦身的一些思考/" rel="next" title="UIViewController瘦身的一些思考">
+                <i class="fa fa-chevron-left"></i> UIViewController瘦身的一些思考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/24/iOS改变状态栏颜色和隐藏/" rel="prev" title="iOS改变状态栏颜色和隐藏">
+                iOS改变状态栏颜色和隐藏 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/19/创建属于自己的Xcode文件模板/"
+           data-title="创建属于自己的Xcode文件模板" data-url="https://ekulelu.github.io/2017/03/19/创建属于自己的Xcode文件模板/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Ekulelu" />
+          <p class="site-author-name" itemprop="name">Ekulelu</p>
+          <p class="site-description motion-element" itemprop="description">一緒に世界の果てまでへ</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ekulelu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ekulelu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p37OqcP9nSbFoEPRagTgkWvI-gzGzoHsz", "IQiHmijzoKs8VMnp6oRleKsS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>

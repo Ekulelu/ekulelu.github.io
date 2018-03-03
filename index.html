@@ -249,6 +249,972 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/画图wiki/iOS基于CoreGraphics的粗细可变且半透明笔画/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/30/画图wiki/iOS基于CoreGraphics的粗细可变且半透明笔画/" itemprop="url">
+                  iOS基于CoreGraphics的粗细可变且半透明笔画
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS-CoreGraphics画图/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS CoreGraphics画图</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/10/30/画图wiki/iOS基于CoreGraphics的粗细可变且半透明笔画/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/画图wiki/iOS基于CoreGraphics的粗细可变且半透明笔画/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/30/画图wiki/iOS基于CoreGraphics的粗细可变且半透明笔画/" class="leancloud_visitors" data-flag-title="iOS基于CoreGraphics的粗细可变且半透明笔画">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在《iOS基于CoreGraphics的可变粗细的划线》的wiki上，已经介绍了现在使用CoreGraphics绘制可变粗细线条的方法，也就是每两个点就调用一次stroke方法绘制一条线段。这个在不透明的情况下没有问题，最多就是性能差点。但是你把绘制的颜色调节成透明的时候，你会发现一个很恶心的现象，一条线段变成了一节一节的。就像下图那样</p>
+<p><img src="http://wx3.sinaimg.cn/mw690/804bc176gy1fp031pev9tj208v01n745.jpg" alt=""></p>
+<p>为什么会变成这样呢？这牵扯到了iOS的线段绘制原理。它在绘制线段结尾的时候，有3中选择去填充这个头尾部：1、不做处理。2、画一个半圆。3、画一个和宽度距离相等的矩形。一般为了好看，我们都会选择第二种选项。因为我们每两个点就绘制了一条线段，所以结尾的点上会补充上一个半圆。当画第二条线段的时候，这条线段的起点洽是第一条线段的终端，所以第二条线段的头部半圆部分会重合在第一条线段里面，第一条线段尾部的半圆也会重合在第二条线段里面。由普通的混色规则所以出现了一个黑色圆。</p>
+<p><img src="http://wx2.sinaimg.cn/mw690/804bc176gy1fp031se1v8j20zs04qmy2.jpg" alt=""></p>
+<p>尝试过更改线段尾部的模式来解决问题，但是行不通，两个相邻线段之间总是避免不了重合部分。也尝试过更改混合模式来解决这个问题。但是得出的效果并不是我想要的。</p>
+<p>所以想到一种比较麻烦的办法：假设我需要绘制的颜色为(1,0,0,0.5)的半透明红色。先将这一笔绘制到另外一个drawingContext上，(destContext是最终绘制的图层)，绘制的颜色为(1,0,0,1)的红颜色。然后将这一笔的图片导出，再将这张图片调节为需要的透明度之后，显示到原本的那张图片的上面。(也就是使用了两个大小和位置一样UIImage来展示)这样看起来就是在画带透明的颜色。过程如下图：</p>
+<p><img src="http://wx3.sinaimg.cn/mw690/804bc176gy1fp031vaqt0j20ms0i0gnx.jpg" alt=""></p>
+<p>当这一笔画完之后，把这一笔的drawingContext导出成图片，然后将这样图片绘制到destContext上面，绘制的时候调节透明度为颜色的透明度。这样destContext就得到了透明的一笔。以后导出最终图片，导出destContext的图片就行了。过程如下：</p>
+<p><img src="http://wx1.sinaimg.cn/mw690/804bc176gy1fp031yazd1j20mo0hygnn.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/" itemprop="url">
+                  iOS基于CoreGraphics的可变粗细的划线
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS-CoreGraphics画图/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS CoreGraphics画图</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/" class="leancloud_visitors" data-flag-title="iOS基于CoreGraphics的可变粗细的划线">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>之前的文章有提及过现在Drawing里面使用的画图方式：基于系统的CoreGraphics框架的CGContextAddLineToPoint来进行绘制，但是这些都有个问题，你会发现你调用stroke之前，只能设定唯一的宽度，当你调用stroke的时候，该path里面的点都会以这个宽度进行绘制。为了实现宽度可变，原生接口只能采用一个很极端的方式：每两个点就调用一次stroke方法，也就是说每两个点组成一个path，然后改变不同的path的宽度就可以绘制出一条可变宽度的线段。<br>代码如下：<br>注：下面的插值方法已经使用了二次贝塞尔方法。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CGFloat</span> x0 = <span class="keyword">self</span>.lastMidPoint.x;</div><div class="line"><span class="built_in">CGFloat</span> y0 = <span class="keyword">self</span>.lastMidPoint.y;</div><div class="line"><span class="built_in">CGFloat</span> x1 = point.x;</div><div class="line"><span class="built_in">CGFloat</span> y1 = point.y;</div><div class="line"><span class="built_in">CGFloat</span> x2 = midP.x;</div><div class="line"><span class="built_in">CGFloat</span> y2 = midP.y;</div><div class="line"><span class="built_in">CGFloat</span> stepZ = ((<span class="built_in">CGFloat</span>)(midP.z - <span class="keyword">self</span>.lastMidPoint.z)) * increment;</div><div class="line"><span class="built_in">CGFloat</span> stepT = ((<span class="built_in">CGFloat</span>)(midP.t - <span class="keyword">self</span>.lastMidPoint.t)) * increment;</div><div class="line"></div><div class="line"><span class="keyword">int</span> index = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="built_in">CGFloat</span> t = increment; t &lt;=<span class="number">1.0</span>; t += increment) &#123;</div><div class="line">    <span class="comment">//二次贝塞尔曲线</span></div><div class="line">    <span class="built_in">CGFloat</span> x = (<span class="number">1</span>-t) * (<span class="number">1</span>-t) * x0 + <span class="number">2</span>*t*(<span class="number">1</span>-t)*x1 + t*t*x2;</div><div class="line">    <span class="built_in">CGFloat</span> y = (<span class="number">1</span>-t) * (<span class="number">1</span>-t) * y0 + <span class="number">2</span>*t*(<span class="number">1</span>-t)*y1 + t*t*y2;</div><div class="line">    RYPoint3 *insertPoint = [RYPoint3 pointWithX:x y:y z:<span class="keyword">self</span>.lastMidPoint.z + stepZ * index t:<span class="keyword">self</span>.lastMidPoint.t + stepT * index];</div><div class="line">    index++;    </div><div class="line">    [<span class="keyword">self</span> changeLineWidthWithPoint:insertPoint context:context];</div><div class="line">   </div><div class="line">    <span class="built_in">CGContextAddLineToPoint</span>(context, insertPoint.x, insertPoint.y);</div><div class="line">    <span class="built_in">CGContextStrokePath</span>(context);</div><div class="line">    <span class="built_in">CGContextMoveToPoint</span>(context, insertPoint.x, insertPoint.y);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然这里使用这样的方法是有很大代价的。每次调用stroke方法，相当于发送一次绘制指令给GPU，每两个点就调用一次，这个十分消耗性能。<br>更好的做法是使用OpenGLES，把绘制指令的发送交给自己管理，且用OpenGLES可以直接使用三角形条来绘制可变粗细的线条。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/画图wiki/线段绘制/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/30/画图wiki/线段绘制/" itemprop="url">
+                  iOS线段绘制
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS-CoreGraphics画图/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS CoreGraphics画图</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/10/30/画图wiki/线段绘制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/画图wiki/线段绘制/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/30/画图wiki/线段绘制/" class="leancloud_visitors" data-flag-title="iOS线段绘制">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1、简单粗暴的drawInRect-（Android的OnDraw）"><a href="#1、简单粗暴的drawInRect-（Android的OnDraw）" class="headerlink" title="1、简单粗暴的drawInRect （Android的OnDraw）"></a>1、简单粗暴的drawInRect （Android的OnDraw）</h2><p>在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect &#123;</div><div class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();</div><div class="line">    <span class="built_in">CGContextSetLineCap</span>(context, kCGLineCapRound);</div><div class="line">    <span class="built_in">CGContextSetLineWidth</span>(context, <span class="number">3</span>);  <span class="comment">//线宽</span></div><div class="line">    <span class="built_in">CGContextSetAllowsAntialiasing</span>(context, <span class="literal">true</span>); <span class="comment">//抗锯齿</span></div><div class="line">    <span class="built_in">CGContextSetRGBStrokeColor</span>(context, <span class="number">70.0</span> / <span class="number">255.0</span>, <span class="number">241.0</span> / <span class="number">255.0</span>, <span class="number">241.0</span> / <span class="number">255.0</span>, <span class="number">1.0</span>);  <span class="comment">//线的颜色</span></div><div class="line">    <span class="built_in">CGContextMoveToPoint</span>(context, <span class="number">0</span>, <span class="number">0</span>);  <span class="comment">//起点坐标</span></div><div class="line">    <span class="built_in">CGContextAddLineToPoint</span>(context, <span class="keyword">self</span>.frame.size.width, <span class="keyword">self</span>.frame.size.height);   <span class="comment">//终点坐标</span></div><div class="line">    <span class="built_in">CGContextStrokePath</span>(context);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因为iOS里面每次调用drawInRect的时候，都会清空上下文。这个弊端很大，当你的点有1万个的时候，每一帧都从第0个点开始绘制，会出现明显的延时。</p>
+<h2 id="2、使用Path对象"><a href="#2、使用Path对象" class="headerlink" title="2、使用Path对象"></a>2、使用Path对象</h2><p>在OnTouch事件将取得的点添加进path对象里面，然后在drawInRect的时候，将这个path重绘。这个确实会节省大量的开销。但是有个问题：path对象只有一个width，写字板有个需求，在写的时候线的粗细需要跟着笔的压力进行变化。所以将全部点都添加到一个path是不可能的。最坏的情况就是每两个点都必须生成一个path对象。在那么多path的情况下对性能也有很大影响。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UIBezierPath</span> *bPath = [[<span class="built_in">UIBezierPath</span> alloc]init];</div><div class="line">[bPath setLineCapStyle:kCGLineCapRound];</div><div class="line">[bPath setLineJoinStyle:kCGLineJoinRound];</div><div class="line">[bPath setLineWidth:<span class="keyword">self</span>.lineWidth]; </div><div class="line">[<span class="keyword">self</span>.lineColor setStroke];</div><div class="line">[bPath moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">500.0</span>, <span class="number">510.0</span>)];</div><div class="line">[bPath stroke];</div></pre></td></tr></table></figure>
+<h2 id="3、使用CAShapeLayer"><a href="#3、使用CAShapeLayer" class="headerlink" title="3、使用CAShapeLayer"></a>3、使用CAShapeLayer</h2><p>CAShapeLayer是一个通过矢量图形而不是bitmap来绘制的图层子类。你指定诸如颜色和线宽等属性，用CGPath来定义想要绘制的图形，最后CAShapeLayer就自动渲染出来了。当然，你也可以用Core Graphics直接向原始的CALyer的内容中绘制一个路径，相比直下，使用CAShapeLayer有以下一些优点：<br>1、渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形会比用Core Graphics快很多。2、高效使用内存。一个CAShapeLayer不需要像普通CALayer一样创建一个寄宿图形，所以无论有多大，都不会占用太多的内存。3、不会被图层边界剪裁掉。一个CAShapeLayer可以在边界之外绘制。你的图层路径不会像在使用Core Graphics的普通CALayer一样被剪裁掉。4、不会出现像素化。当你给CAShapeLayer做3D变换时，它不像一个有寄宿图的普通图层一样变得像素化。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UIBezierPath</span> *path = [[<span class="built_in">UIBezierPath</span> alloc] init];</div><div class="line">[path moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">175</span>, <span class="number">100</span>)];</div><div class="line">  ￼</div><div class="line">[path addArcWithCenter:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">100</span>) radius:<span class="number">25</span> startAngle:<span class="number">0</span> endAngle:<span class="number">2</span>*M_PI clockwise:<span class="literal">YES</span>];</div><div class="line">[path moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">125</span>)];</div><div class="line">[path addLineToPoint:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">175</span>)];</div><div class="line">[path addLineToPoint:<span class="built_in">CGPointMake</span>(<span class="number">125</span>, <span class="number">225</span>)];</div><div class="line">[path moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">150</span>, <span class="number">175</span>)];</div><div class="line">[path addLineToPoint:<span class="built_in">CGPointMake</span>(<span class="number">175</span>, <span class="number">225</span>)];</div><div class="line">[path moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">100</span>, <span class="number">150</span>)];</div><div class="line">[path addLineToPoint:<span class="built_in">CGPointMake</span>(<span class="number">200</span>, <span class="number">150</span>)];</div><div class="line"></div><div class="line"><span class="comment">//create shape layer</span></div><div class="line"><span class="built_in">CAShapeLayer</span> *shapeLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">shapeLayer.strokeColor = [<span class="built_in">UIColor</span> redColor].CGColor;</div><div class="line">shapeLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">shapeLayer.lineWidth = <span class="number">5</span>;</div><div class="line">shapeLayer.lineJoin = kCALineJoinRound;</div><div class="line">shapeLayer.lineCap = kCALineCapRound;</div><div class="line">shapeLayer.path = path.CGPath;</div><div class="line"><span class="comment">//add it to our view</span></div><div class="line">[<span class="keyword">self</span>.containerView.layer addSublayer:shapeLayer];</div></pre></td></tr></table></figure>
+<p>CAShapeLayer的缺点是一个CAShapeLayer只能添加一个path，如果你需要绘制不同的形状，那么就得添加不同的layer。之前测试过一个demo，添加了几十个layer之后，内存仍没有可观测的变化。对于可变宽度的线，使用CAShapeLayer仍显得很占用内存。</p>
+<h2 id="4、drawInRect的改进方法"><a href="#4、drawInRect的改进方法" class="headerlink" title="4、drawInRect的改进方法"></a>4、drawInRect的改进方法</h2><p>上面提到，drawInRect每次都会清空掉上一帧的图片，所以必须每次从头开始绘制。为了解决这个问题，可以采取这样的做法：每画一定数量的点之后，将当期的图片保存下来。后面就先绘制这张图片，然后再绘制这张图片之后的点。这样可以避免当点特别多的时候的卡顿。坏处就是当你的画布大小很大的时候，比如1080P，每次渲染的时候都需要绘制这张缓存的图片。在iOS系统测试来看，使用UIImage的drawInRect方法十分吃性能。</p>
+<h2 id="5、现在的做法"><a href="#5、现在的做法" class="headerlink" title="5、现在的做法"></a>5、现在的做法</h2><p>使用CGBitmapContextCreate()，先开辟一个画布上下文context，以后来的点都往这个画布上去画，且画过的点不需要再次绘制。当需要渲染到屏幕的时候，将这个画布context提取成UIImage对象。最后将这个image显示赋值到UIImageView，显示屏幕上。这样的话，开销就在于从context中提取image和绘制新到来的几个数据点。测试看来，能将CPU功耗降低一半。<br>这里遇到一个问题，创建context的时候，内存可以自己分配，或者传入NULL让系统自动生成，开始的时候忘记了内存是自己分配的，然后没进行释放，当你新建了许多页的时候，虽然你把context release掉了，但是内存还是泄露了，且程序不会崩溃，只会打log，然后绘制的时候出现一些莫名其妙的效果。我这边是闪屏。</p>
+<h2 id="6、更好的做法："><a href="#6、更好的做法：" class="headerlink" title="6、更好的做法："></a>6、更好的做法：</h2><p>使用OpenGLES，测试了一些使用OpenGLES的demo，它们对CPU性能消耗要更低，而且可以做出原生API无法实现的效果。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/" itemprop="url">
+                  iOS画图轨迹圆滑处理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS-CoreGraphics画图/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS CoreGraphics画图</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/" class="leancloud_visitors" data-flag-title="iOS画图轨迹圆滑处理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>用户在画图过程中，系统从屏幕上获取到的是离散的点。而且这个点的获取是有一个最高频率的，当用户在屏幕上滑动速度很快的时候，获取到的两个点就会距离较远。</p>
+<p><img src="http://wx2.sinaimg.cn/mw690/804bc176gy1fp02iugf01j20b40b43yj.jpg" alt=""></p>
+<p>简单的绘制过程就是将相邻的两个点连接起来。如下图。但是正如上面所说的，如果用户滑动的速度太快，那么两个点的距离就会比较远，当用户画曲线的时候，就会出现很明显的转折角。</p>
+<p><img src="http://wx3.sinaimg.cn/mw690/804bc176gy1fp030rbzbqj20b40bnaai.jpg" alt=""></p>
+<p>为了解决这个问题，我们需要借助于二次贝塞尔曲线。二次贝塞尔曲线的公式如下。当t为0的时候，B(t)的值是P0，当t为1的时候，B(t)的值是P2。P1是控制点，用来控制P0和P2之间的弯曲程度。</p>
+<p><img src="http://wx4.sinaimg.cn/mw690/804bc176gy1fp01kydey5j208t00l741.jpg" alt=""></p>
+<p>正如方程所显示的，我们需要三个点才能画出一段平滑的曲线。但是如果你直接将屏幕报上来的点，每三个一组去套用二次贝塞尔的公式，那么很遗憾，得出来的图形还是棱角分明的。正确地使用公式，我们需要一点姿势：<br>首先当有3个报点的时候，将相邻两个点的中点求出来，把他们作为P0和P2，然后把中间的那个报点作为P1控制点来套用公式。图像如下，其中蓝色的是报点，橙色的是中点。</p>
+<p><img src="http://wx1.sinaimg.cn/mw690/804bc176gy1fp02izyri8j20dw0dw0sw.jpg" alt=""></p>
+<p>当然这里有两处例外：第一个报点和第一个中点之间、最后一个报点和最后一个中点之间。因为这两处都不足3个点，这里有两种处理方法，一个是将这些段都不绘制；另外的一种是用绘制直线。个人比较偏向第二种做法，因为第一种做法在某些情况下会看到在我下手的地方没有绘制线段。</p>
+<p>简单的实例代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)pan:(<span class="built_in">UIPanGestureRecognizer</span> *)pan &#123;</div><div class="line">    <span class="built_in">CGPoint</span> currentPoint = [pan locationInView:<span class="keyword">self</span>];</div><div class="line">    <span class="built_in">CGPoint</span> midPoint = midpoint(previousPoint, currentPoint);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (pan.state == <span class="built_in">UIGestureRecognizerStateBegan</span>) &#123;</div><div class="line">        [path moveToPoint:currentPoint];</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pan.state == <span class="built_in">UIGestureRecognizerStateChanged</span>) &#123;</div><div class="line">        [path addQuadCurveToPoint:midPoint controlPoint:previousPoint];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    previousPoint = currentPoint;</div><div class="line"></div><div class="line">    [<span class="keyword">self</span> setNeedsDisplay];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里说明一下为什么没有处理UIGestureRecognizerStateEnded事件。因为UIGestureRecognizerStateEnded事件里面报的点的坐标和UIGestureRecognizerStateChanged的最后一个报点的坐标是重合的。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/iOS视频制作/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/30/iOS视频制作/" itemprop="url">
+                  iOS视频制作
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发技术杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/10/30/iOS视频制作/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/iOS视频制作/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/30/iOS视频制作/" class="leancloud_visitors" data-flag-title="iOS视频制作">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#<br>这里说的视频制作并不是从摄像头录制视频，而是如何将一帧一帧的图片合成一个视频文件。这里我们所使用到的类是AVAssetWriter，它的使用方式比较固定，且代码也比较多。<br>首先是设定好AVAssetWriter</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)setUpWriter</div><div class="line">&#123;</div><div class="line">    _rgbColorSpace = <span class="built_in">CGColorSpaceCreateDeviceRGB</span>();</div><div class="line">    </div><div class="line">    <span class="built_in">NSDictionary</span> *bufferAttributes = @&#123;(<span class="keyword">id</span>)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),</div><div class="line">                                       (<span class="keyword">id</span>)kCVPixelBufferCGBitmapContextCompatibilityKey : @YES,</div><div class="line">                                       (<span class="keyword">id</span>)kCVPixelBufferWidthKey : @(_viewSize.width),</div><div class="line">                                       (<span class="keyword">id</span>)kCVPixelBufferHeightKey : @(_viewSize.height),</div><div class="line">                                       (<span class="keyword">id</span>)kCVPixelBufferBytesPerRowAlignmentKey : @(_viewSize.width * <span class="number">4</span>)</div><div class="line">                                       &#125;;</div><div class="line">    </div><div class="line">    _outputBufferPool = <span class="literal">NULL</span>;</div><div class="line">    CVPixelBufferPoolCreate(<span class="literal">NULL</span>, <span class="literal">NULL</span>, (__bridge <span class="built_in">CFDictionaryRef</span>)(bufferAttributes), &amp;_outputBufferPool);</div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="built_in">NSError</span>* error = <span class="literal">nil</span>;</div><div class="line"></div><div class="line">    _videoWriter = [[<span class="built_in">AVAssetWriter</span> alloc] initWithURL: [<span class="keyword">self</span> tempFileURL]</div><div class="line">                                             fileType:<span class="built_in">AVFileTypeQuickTimeMovie</span></div><div class="line">                                                error:&amp;error];</div><div class="line">    <span class="built_in">NSParameterAssert</span>(_videoWriter);</div><div class="line">    </div><div class="line">    <span class="built_in">NSInteger</span> pixelNumber = _viewSize.width * _viewSize.height;</div><div class="line">    <span class="built_in">NSDictionary</span>* videoCompression = @&#123;<span class="built_in">AVVideoAverageBitRateKey</span>: @(pixelNumber * <span class="number">1</span>),</div><div class="line">                                       </div><div class="line">                                       &#125;;</div><div class="line">    </div><div class="line">    <span class="built_in">NSDictionary</span>* videoSettings = @&#123;<span class="built_in">AVVideoCodecKey</span>: <span class="built_in">AVVideoCodecH264</span>,</div><div class="line">                                    <span class="built_in">AVVideoWidthKey</span>: [<span class="built_in">NSNumber</span> numberWithInt:_viewSize.width],</div><div class="line">                                    <span class="built_in">AVVideoHeightKey</span>: [<span class="built_in">NSNumber</span> numberWithInt:_viewSize.height],</div><div class="line">                                    <span class="built_in">AVVideoCompressionPropertiesKey</span>: videoCompression&#125;;</div><div class="line">    </div><div class="line">    _videoWriterInput = [<span class="built_in">AVAssetWriterInput</span> assetWriterInputWithMediaType:<span class="built_in">AVMediaTypeVideo</span> outputSettings:videoSettings];</div><div class="line">    <span class="built_in">NSParameterAssert</span>(_videoWriterInput);</div><div class="line">    </div><div class="line">    _videoWriterInput.expectsMediaDataInRealTime = <span class="literal">YES</span>;</div><div class="line">    _videoWriterInput.transform = <span class="built_in">CGAffineTransformIdentity</span>;</div><div class="line">    </div><div class="line">    _avAdaptor = [<span class="built_in">AVAssetWriterInputPixelBufferAdaptor</span> assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_videoWriterInput sourcePixelBufferAttributes:<span class="literal">nil</span>];</div><div class="line">    </div><div class="line">    [_videoWriter addInput:_videoWriterInput];</div><div class="line">    </div><div class="line">    [_videoWriter startWriting];</div><div class="line">    [_videoWriter startSessionAtSourceTime:<span class="built_in">CMTimeMake</span>(<span class="number">0</span>, <span class="number">1000</span>)];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>配置好AVAssetWriter后，就可以往它写入每一帧的图像数据了。写入的方法如下。代码里面使用了代理模式，将每一帧的context传递给了代理，由代理去完成绘制后，把这个context写入到视频。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)writeVideoFrame</div><div class="line">&#123;   </div><div class="line">    <span class="keyword">if</span> (dispatch_semaphore_wait(_pixelAppendSemaphore, DISPATCH_TIME_NOW) != <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">dispatch_async</span>(_append_pixelBuffer_queue, ^&#123;</div><div class="line">        </div><div class="line">        <span class="keyword">if</span> (![_videoWriterInput isReadyForMoreMediaData]) <span class="keyword">return</span>;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.currentTime &gt; <span class="keyword">self</span>.totalTime &amp;&amp; <span class="keyword">self</span>.isExporting) &#123;</div><div class="line">            [<span class="keyword">self</span> stopExporting];</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        DLog(<span class="string">@"time %f %f"</span>, <span class="keyword">self</span>.currentTime, <span class="keyword">self</span>.currentTime - <span class="keyword">self</span>.totalTime);</div><div class="line">        </div><div class="line">        <span class="built_in">CMTime</span> time = <span class="built_in">CMTimeMakeWithSeconds</span>(<span class="keyword">self</span>.currentTime, <span class="number">1000</span>);</div><div class="line">        </div><div class="line">        CVPixelBufferRef pixelBuffer = <span class="literal">NULL</span>;</div><div class="line">        <span class="built_in">CGContextRef</span> bitmapContext = [<span class="keyword">self</span> createPixelBufferAndBitmapContext:&amp;pixelBuffer];</div><div class="line">        </div><div class="line">        RYExporterNextOperation nextOpr = RYExporterNextOperationContinue;</div><div class="line">        <span class="comment">//通过代理去绘制图像</span></div><div class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.delegate) &#123;</div><div class="line">            <span class="keyword">if</span> ([<span class="keyword">self</span>.delegate respondsToSelector:<span class="keyword">@selector</span>(exporter:getFrameInContext:time:totalTime:nextOperation:)] == <span class="literal">YES</span>) &#123;</div><div class="line">                [<span class="keyword">self</span>.delegate exporter:<span class="keyword">self</span> getFrameInContext:bitmapContext time:<span class="keyword">self</span>.currentTime totalTime:<span class="keyword">self</span>.totalTime nextOperation:&amp;nextOpr];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="built_in">BOOL</span> success = [_avAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:time];</div><div class="line">        <span class="keyword">if</span> (!success) &#123;</div><div class="line">            DLog(<span class="string">@"Warning: Unable to write buffer to video"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">CGContextRelease</span>(bitmapContext);</div><div class="line">        CVPixelBufferUnlockBaseAddress(pixelBuffer, <span class="number">0</span>);</div><div class="line">        CVPixelBufferRelease(pixelBuffer);</div><div class="line">        </div><div class="line">        dispatch_semaphore_signal(_pixelAppendSemaphore);</div><div class="line"></div><div class="line">        </div><div class="line">        <span class="keyword">if</span> (nextOpr == RYExporterNextOperationCancel) &#123;</div><div class="line">            [<span class="keyword">self</span> cancelExporting];</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nextOpr == RYExporterNextOperationEnd) &#123;</div><div class="line">            [<span class="keyword">self</span> stopExporting];</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">self</span>.currentTime += <span class="number">1</span>/<span class="keyword">self</span>.fps;</div><div class="line">        </div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="built_in">CGContextRef</span>)createPixelBufferAndBitmapContext:(CVPixelBufferRef *)pixelBuffer</div><div class="line">&#123;</div><div class="line">    CVPixelBufferPoolCreatePixelBuffer(<span class="literal">NULL</span>, _outputBufferPool, pixelBuffer);</div><div class="line">    CVPixelBufferLockBaseAddress(*pixelBuffer, <span class="number">0</span>);</div><div class="line">    </div><div class="line">    <span class="built_in">CGContextRef</span> bitmapContext = <span class="literal">NULL</span>;</div><div class="line">    bitmapContext = <span class="built_in">CGBitmapContextCreate</span>(CVPixelBufferGetBaseAddress(*pixelBuffer),</div><div class="line">                                          CVPixelBufferGetWidth(*pixelBuffer),</div><div class="line">                                          CVPixelBufferGetHeight(*pixelBuffer),</div><div class="line">                                          <span class="number">8</span>, CVPixelBufferGetBytesPerRow(*pixelBuffer), _rgbColorSpace,</div><div class="line">                                          kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst</div><div class="line">                                          );</div><div class="line">    <span class="built_in">CGContextScaleCTM</span>(bitmapContext, _scale, _scale);</div><div class="line">    <span class="built_in">CGAffineTransform</span> flipVertical = <span class="built_in">CGAffineTransformMake</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">-1</span>, <span class="number">0</span>, _viewSize.height);</div><div class="line">    <span class="built_in">CGContextConcatCTM</span>(bitmapContext, flipVertical);</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> bitmapContext;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>留意到上面的代码是运行在一个串行队列中，但是这个串行队列是运行在全局队列中，配置如下，写在了init方法里面。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">_append_pixelBuffer_queue = dispatch_queue_create(<span class="string">"RYExporter.append_queue"</span>, DISPATCH_QUEUE_SERIAL);</div><div class="line">dispatch_set_target_queue(_append_pixelBuffer_queue, dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, <span class="number">0</span>));</div><div class="line">_pixelAppendSemaphore = dispatch_semaphore_create(<span class="number">0</span>); <span class="comment">//初始化一个信号量</span></div></pre></td></tr></table></figure>
+<p>为了能自动调用writeVideoFrame方法，使用了一个DisplayLink，在开始导出视频的时候，初始化这个DisplayLink并将它加入到runloop。使用DisplayLink的好处是能获得和屏幕刷新率一样的频率。在录屏的时候也可以使用这个视频导出类。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)startExportingWithTotalTime:(<span class="built_in">CGFloat</span>)totalTime viewSize:(<span class="built_in">CGSize</span>)viewSize videoPath:(<span class="built_in">NSString</span>*)videoPath fps:(<span class="built_in">NSInteger</span>)fps</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (!_isExporting) &#123;</div><div class="line">        <span class="keyword">self</span>.totalTime = totalTime;</div><div class="line">        <span class="keyword">self</span>.viewSize = viewSize;</div><div class="line">        _videoPath = videoPath;</div><div class="line">        <span class="keyword">self</span>.fps = fps;</div><div class="line">        [<span class="keyword">self</span> setUpWriter];</div><div class="line">        _isExporting = (_videoWriter.status == <span class="built_in">AVAssetWriterStatusWriting</span>);</div><div class="line">        _displayLink = [<span class="built_in">CADisplayLink</span> displayLinkWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(writeVideoFrame)];</div><div class="line">        [_displayLink addToRunLoop:[<span class="built_in">NSRunLoop</span> mainRunLoop] forMode:<span class="built_in">NSRunLoopCommonModes</span>];</div><div class="line">        <span class="keyword">self</span>.beginTime = [<span class="built_in">NSDate</span> date].timeIntervalSince1970;</div><div class="line"></div><div class="line">        dispatch_semaphore_signal(_pixelAppendSemaphore);</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _isExporting;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>绘制完成或者取消后，必须对一些用到的对象进行清理，避免内存泄露。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)completeExportingSession</div><div class="line">&#123;</div><div class="line">    @weakify(<span class="keyword">self</span>)</div><div class="line">    <span class="built_in">dispatch_async</span>(_append_pixelBuffer_queue, ^&#123;</div><div class="line">        @strongify(<span class="keyword">self</span>)</div><div class="line">        [_videoWriterInput markAsFinished];</div><div class="line">        [_videoWriter finishWritingWithCompletionHandler:^&#123;</div><div class="line">            <span class="keyword">void</span> (^completion)(<span class="built_in">NSError</span>* error) = ^(<span class="built_in">NSError</span>* error) &#123;</div><div class="line">                [<span class="keyword">self</span> cleanup];</div><div class="line">                <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">                    <span class="keyword">if</span> (<span class="keyword">self</span>.delegate &amp;&amp; [<span class="keyword">self</span>.delegate respondsToSelector:<span class="keyword">@selector</span>(exporterVideoCompleted:videoPath:error:)]) &#123;</div><div class="line">                        [<span class="keyword">self</span>.delegate exporterVideoCompleted:<span class="keyword">self</span> videoPath:<span class="keyword">self</span>.videoPath error:error];</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;;</div><div class="line">            </div><div class="line">            <span class="keyword">if</span> (<span class="keyword">self</span>.videoPath) &#123; <span class="comment">//如果有设定目标路径，则移动到目标路径</span></div><div class="line">                <span class="built_in">NSFileManager</span>* fileManager = [<span class="built_in">NSFileManager</span> defaultManager];</div><div class="line">                <span class="built_in">NSError</span> *error;</div><div class="line">                <span class="keyword">if</span> ([fileManager fileExistsAtPath:<span class="keyword">self</span>.videoPath isDirectory:<span class="literal">nil</span>]) &#123;</div><div class="line">                    [fileManager removeItemAtPath:<span class="keyword">self</span>.videoPath error:&amp;error];</div><div class="line">                &#125;</div><div class="line">                [fileManager moveItemAtPath:<span class="keyword">self</span>.tmpFilePath toPath:<span class="keyword">self</span>.videoPath error:&amp;error];</div><div class="line">                completion(error);</div><div class="line"></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];</div><div class="line">                [library writeVideoAtPathToSavedPhotosAlbum:_videoWriter.outputURL completionBlock:^(<span class="built_in">NSURL</span> *assetURL, <span class="built_in">NSError</span> *error) &#123;</div><div class="line">                    <span class="keyword">if</span> (error) &#123;</div><div class="line">                        <span class="built_in">NSLog</span>(<span class="string">@"Error copying video to camera roll:%@"</span>, [error localizedDescription]);</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        [<span class="keyword">self</span> removeTempFilePath:_videoWriter.outputURL.path];</div><div class="line">                    &#125;</div><div class="line">                    completion(error);</div><div class="line">                &#125;];</div><div class="line">            &#125;</div><div class="line">        &#125;];</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)cancelExportingSession &#123;</div><div class="line">    @weakify(<span class="keyword">self</span>)</div><div class="line">    <span class="built_in">dispatch_async</span>(_append_pixelBuffer_queue, ^&#123;</div><div class="line">        @strongify(<span class="keyword">self</span>)</div><div class="line">        [_videoWriterInput markAsFinished];</div><div class="line">        [_videoWriter finishWritingWithCompletionHandler:^&#123;</div><div class="line">            <span class="keyword">void</span> (^completion)(<span class="keyword">void</span>) = ^() &#123;</div><div class="line">                [<span class="keyword">self</span> cleanup];</div><div class="line">                <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">                    <span class="keyword">if</span> (<span class="keyword">self</span>.delegate &amp;&amp; [<span class="keyword">self</span>.delegate respondsToSelector:<span class="keyword">@selector</span>(exporterVideoCompleted:videoPath:error:)]) &#123;</div><div class="line">                        [<span class="keyword">self</span>.delegate exporterVideoCompleted:<span class="keyword">self</span> videoPath:<span class="literal">nil</span> error:<span class="literal">nil</span>];</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;;</div><div class="line">            </div><div class="line">            [<span class="keyword">self</span> removeTempFilePath:_videoWriter.outputURL.path];</div><div class="line">            completion();</div><div class="line">        &#125;];</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)cleanup</div><div class="line">&#123;</div><div class="line">    <span class="keyword">self</span>.avAdaptor = <span class="literal">nil</span>;</div><div class="line">    <span class="keyword">self</span>.videoWriterInput = <span class="literal">nil</span>;</div><div class="line">    <span class="keyword">self</span>.videoWriter = <span class="literal">nil</span>;</div><div class="line">    <span class="keyword">self</span>.outputBufferPoolAuxAttributes = <span class="literal">nil</span>;</div><div class="line">    <span class="built_in">CGColorSpaceRelease</span>(_rgbColorSpace);</div><div class="line">    CVPixelBufferPoolRelease(_outputBufferPool);</div><div class="line">    </div><div class="line">    <span class="keyword">self</span>.currentTime = <span class="number">0</span>;</div><div class="line">    <span class="keyword">self</span>.totalTime = <span class="number">0</span>;</div><div class="line">    <span class="keyword">self</span>.isExporting = <span class="literal">NO</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/08/12/UIDocument简介/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/12/UIDocument简介/" itemprop="url">
+                  UIDocument简介
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-12T22:16:29+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发技术杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/08/12/UIDocument简介/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/12/UIDocument简介/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/08/12/UIDocument简介/" class="leancloud_visitors" data-flag-title="UIDocument简介">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>UIDocument是iOS的一个负责文件读取和存储的类，对于文档类的应用，使用这个类可以省去存储和读取时候线程的一些麻烦事情。尤其是和NSUndoManager配合之后，可以做到自动存储，很方便。</p>
+<p>UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取和怎么存储，都是需要你自己去定义的。所以，一般使用UIDocument的做法就是继承它，然后实现它存储和读取相关的方法。<br>首先你需要创建它，这个url指定的可以是一个文件或文件夹</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">instancetype</span>)initWithFileURL:(<span class="built_in">NSURL</span> *)url;</div></pre></td></tr></table></figure>
+<p>基本的读写操作涉及到的方法有四个：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)openWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">BOOL</span> success))completionHandler __TVOS_PROHIBITED;</div><div class="line">- (<span class="keyword">void</span>)closeWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">BOOL</span> success))completionHandler __TVOS_PROHIBITED;</div><div class="line">- (<span class="built_in">BOOL</span>)loadFromContents:(<span class="keyword">id</span>)contents ofType:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)typeName error:(<span class="built_in">NSError</span> **)outError __TVOS_PROHIBITED;</div><div class="line">- (<span class="keyword">nullable</span> <span class="keyword">id</span>)contentsForType:(<span class="built_in">NSString</span> *)typeName error:(<span class="built_in">NSError</span> **)outError __TVOS_PROHIBITED;</div></pre></td></tr></table></figure>
+<p>前面两个方法就是打开url对应的文件，和关闭打开的文件。<br>当调用文件打开方法后，它就会调用<code>loadFromContents: ofType: error:</code>方法，这个方法默认会读取url对应的文件，然后放到contents里面，这里面你需要自定义怎么去解析这个contents。<br>如果你url对应的是文件夹，那么contents里面是NSFileWrapper对象，用<code>wrapper.fileWrappers</code>得到一个字典，字典的key是文件或文件夹的名字，value仍然是个NSFileWrapper对象。如果NSFileWrapper对应的是一个文件，你可以使用<code>wrap.regularFileContents</code>得到这个文件的data。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSFileWrapper</span> *wrapper = (<span class="built_in">NSFileWrapper</span>*)contents;</div><div class="line"><span class="built_in">NSDictionary</span> *fileWrappers = wrapper.fileWrappers;</div><div class="line"><span class="built_in">NSFileWrapper</span> *imgWrap = [fileWrappers objectForKey:<span class="string">@"imageFileName"</span>];</div><div class="line">page.image = [<span class="built_in">UIImage</span> imageWithData:imgWrap.regularFileContents];</div></pre></td></tr></table></figure>
+<p>当系统需要存储的时候，它会调用<code>contentsForType:error:</code>方法，你需要在这个方法里面封装好你需要保存的数据，改数据会写到创建时候的url下面，如果你url是个文件夹，那么你用NSFileWrapper去封装你的保存的数据，如下</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSFileWrapper</span> *wrapper =[[<span class="built_in">NSFileWrapper</span> alloc]initDirectoryWithFileWrappers:@&#123;&#125;];</div><div class="line"><span class="built_in">NSData</span> *imgData = [<span class="keyword">self</span> getImageData:page.image];</div><div class="line">        <span class="built_in">NSFileWrapper</span> *imgWrap = [[<span class="built_in">NSFileWrapper</span> alloc]initRegularFileWithContents:imgData];</div><div class="line">        [imgWrap setPreferredFilename:page.imageFileName];</div><div class="line">        [wrapper addFileWrapper:imgWrap];</div></pre></td></tr></table></figure>
+<p>那么系统怎么知道什么时候需要存储呢？一个是使用下面的方法。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)updateChangeCount:(<span class="built_in">UIDocumentChangeKind</span>)change</div></pre></td></tr></table></figure>
+<p>另外一个是使用undoManager，如果你设置了document的undoManager，那么对undoManager进行了缓存操作后，它就会自动通知document有了改变。这个操作会影响</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)hasUnsavedChanges;</div></pre></td></tr></table></figure>
+<p>之后系统会自动调用<code>autosaveWithCompletionHandler:</code>，这个方法最终会调用到<code>contentsForType:error:</code>，然后进行文件写入。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)autosaveWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">BOOL</span> success))completionHandler;</div></pre></td></tr></table></figure>
+<p>注意是这个方法文档说不建议子类去调用，除非你想自定义自动存储的一些行为，如果你需要自己调用，请在主线程调用，否则不会进行操作。</p>
+<blockquote>
+<p>在实际的使用过程中遇到几个坑：</p>
+<p>1、如果使用home键后，再点击程序回到程序界面，那么会再次触发加载数据的流程。这里可能会导致一些业务问题。</p>
+<p>2、在某些iPhone6或iPhoneSE上面偶现调用了<code>contentsForType:error:</code>方法后出现卡死的现象。需要重新启动手机才能恢复正常。后面自己按照UIDocument的这套流程写了一个Saver类，实现了基本的读写功能，起码能保证业务逻辑的正常。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/14/Swift4学习笔记5——流程控制语句/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -404,7 +1370,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/14/学Swift4之4——集合类型/">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/14/学Swift4/学Swift4之4——集合类型/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Ekulelu">
@@ -429,7 +1395,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/06/14/学Swift4之4——集合类型/" itemprop="url">
+                <a class="post-title-link" href="/2017/06/14/学Swift4/学Swift4之4——集合类型/" itemprop="url">
                   学Swift4之4——集合类型
                 </a>
               
@@ -478,8 +1444,8 @@
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
-                <a href="/2017/06/14/学Swift4之4——集合类型/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/14/学Swift4之4——集合类型/" itemprop="commentCount"></span>
+                <a href="/2017/06/14/学Swift4/学Swift4之4——集合类型/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/14/学Swift4/学Swift4之4——集合类型/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -489,7 +1455,7 @@
 
           
           
-             <span id="/2017/06/14/学Swift4之4——集合类型/" class="leancloud_visitors" data-flag-title="学Swift4之4——集合类型">
+             <span id="/2017/06/14/学Swift4/学Swift4之4——集合类型/" class="leancloud_visitors" data-flag-title="学Swift4之4——集合类型">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -519,7 +1485,7 @@
 <h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><p>创建array的四种方法<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> array1 = [<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>] <span class="comment">//包含 a b c 三个字符串</span></div><div class="line"><span class="keyword">var</span> array2 = <span class="type">Array</span>&lt;<span class="type">Int</span>&gt;()  <span class="comment">//空array，这里一定要指明元素类型</span></div><div class="line"><span class="keyword">var</span> array3 = [<span class="type">String</span>]()  <span class="comment">//空array</span></div><div class="line"><span class="keyword">var</span> array4 = <span class="type">Array</span>(repeating:<span class="number">2.4</span>, <span class="built_in">count</span>:<span class="number">3</span>) <span class="comment">//包含3个double变量，值都为1.3</span></div><div class="line"><span class="keyword">var</span> array5 = [<span class="type">Double</span>](repeating:<span class="number">2.4</span>, <span class="built_in">count</span>:<span class="number">3</span>) <span class="comment">//包含3个double变量，值都为1.3</span></div></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/14/学Swift4之4——集合类型/#more" rel="contents">
+            <a class="btn" href="/2017/06/14/学Swift4/学Swift4之4——集合类型/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -560,7 +1526,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/13/学Swift4之3——String和Characters/">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/13/学Swift4/学Swift4之3——String和Characters/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Ekulelu">
@@ -585,7 +1551,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/06/13/学Swift4之3——String和Characters/" itemprop="url">
+                <a class="post-title-link" href="/2017/06/13/学Swift4/学Swift4之3——String和Characters/" itemprop="url">
                   学Swift4之3——String和Characters
                 </a>
               
@@ -634,8 +1600,8 @@
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
-                <a href="/2017/06/13/学Swift4之3——String和Characters/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/13/学Swift4之3——String和Characters/" itemprop="commentCount"></span>
+                <a href="/2017/06/13/学Swift4/学Swift4之3——String和Characters/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/13/学Swift4/学Swift4之3——String和Characters/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -645,7 +1611,7 @@
 
           
           
-             <span id="/2017/06/13/学Swift4之3——String和Characters/" class="leancloud_visitors" data-flag-title="学Swift4之3——String和Characters">
+             <span id="/2017/06/13/学Swift4/学Swift4之3——String和Characters/" class="leancloud_visitors" data-flag-title="学Swift4之3——String和Characters">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -674,7 +1640,7 @@
           <p>为啥String和Character要单独拿出来讲呢？因为和C区别蛮大的，而且经常用到。感觉Swift的String还是没有Java的String好用。比如截串就是个麻烦的事情。以后String可能还会更新，让String变得更加好用。<br>需要注意的是，Swift中的String是值传递。附上String 的定义就明白了。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">String</span> </span>&#123;</div><div class="line">    <span class="comment">/// An empty `String`.</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">init</span>()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/13/学Swift4之3——String和Characters/#more" rel="contents">
+            <a class="btn" href="/2017/06/13/学Swift4/学Swift4之3——String和Characters/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -715,7 +1681,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/13/学Swift4之2——基本类型和基本运算/">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/13/学Swift4/学Swift4之2——基本类型和基本运算/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Ekulelu">
@@ -740,7 +1706,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/06/13/学Swift4之2——基本类型和基本运算/" itemprop="url">
+                <a class="post-title-link" href="/2017/06/13/学Swift4/学Swift4之2——基本类型和基本运算/" itemprop="url">
                   学Swift4之2——基本类型和基本运算
                 </a>
               
@@ -789,8 +1755,8 @@
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
-                <a href="/2017/06/13/学Swift4之2——基本类型和基本运算/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/13/学Swift4之2——基本类型和基本运算/" itemprop="commentCount"></span>
+                <a href="/2017/06/13/学Swift4/学Swift4之2——基本类型和基本运算/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/13/学Swift4/学Swift4之2——基本类型和基本运算/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -800,7 +1766,7 @@
 
           
           
-             <span id="/2017/06/13/学Swift4之2——基本类型和基本运算/" class="leancloud_visitors" data-flag-title="学Swift4之2——基本类型和基本运算">
+             <span id="/2017/06/13/学Swift4/学Swift4之2——基本类型和基本运算/" class="leancloud_visitors" data-flag-title="学Swift4之2——基本类型和基本运算">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -830,952 +1796,7 @@
 <p>数字类型<br>这里记录一下每个类型的大小。<br>Int 在32位机器上是Int32 ，在64位机器上是Int64. 除了Int之外，还有Int，Int8，Int16，Int32，Int64.<br>UInt在32位机器上是UInt32 ，在64位机器上是UInt64.   除了UInt之外，还有UInt8，UInt16，UInt32，UInt64.<br>Double  64位浮点数<br>Float  32位浮点数<br>
           <!--noindex-->
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/13/学Swift4之2——基本类型和基本运算/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/06/13/学Swift4之1——初见/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Ekulelu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Ekulelu's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/13/学Swift4之1——初见/" itemprop="url">
-                  学Swift4之1——初见
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-13T19:55:00+08:00">
-                2017-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习Swift4-Learn-Swift4/" itemprop="url" rel="index">
-                    <span itemprop="name">学习Swift4(Learn Swift4)</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2017/06/13/学Swift4之1——初见/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/13/学Swift4之1——初见/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/06/13/学Swift4之1——初见/" class="leancloud_visitors" data-flag-title="学Swift4之1——初见">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">Visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>注：个人的swift2学习笔记，根据Swift4的更新做了更新。</p>
-<p>由于知识水平有限，如果有错误，欢迎指出。谢谢！本笔记是在有一定的编程语言基础之上写的。基础为0的朋友可能看得会有点吃力。建议可以看看C语言或OC的基础教程再来看本笔记。</p>
-<p>写在前面，swift有一个playground类型的项目，写代码后直接就能看到结果，还是挺好玩的。</p>
-<p>Swift和其他高级语言不同，它有变量类型的自动识别。在C语言中，我们声明一个整形变量是用<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int a = <span class="number">1</span>;</div></pre></td></tr></table></figure></p>
-<p>这个变量是可以改变的，如果不能改变，那么在前面加上const，这个大家都熟悉。可以理解为先有了类型，接下来才是否可以变。<br>但是在swift中，它首先区别的是变量还是常量。<br>
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/13/学Swift4之1——初见/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/02/24/OpenCV 3.2.0 in MacOS/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Ekulelu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Ekulelu's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/02/24/OpenCV 3.2.0 in MacOS/" itemprop="url">
-                  OpenCV 3.2.0 in MacOS
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-24T22:04:00+08:00">
-                2017-02-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS开发技术杂谈</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2017/02/24/OpenCV 3.2.0 in MacOS/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/24/OpenCV 3.2.0 in MacOS/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/02/24/OpenCV 3.2.0 in MacOS/" class="leancloud_visitors" data-flag-title="OpenCV 3.2.0 in MacOS">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">Visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>这里面的OpenCV是给mac系统用的，如果是用在iOS，那么直接在官网下载iOS的framework就行了。</p>
-<p>本来昨晚下班早早的，想想配置一下OpenCV来玩玩，谁知道搞了3个小时都没搞定！github不翻墙连不上去，翻墙软件全局模式挂了。按着网上的方法来安装OpenCV3.2，试了几次都是在下载一个ippcvxxx文件上面出错，连不上github。随后重要在网上找到了下载链接，把下载包仍了进去，但是仍然报错。后面开窍去试了下3.1版本，cmake的generate过了。洗澡回来make，这次仍然报错，说找不到QTKit头文件。百度下来一看，都是说Seirra把某个库文件给改了，尝试了一种把QTKit文件扔进去的办法，根本不行。我想翻桌子！睡觉。。。。</p>
-<p>下面记录一下这个过程里面用到的东西和坑。<br>
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/02/24/OpenCV 3.2.0 in MacOS/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2016/12/25/talkAboutLazyLoad/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Ekulelu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Ekulelu's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/25/talkAboutLazyLoad/" itemprop="url">
-                  懒加载的坑
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-25T15:55:00+08:00">
-                2016-12-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS开发技术杂谈</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/12/25/talkAboutLazyLoad/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/25/talkAboutLazyLoad/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/12/25/talkAboutLazyLoad/" class="leancloud_visitors" data-flag-title="懒加载的坑">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">Visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>这次我们来讲讲懒加载。懒加载的意思就是将成员变量的创建放到getter方法里面。使用到这个成员变量的时候再进行创建。这样可以节省内存空间。这里有个主意点：以后使用懒加载的成员变量的时候，请用getter方法，而不是 <em>+成员变量名字 。因为 </em>+成员变量名字 这种写法并不会调用getter方法，所以可能会拿到空的成员变量。 Getter和Setter方法的写法这里就不讲了。这里讲的是各种不经意的写法混合到一起产生的怪异bug。<br>
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/25/talkAboutLazyLoad/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2016/12/11/Hexo_github_blog/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Ekulelu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Ekulelu's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/11/Hexo_github_blog/" itemprop="url">
-                  使用Hexo搭建blog并在github上部署
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-11T19:45:00+08:00">
-                2016-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/经验笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">经验笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/12/11/Hexo_github_blog/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/11/Hexo_github_blog/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/12/11/Hexo_github_blog/" class="leancloud_visitors" data-flag-title="使用Hexo搭建blog并在github上部署">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">Visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>前两周学着用Hexo搭建博客，且在github上部署。这里把里面的过程记录一下。</p>
-<blockquote>
-<p>使用的系统是Mac，但是windows也是基本一致。</p>
-</blockquote>
-<h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p><a href="https://nodejs.org/en/download/">下载地址</a></p>
-<p>安装完成后，进入终端，使用下面命令可以查询到安装的版本号，验证一下有没安装成功。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ node -v</div><div class="line">$ npm -v</div></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/11/Hexo_github_blog/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2016/12/11/ReactiveCocoa入门教程二/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Ekulelu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Ekulelu's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/11/ReactiveCocoa入门教程二/" itemprop="url">
-                  ReactiveCocoa入门教程二
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-11T13:45:00+08:00">
-                2016-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ReactiveCocoa/" itemprop="url" rel="index">
-                    <span itemprop="name">ReactiveCocoa</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/12/11/ReactiveCocoa入门教程二/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/11/ReactiveCocoa入门教程二/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/12/11/ReactiveCocoa入门教程二/" class="leancloud_visitors" data-flag-title="ReactiveCocoa入门教程二">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">Visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇文章我们使用ReactiveCocoa搭建了一个简单的登录页面，这一次我们来搭建注册页面。</p>
-<blockquote>
-<p>本篇代码在<a href="https://github.com/Ekulelu/ReactiveCocoaRegister">https://github.com/Ekulelu/ReactiveCocoaRegister</a></p>
-</blockquote>
-<p>Account和password的有效规制还是和之前一样，长度必须大于5，否则输入框背景色是红色的，这一步直接用之前的代码就可以了。<br>注册按钮的响应和登录的响应应该是一样的逻辑，对于之前的伪代码来讲，也几乎没什么改动。<br>但是注册和登录最起码有个不同的东西，就是注册的用户名可能已经被占用，我们想用户在输入完了用户名之后，从后台对用户名是否可用进行判断，如果可用，才允许用户点击“注册”按钮。<br>
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/11/ReactiveCocoa入门教程二/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2016/12/11/ReactiveCocoa入门教程一/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Ekulelu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Ekulelu's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/11/ReactiveCocoa入门教程一/" itemprop="url">
-                  ReactiveCocoa入门教程一
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-11T13:15:00+08:00">
-                2016-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ReactiveCocoa/" itemprop="url" rel="index">
-                    <span itemprop="name">ReactiveCocoa</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/12/11/ReactiveCocoa入门教程一/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/11/ReactiveCocoa入门教程一/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/12/11/ReactiveCocoa入门教程一/" class="leancloud_visitors" data-flag-title="ReactiveCocoa入门教程一">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">Visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>ReactiveCocoa框架是Github开源的一个应用于iOS和MacOS开发的新框架，使用它能大幅度改变在“苹果体系”里面的编程习惯。所以如果是有一些iOS编程经验的人来看这个框架的使用方法可能倒会觉得不习惯。这里不想从比较两种编程的区别来引入ReactiveCocoa，因为这样会让人觉得更混乱。希望读者能把iOS的编程套路忘记后来看这篇文章，以免造成不习惯或混乱，毕竟ReactiveCocoa的编程习惯更加接近我们所追求的编程套路。<br>
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/11/ReactiveCocoa入门教程一/#more" rel="contents">
+            <a class="btn" href="/2017/06/13/学Swift4/学Swift4之2——基本类型和基本运算/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1811,7 +1832,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1852,7 +1873,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">26</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

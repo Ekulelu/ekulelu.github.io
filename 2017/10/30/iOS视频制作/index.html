@@ -1,0 +1,777 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="#这里说的视频制作并不是从摄像头录制视频，而是如何将一帧一帧的图片合成一个视频文件。这里我们所使用到的类是AVAssetWriter，它的使用方式比较固定，且代码也比较多。首先是设定好AVAssetWriter
+123456789101112131415161718192021222324252627282930313233343536373839404142434445-(void)setUpW">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS视频制作">
+<meta property="og:url" content="https://ekulelu.github.io/2017/10/30/iOS视频制作/index.html">
+<meta property="og:site_name" content="Ekulelu's Blog">
+<meta property="og:description" content="#这里说的视频制作并不是从摄像头录制视频，而是如何将一帧一帧的图片合成一个视频文件。这里我们所使用到的类是AVAssetWriter，它的使用方式比较固定，且代码也比较多。首先是设定好AVAssetWriter
+123456789101112131415161718192021222324252627282930313233343536373839404142434445-(void)setUpW">
+<meta property="og:updated_time" content="2018-03-03T15:21:10.788Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS视频制作">
+<meta name="twitter:description" content="#这里说的视频制作并不是从摄像头录制视频，而是如何将一帧一帧的图片合成一个视频文件。这里我们所使用到的类是AVAssetWriter，它的使用方式比较固定，且代码也比较多。首先是设定好AVAssetWriter
+123456789101112131415161718192021222324252627282930313233343536373839404142434445-(void)setUpW">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ekulelu.github.io/2017/10/30/iOS视频制作/"/>
+
+
+
+
+
+  <title> iOS视频制作 | Ekulelu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f31c6baa24838cd36f68f42d6187a455";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ekulelu's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/iOS视频制作/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS视频制作
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发技术杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/10/30/iOS视频制作/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/iOS视频制作/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/30/iOS视频制作/" class="leancloud_visitors" data-flag-title="iOS视频制作">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#<br>这里说的视频制作并不是从摄像头录制视频，而是如何将一帧一帧的图片合成一个视频文件。这里我们所使用到的类是AVAssetWriter，它的使用方式比较固定，且代码也比较多。<br>首先是设定好AVAssetWriter</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)setUpWriter</div><div class="line">&#123;</div><div class="line">    _rgbColorSpace = <span class="built_in">CGColorSpaceCreateDeviceRGB</span>();</div><div class="line">    </div><div class="line">    <span class="built_in">NSDictionary</span> *bufferAttributes = @&#123;(<span class="keyword">id</span>)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),</div><div class="line">                                       (<span class="keyword">id</span>)kCVPixelBufferCGBitmapContextCompatibilityKey : @YES,</div><div class="line">                                       (<span class="keyword">id</span>)kCVPixelBufferWidthKey : @(_viewSize.width),</div><div class="line">                                       (<span class="keyword">id</span>)kCVPixelBufferHeightKey : @(_viewSize.height),</div><div class="line">                                       (<span class="keyword">id</span>)kCVPixelBufferBytesPerRowAlignmentKey : @(_viewSize.width * <span class="number">4</span>)</div><div class="line">                                       &#125;;</div><div class="line">    </div><div class="line">    _outputBufferPool = <span class="literal">NULL</span>;</div><div class="line">    CVPixelBufferPoolCreate(<span class="literal">NULL</span>, <span class="literal">NULL</span>, (__bridge <span class="built_in">CFDictionaryRef</span>)(bufferAttributes), &amp;_outputBufferPool);</div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="built_in">NSError</span>* error = <span class="literal">nil</span>;</div><div class="line"></div><div class="line">    _videoWriter = [[<span class="built_in">AVAssetWriter</span> alloc] initWithURL: [<span class="keyword">self</span> tempFileURL]</div><div class="line">                                             fileType:<span class="built_in">AVFileTypeQuickTimeMovie</span></div><div class="line">                                                error:&amp;error];</div><div class="line">    <span class="built_in">NSParameterAssert</span>(_videoWriter);</div><div class="line">    </div><div class="line">    <span class="built_in">NSInteger</span> pixelNumber = _viewSize.width * _viewSize.height;</div><div class="line">    <span class="built_in">NSDictionary</span>* videoCompression = @&#123;<span class="built_in">AVVideoAverageBitRateKey</span>: @(pixelNumber * <span class="number">1</span>),</div><div class="line">                                       </div><div class="line">                                       &#125;;</div><div class="line">    </div><div class="line">    <span class="built_in">NSDictionary</span>* videoSettings = @&#123;<span class="built_in">AVVideoCodecKey</span>: <span class="built_in">AVVideoCodecH264</span>,</div><div class="line">                                    <span class="built_in">AVVideoWidthKey</span>: [<span class="built_in">NSNumber</span> numberWithInt:_viewSize.width],</div><div class="line">                                    <span class="built_in">AVVideoHeightKey</span>: [<span class="built_in">NSNumber</span> numberWithInt:_viewSize.height],</div><div class="line">                                    <span class="built_in">AVVideoCompressionPropertiesKey</span>: videoCompression&#125;;</div><div class="line">    </div><div class="line">    _videoWriterInput = [<span class="built_in">AVAssetWriterInput</span> assetWriterInputWithMediaType:<span class="built_in">AVMediaTypeVideo</span> outputSettings:videoSettings];</div><div class="line">    <span class="built_in">NSParameterAssert</span>(_videoWriterInput);</div><div class="line">    </div><div class="line">    _videoWriterInput.expectsMediaDataInRealTime = <span class="literal">YES</span>;</div><div class="line">    _videoWriterInput.transform = <span class="built_in">CGAffineTransformIdentity</span>;</div><div class="line">    </div><div class="line">    _avAdaptor = [<span class="built_in">AVAssetWriterInputPixelBufferAdaptor</span> assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_videoWriterInput sourcePixelBufferAttributes:<span class="literal">nil</span>];</div><div class="line">    </div><div class="line">    [_videoWriter addInput:_videoWriterInput];</div><div class="line">    </div><div class="line">    [_videoWriter startWriting];</div><div class="line">    [_videoWriter startSessionAtSourceTime:<span class="built_in">CMTimeMake</span>(<span class="number">0</span>, <span class="number">1000</span>)];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>配置好AVAssetWriter后，就可以往它写入每一帧的图像数据了。写入的方法如下。代码里面使用了代理模式，将每一帧的context传递给了代理，由代理去完成绘制后，把这个context写入到视频。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)writeVideoFrame</div><div class="line">&#123;   </div><div class="line">    <span class="keyword">if</span> (dispatch_semaphore_wait(_pixelAppendSemaphore, DISPATCH_TIME_NOW) != <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">dispatch_async</span>(_append_pixelBuffer_queue, ^&#123;</div><div class="line">        </div><div class="line">        <span class="keyword">if</span> (![_videoWriterInput isReadyForMoreMediaData]) <span class="keyword">return</span>;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.currentTime &gt; <span class="keyword">self</span>.totalTime &amp;&amp; <span class="keyword">self</span>.isExporting) &#123;</div><div class="line">            [<span class="keyword">self</span> stopExporting];</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        DLog(<span class="string">@"time %f %f"</span>, <span class="keyword">self</span>.currentTime, <span class="keyword">self</span>.currentTime - <span class="keyword">self</span>.totalTime);</div><div class="line">        </div><div class="line">        <span class="built_in">CMTime</span> time = <span class="built_in">CMTimeMakeWithSeconds</span>(<span class="keyword">self</span>.currentTime, <span class="number">1000</span>);</div><div class="line">        </div><div class="line">        CVPixelBufferRef pixelBuffer = <span class="literal">NULL</span>;</div><div class="line">        <span class="built_in">CGContextRef</span> bitmapContext = [<span class="keyword">self</span> createPixelBufferAndBitmapContext:&amp;pixelBuffer];</div><div class="line">        </div><div class="line">        RYExporterNextOperation nextOpr = RYExporterNextOperationContinue;</div><div class="line">        <span class="comment">//通过代理去绘制图像</span></div><div class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.delegate) &#123;</div><div class="line">            <span class="keyword">if</span> ([<span class="keyword">self</span>.delegate respondsToSelector:<span class="keyword">@selector</span>(exporter:getFrameInContext:time:totalTime:nextOperation:)] == <span class="literal">YES</span>) &#123;</div><div class="line">                [<span class="keyword">self</span>.delegate exporter:<span class="keyword">self</span> getFrameInContext:bitmapContext time:<span class="keyword">self</span>.currentTime totalTime:<span class="keyword">self</span>.totalTime nextOperation:&amp;nextOpr];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="built_in">BOOL</span> success = [_avAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:time];</div><div class="line">        <span class="keyword">if</span> (!success) &#123;</div><div class="line">            DLog(<span class="string">@"Warning: Unable to write buffer to video"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">CGContextRelease</span>(bitmapContext);</div><div class="line">        CVPixelBufferUnlockBaseAddress(pixelBuffer, <span class="number">0</span>);</div><div class="line">        CVPixelBufferRelease(pixelBuffer);</div><div class="line">        </div><div class="line">        dispatch_semaphore_signal(_pixelAppendSemaphore);</div><div class="line"></div><div class="line">        </div><div class="line">        <span class="keyword">if</span> (nextOpr == RYExporterNextOperationCancel) &#123;</div><div class="line">            [<span class="keyword">self</span> cancelExporting];</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nextOpr == RYExporterNextOperationEnd) &#123;</div><div class="line">            [<span class="keyword">self</span> stopExporting];</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">self</span>.currentTime += <span class="number">1</span>/<span class="keyword">self</span>.fps;</div><div class="line">        </div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="built_in">CGContextRef</span>)createPixelBufferAndBitmapContext:(CVPixelBufferRef *)pixelBuffer</div><div class="line">&#123;</div><div class="line">    CVPixelBufferPoolCreatePixelBuffer(<span class="literal">NULL</span>, _outputBufferPool, pixelBuffer);</div><div class="line">    CVPixelBufferLockBaseAddress(*pixelBuffer, <span class="number">0</span>);</div><div class="line">    </div><div class="line">    <span class="built_in">CGContextRef</span> bitmapContext = <span class="literal">NULL</span>;</div><div class="line">    bitmapContext = <span class="built_in">CGBitmapContextCreate</span>(CVPixelBufferGetBaseAddress(*pixelBuffer),</div><div class="line">                                          CVPixelBufferGetWidth(*pixelBuffer),</div><div class="line">                                          CVPixelBufferGetHeight(*pixelBuffer),</div><div class="line">                                          <span class="number">8</span>, CVPixelBufferGetBytesPerRow(*pixelBuffer), _rgbColorSpace,</div><div class="line">                                          kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst</div><div class="line">                                          );</div><div class="line">    <span class="built_in">CGContextScaleCTM</span>(bitmapContext, _scale, _scale);</div><div class="line">    <span class="built_in">CGAffineTransform</span> flipVertical = <span class="built_in">CGAffineTransformMake</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">-1</span>, <span class="number">0</span>, _viewSize.height);</div><div class="line">    <span class="built_in">CGContextConcatCTM</span>(bitmapContext, flipVertical);</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> bitmapContext;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>留意到上面的代码是运行在一个串行队列中，但是这个串行队列是运行在全局队列中，配置如下，写在了init方法里面。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">_append_pixelBuffer_queue = dispatch_queue_create(<span class="string">"RYExporter.append_queue"</span>, DISPATCH_QUEUE_SERIAL);</div><div class="line">dispatch_set_target_queue(_append_pixelBuffer_queue, dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, <span class="number">0</span>));</div><div class="line">_pixelAppendSemaphore = dispatch_semaphore_create(<span class="number">0</span>); <span class="comment">//初始化一个信号量</span></div></pre></td></tr></table></figure>
+<p>为了能自动调用writeVideoFrame方法，使用了一个DisplayLink，在开始导出视频的时候，初始化这个DisplayLink并将它加入到runloop。使用DisplayLink的好处是能获得和屏幕刷新率一样的频率。在录屏的时候也可以使用这个视频导出类。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)startExportingWithTotalTime:(<span class="built_in">CGFloat</span>)totalTime viewSize:(<span class="built_in">CGSize</span>)viewSize videoPath:(<span class="built_in">NSString</span>*)videoPath fps:(<span class="built_in">NSInteger</span>)fps</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (!_isExporting) &#123;</div><div class="line">        <span class="keyword">self</span>.totalTime = totalTime;</div><div class="line">        <span class="keyword">self</span>.viewSize = viewSize;</div><div class="line">        _videoPath = videoPath;</div><div class="line">        <span class="keyword">self</span>.fps = fps;</div><div class="line">        [<span class="keyword">self</span> setUpWriter];</div><div class="line">        _isExporting = (_videoWriter.status == <span class="built_in">AVAssetWriterStatusWriting</span>);</div><div class="line">        _displayLink = [<span class="built_in">CADisplayLink</span> displayLinkWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(writeVideoFrame)];</div><div class="line">        [_displayLink addToRunLoop:[<span class="built_in">NSRunLoop</span> mainRunLoop] forMode:<span class="built_in">NSRunLoopCommonModes</span>];</div><div class="line">        <span class="keyword">self</span>.beginTime = [<span class="built_in">NSDate</span> date].timeIntervalSince1970;</div><div class="line"></div><div class="line">        dispatch_semaphore_signal(_pixelAppendSemaphore);</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _isExporting;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>绘制完成或者取消后，必须对一些用到的对象进行清理，避免内存泄露。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)completeExportingSession</div><div class="line">&#123;</div><div class="line">    @weakify(<span class="keyword">self</span>)</div><div class="line">    <span class="built_in">dispatch_async</span>(_append_pixelBuffer_queue, ^&#123;</div><div class="line">        @strongify(<span class="keyword">self</span>)</div><div class="line">        [_videoWriterInput markAsFinished];</div><div class="line">        [_videoWriter finishWritingWithCompletionHandler:^&#123;</div><div class="line">            <span class="keyword">void</span> (^completion)(<span class="built_in">NSError</span>* error) = ^(<span class="built_in">NSError</span>* error) &#123;</div><div class="line">                [<span class="keyword">self</span> cleanup];</div><div class="line">                <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">                    <span class="keyword">if</span> (<span class="keyword">self</span>.delegate &amp;&amp; [<span class="keyword">self</span>.delegate respondsToSelector:<span class="keyword">@selector</span>(exporterVideoCompleted:videoPath:error:)]) &#123;</div><div class="line">                        [<span class="keyword">self</span>.delegate exporterVideoCompleted:<span class="keyword">self</span> videoPath:<span class="keyword">self</span>.videoPath error:error];</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;;</div><div class="line">            </div><div class="line">            <span class="keyword">if</span> (<span class="keyword">self</span>.videoPath) &#123; <span class="comment">//如果有设定目标路径，则移动到目标路径</span></div><div class="line">                <span class="built_in">NSFileManager</span>* fileManager = [<span class="built_in">NSFileManager</span> defaultManager];</div><div class="line">                <span class="built_in">NSError</span> *error;</div><div class="line">                <span class="keyword">if</span> ([fileManager fileExistsAtPath:<span class="keyword">self</span>.videoPath isDirectory:<span class="literal">nil</span>]) &#123;</div><div class="line">                    [fileManager removeItemAtPath:<span class="keyword">self</span>.videoPath error:&amp;error];</div><div class="line">                &#125;</div><div class="line">                [fileManager moveItemAtPath:<span class="keyword">self</span>.tmpFilePath toPath:<span class="keyword">self</span>.videoPath error:&amp;error];</div><div class="line">                completion(error);</div><div class="line"></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];</div><div class="line">                [library writeVideoAtPathToSavedPhotosAlbum:_videoWriter.outputURL completionBlock:^(<span class="built_in">NSURL</span> *assetURL, <span class="built_in">NSError</span> *error) &#123;</div><div class="line">                    <span class="keyword">if</span> (error) &#123;</div><div class="line">                        <span class="built_in">NSLog</span>(<span class="string">@"Error copying video to camera roll:%@"</span>, [error localizedDescription]);</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        [<span class="keyword">self</span> removeTempFilePath:_videoWriter.outputURL.path];</div><div class="line">                    &#125;</div><div class="line">                    completion(error);</div><div class="line">                &#125;];</div><div class="line">            &#125;</div><div class="line">        &#125;];</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)cancelExportingSession &#123;</div><div class="line">    @weakify(<span class="keyword">self</span>)</div><div class="line">    <span class="built_in">dispatch_async</span>(_append_pixelBuffer_queue, ^&#123;</div><div class="line">        @strongify(<span class="keyword">self</span>)</div><div class="line">        [_videoWriterInput markAsFinished];</div><div class="line">        [_videoWriter finishWritingWithCompletionHandler:^&#123;</div><div class="line">            <span class="keyword">void</span> (^completion)(<span class="keyword">void</span>) = ^() &#123;</div><div class="line">                [<span class="keyword">self</span> cleanup];</div><div class="line">                <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">                    <span class="keyword">if</span> (<span class="keyword">self</span>.delegate &amp;&amp; [<span class="keyword">self</span>.delegate respondsToSelector:<span class="keyword">@selector</span>(exporterVideoCompleted:videoPath:error:)]) &#123;</div><div class="line">                        [<span class="keyword">self</span>.delegate exporterVideoCompleted:<span class="keyword">self</span> videoPath:<span class="literal">nil</span> error:<span class="literal">nil</span>];</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;;</div><div class="line">            </div><div class="line">            [<span class="keyword">self</span> removeTempFilePath:_videoWriter.outputURL.path];</div><div class="line">            completion();</div><div class="line">        &#125;];</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)cleanup</div><div class="line">&#123;</div><div class="line">    <span class="keyword">self</span>.avAdaptor = <span class="literal">nil</span>;</div><div class="line">    <span class="keyword">self</span>.videoWriterInput = <span class="literal">nil</span>;</div><div class="line">    <span class="keyword">self</span>.videoWriter = <span class="literal">nil</span>;</div><div class="line">    <span class="keyword">self</span>.outputBufferPoolAuxAttributes = <span class="literal">nil</span>;</div><div class="line">    <span class="built_in">CGColorSpaceRelease</span>(_rgbColorSpace);</div><div class="line">    CVPixelBufferPoolRelease(_outputBufferPool);</div><div class="line">    </div><div class="line">    <span class="keyword">self</span>.currentTime = <span class="number">0</span>;</div><div class="line">    <span class="keyword">self</span>.totalTime = <span class="number">0</span>;</div><div class="line">    <span class="keyword">self</span>.isExporting = <span class="literal">NO</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/12/UIDocument简介/" rel="next" title="UIDocument简介">
+                <i class="fa fa-chevron-left"></i> UIDocument简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/" rel="prev" title="iOS画图轨迹圆滑处理">
+                iOS画图轨迹圆滑处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/10/30/iOS视频制作/"
+           data-title="iOS视频制作" data-url="https://ekulelu.github.io/2017/10/30/iOS视频制作/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Ekulelu" />
+          <p class="site-author-name" itemprop="name">Ekulelu</p>
+          <p class="site-description motion-element" itemprop="description">一緒に世界の果てまでへ</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ekulelu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ekulelu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p37OqcP9nSbFoEPRagTgkWvI-gzGzoHsz", "IQiHmijzoKs8VMnp6oRleKsS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="网上有很多教程可以参考，但是还是有一些问题的解决方法不正确。现在这里重新介绍一下。制作.a文件的过程是在移植AR库的时候碰到的，这里还使用了opencv的framework，所以还有一些使用上的问题要留意。
+下面介绍.a的制作方法：
+首先新建一个工程，选择Static Library。
+
+创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS静态库.a文件的制作和使用">
+<meta property="og:url" content="https://ekulelu.github.io/2017/05/24/iOS静态库.a文件的制作和使用/index.html">
+<meta property="og:site_name" content="Ekulelu's Blog">
+<meta property="og:description" content="网上有很多教程可以参考，但是还是有一些问题的解决方法不正确。现在这里重新介绍一下。制作.a文件的过程是在移植AR库的时候碰到的，这里还使用了opencv的framework，所以还有一些使用上的问题要留意。
+下面介绍.a的制作方法：
+首先新建一个工程，选择Static Library。
+
+创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ozub06j20hr0csq4v.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00p2gvswj20fa03r0t6.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/804bc176gy1fp00p4we8sj20e605wdgt.jpg">
+<meta property="og:updated_time" content="2018-03-03T15:11:08.740Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS静态库.a文件的制作和使用">
+<meta name="twitter:description" content="网上有很多教程可以参考，但是还是有一些问题的解决方法不正确。现在这里重新介绍一下。制作.a文件的过程是在移植AR库的时候碰到的，这里还使用了opencv的framework，所以还有一些使用上的问题要留意。
+下面介绍.a的制作方法：
+首先新建一个工程，选择Static Library。
+
+创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ozub06j20hr0csq4v.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ekulelu.github.io/2017/05/24/iOS静态库.a文件的制作和使用/"/>
+
+
+
+
+
+  <title> iOS静态库.a文件的制作和使用 | Ekulelu's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f31c6baa24838cd36f68f42d6187a455";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ekulelu's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/05/24/iOS静态库.a文件的制作和使用/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS静态库.a文件的制作和使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-24T23:04:00+08:00">
+                2017-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发技术杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/05/24/iOS静态库.a文件的制作和使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/24/iOS静态库.a文件的制作和使用/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/24/iOS静态库.a文件的制作和使用/" class="leancloud_visitors" data-flag-title="iOS静态库.a文件的制作和使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>网上有很多教程可以参考，但是还是有一些问题的解决方法不正确。现在这里重新介绍一下。制作.a文件的过程是在移植AR库的时候碰到的，这里还使用了opencv的framework，所以还有一些使用上的问题要留意。</p>
+<p>下面介绍.a的制作方法：</p>
+<p>首先新建一个工程，选择Static Library。</p>
+<p><img src="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ozub06j20hr0csq4v.jpg" alt=""></p>
+<p>创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头文件。一般的做法是在它里面引用你库里面的其他头文件，然后使用者只要引用这个头文件就可以引用到库的其他头文件了。这里有个注意的地方，待会儿再讲。</p>
+<p><img src="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00p2gvswj20fa03r0t6.jpg" alt=""></p>
+<a id="more"></a>
+<p>因为我们需要用到opencv的framework，所以把它拖到工程里面，这个时候有一个拖文件的时候是否copy is need的选项，这个最好把它勾选，让xcode把这个framework拷贝到工程的目录中去，否则你需要在Build Settings里面的Framework Search Paths里面添加opencv的framework所在的目录。</p>
+<p>这里顺便添加一个将UIImage转换为Mat的类别进工程。然后工程目录如下：</p>
+<p><img src="http://wx3.sinaimg.cn/mw690/804bc176gy1fp00p4we8sj20e605wdgt.jpg" alt=""></p>
+<p>这里简单的在<code>StaticLib.h/mm</code>里面添加一个方法。（留意这个.mm文件，因为需要用C++的代码，所以需要改文件后缀为.mm）。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//StaticLib.h</span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"UIImage2OpenCV.h"</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">StaticLib</span> : <span class="title">NSObject</span></span></div><div class="line">- (cv::Mat)dealWithImage:(<span class="built_in">UIImage</span>*)image;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//StaticLib.mm</div><div class="line">#import &quot;StaticLib.h&quot;</div><div class="line">@implementation StaticLib</div><div class="line">- (cv::Mat)dealWithImage:(UIImage*)image &#123;</div><div class="line">    return [image toMat]; //toMat是UIImage2OpenCV的类别方法。</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>再修改一下工程的一些配置，网上的说法是让xcode不要移除没有使用的代码。</p>
+<blockquote>
+<p>   Dead Code Stripping - Set this to NO</p>
+<p>   Strip Debug Symbols During Copy - Set this to NO for all configurations</p>
+<p>   Strip Style - Set this to Non-Global Symbols</p>
+</blockquote>
+<p>另外需要修改的是编译架构，在<code>Build settings</code>里面，xcode8是默认不包含armv7s架构的，这个架构在iPhone 5，iPad4里面用到了，所以最好添加上去吧，另外一个就是是否只编译当前架构，这个将所有改为NO，否则只会编译出当前使用的架构。</p>
+<p>然后到工程的Build Phase里面，点击Xcode的菜单的<code>Editor</code>，选择里面的<code>Add Header Build Phase</code>，然后<code>Build Phase</code>里面会多一项Header，里面有三个选项，<code>Public</code>， <code>private</code>， <code>Project</code>。代表头文件是否暴露。但其实没看出有什么区别。</p>
+<p>重要的是在上面的<code>Copy Files</code>这一项，这个代表了将哪些头文件拷贝出去指定目录。如果你是使用工程嵌套的方法，外部工程会将库工程生成的.a和include文件夹拷贝到它的输出目录的。所以这里决定了外部工程可以看到哪些头文件。你会发现我们后面拖进去的<code>UIImage2OpenCV.h</code>并不在里面，点加号，把它添加上去。</p>
+<p>另外需要注意的一点是这里上面的<code>Compile Sources</code>这一项，一般来讲，你拖到工程里面的源文件都会被添加到这里的，但是也出现过意外，如果你编译出来的库在使用的时候报了在xxx架构下找不到XXX定义，请回来看看这里是否将所有源文件添加进来了。</p>
+<p>好了，选择模拟器，编译一下，再选择真机，编译一下。然后打开工程的<code>Products</code>目录，你会看到模拟器和真机的输入，如果你需要这个库在模拟器和真机环境下都可以运行，那么需要合并这两个.a文件。命令如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lipo -create   xxx  xxx -output newName</div></pre></td></tr></table></figure>
+<p>前面两个xxx代表了两个.a文件的路径，后面的newName代表生成的.a文件的路径。运行后就可以得到一个总的.a文件，可以使用下面的命令来看这个.a文件支持的架构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lipo -info  xxx.a</div></pre></td></tr></table></figure>
+<p>如果合并成功，应该可以看到.a文件支持armv7 armv7s i386 x86_64 arm64这些架构。</p>
+<p>使用的时候将.a文件和include里面的头文件拷贝过去就行了。一般的.a文件这样就行了，但是我们的.a文件你直接用肯定不行的。这里有两个问题：</p>
+<ol>
+<li>我们用到了opencv的framework。</li>
+<li>代码里面有类别。</li>
+</ol>
+<p>使用framework编译的.a文件，你导入时候会发现找不到opencv的头文件。所以我们仍需要在使用的工程里面导入opencv的framework。<br>第二个是使用了类别的问题，就是<code>UIImage2OpenCV</code>这个文件。猜测是由于OC的动态加载机制，没有使用到的类是不会加载的。所以.a文件里面的类别没有加载，直到使用的时候也是，所以就会出现运行时报出找不到<code>UIImage toMat</code>的错误。网上推荐的方法是在静态库的工程设置里面将<code>other linker flags</code>设置为<code>-Objc</code>和<code>-all_load</code>，但是实际测试发现，在64位机器上根本不行。仍然报错，有些网上说的是将上面的设置用在使用到.a文件的工程里面，但是你会发现这样改直接导致编译错误。报错是opencv的一些符合在该架构下找不到。<br>解决的方法有两个：</p>
+<ol>
+<li>不是没加载文件导致的吗，那我就强制加载一下。在类别文件里面再定义一个类，然后在使用的工程里面先创建一下这个类的对象，那么OC就会将这个文件加载起来了，里面的类别方法自然可以使用。但是感觉这个方法好笨，不旦要新建一个多余的类，而且还要创建多余的对象。</li>
+<li>最后找到的方法是：在使用.a文件的工程的设置里面，将<code>other linker flags</code>设置为<code>-force_load xxx.a</code>，将xxx.a替换为你的.a文件。这样就没问题了。</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/18/iOS蓝牙连接/" rel="next" title="iOS蓝牙连接">
+                <i class="fa fa-chevron-left"></i> iOS蓝牙连接
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/13/学Swift4/学Swift4之1——初见/" rel="prev" title="学Swift4之1——初见">
+                学Swift4之1——初见 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/24/iOS静态库.a文件的制作和使用/"
+           data-title="iOS静态库.a文件的制作和使用" data-url="https://ekulelu.github.io/2017/05/24/iOS静态库.a文件的制作和使用/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Ekulelu" />
+          <p class="site-author-name" itemprop="name">Ekulelu</p>
+          <p class="site-description motion-element" itemprop="description">一緒に世界の果てまでへ</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ekulelu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ekulelu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("p37OqcP9nSbFoEPRagTgkWvI-gzGzoHsz", "IQiHmijzoKs8VMnp6oRleKsS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>
