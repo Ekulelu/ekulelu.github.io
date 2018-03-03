@@ -94,7 +94,7 @@ iOS蓝牙连接的流程如下：
 <meta property="og:description" content="iOS蓝牙连接其实不难，可以参照官方的例子教程或者使用github的开源库babyBluetooth。
 iOS蓝牙连接的流程如下：
 通过服务的UUID扫描外部设备 -&amp;gt; 连接外部设备 -&amp;gt; 连接成功后扫描设备的服务 -&amp;gt; 发现服务后，扫描该服务的Characteristics -&amp;gt; 扫描到Characteristics后，进行读、写、订阅 -&amp;gt; 读和订阅后，有数据回来">
-<meta property="og:updated_time" content="2018-03-03T15:12:15.010Z">
+<meta property="og:updated_time" content="2018-03-03T16:18:10.650Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS蓝牙连接">
 <meta name="twitter:description" content="iOS蓝牙连接其实不难，可以参照官方的例子教程或者使用github的开源库babyBluetooth。
@@ -365,6 +365,7 @@ iOS蓝牙连接的流程如下：
 <p>iOS蓝牙连接的流程如下：</p>
 <p>通过服务的UUID扫描外部设备 -&gt; 连接外部设备 -&gt; 连接成功后扫描设备的服务 -&gt; 发现服务后，扫描该服务的Characteristics -&gt; 扫描到Characteristics后，进行读、写、订阅 -&gt; 读和订阅后，有数据回来，会回调一个代理方法<code>didUpdateValueForCharacteristic</code>获得数据。</p>
 <p>下面介绍一下官方教程的代码，因为iOS是作为主端，所以只介绍主端的代码，从端的代码示例代码也有，可以参考，并不难。</p>
+<a id="more"></a>
 <p><a href="https://developer.apple.com/library/content/samplecode/BTLE_Transfer/Introduction/Intro.html#//apple_ref/doc/uid/DTS40012927" target="_blank" rel="external">官方教程的代码下载链接</a></p>
 <p>主端官方的例子主要是参照<code>BTLECentralViewController.m</code>这个文件。iOS原生的蓝牙基本是使用了代理方法的结构来处理蓝牙功能。基本上流程的一步对应一个代理方法。</p>
 <p>创建CBCentralManager对象，并设置好它的代理。</p>

@@ -84,19 +84,16 @@
 
 
 
-<meta name="description" content="1、简单粗暴的drawInRect （Android的OnDraw）在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。
-12345678910- (void)">
+<meta name="description" content="1、简单粗暴的drawInRect （Android的OnDraw）在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS线段绘制">
 <meta property="og:url" content="https://ekulelu.github.io/2017/10/30/画图wiki/线段绘制/index.html">
 <meta property="og:site_name" content="Ekulelu's Blog">
-<meta property="og:description" content="1、简单粗暴的drawInRect （Android的OnDraw）在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。
-12345678910- (void)">
-<meta property="og:updated_time" content="2018-03-03T15:19:29.225Z">
+<meta property="og:description" content="1、简单粗暴的drawInRect （Android的OnDraw）在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。">
+<meta property="og:updated_time" content="2018-03-03T16:19:49.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS线段绘制">
-<meta name="twitter:description" content="1、简单粗暴的drawInRect （Android的OnDraw）在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。
-12345678910- (void)">
+<meta name="twitter:description" content="1、简单粗暴的drawInRect （Android的OnDraw）在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。">
 
 
 
@@ -359,6 +356,7 @@
 
       
         <h2 id="1、简单粗暴的drawInRect-（Android的OnDraw）"><a href="#1、简单粗暴的drawInRect-（Android的OnDraw）" class="headerlink" title="1、简单粗暴的drawInRect （Android的OnDraw）"></a>1、简单粗暴的drawInRect （Android的OnDraw）</h2><p>在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。</p>
+<a id="more"></a>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect &#123;</div><div class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();</div><div class="line">    <span class="built_in">CGContextSetLineCap</span>(context, kCGLineCapRound);</div><div class="line">    <span class="built_in">CGContextSetLineWidth</span>(context, <span class="number">3</span>);  <span class="comment">//线宽</span></div><div class="line">    <span class="built_in">CGContextSetAllowsAntialiasing</span>(context, <span class="literal">true</span>); <span class="comment">//抗锯齿</span></div><div class="line">    <span class="built_in">CGContextSetRGBStrokeColor</span>(context, <span class="number">70.0</span> / <span class="number">255.0</span>, <span class="number">241.0</span> / <span class="number">255.0</span>, <span class="number">241.0</span> / <span class="number">255.0</span>, <span class="number">1.0</span>);  <span class="comment">//线的颜色</span></div><div class="line">    <span class="built_in">CGContextMoveToPoint</span>(context, <span class="number">0</span>, <span class="number">0</span>);  <span class="comment">//起点坐标</span></div><div class="line">    <span class="built_in">CGContextAddLineToPoint</span>(context, <span class="keyword">self</span>.frame.size.width, <span class="keyword">self</span>.frame.size.height);   <span class="comment">//终点坐标</span></div><div class="line">    <span class="built_in">CGContextStrokePath</span>(context);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>因为iOS里面每次调用drawInRect的时候，都会清空上下文。这个弊端很大，当你的点有1万个的时候，每一帧都从第0个点开始绘制，会出现明显的延时。</p>
 <h2 id="2、使用Path对象"><a href="#2、使用Path对象" class="headerlink" title="2、使用Path对象"></a>2、使用Path对象</h2><p>在OnTouch事件将取得的点添加进path对象里面，然后在drawInRect的时候，将这个path重绘。这个确实会节省大量的开销。但是有个问题：path对象只有一个width，写字板有个需求，在写的时候线的粗细需要跟着笔的压力进行变化。所以将全部点都添加到一个path是不可能的。最坏的情况就是每两个点都必须生成一个path对象。在那么多path的情况下对性能也有很大影响。</p>
@@ -395,8 +393,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/" rel="next" title="iOS画图轨迹圆滑处理">
-                <i class="fa fa-chevron-left"></i> iOS画图轨迹圆滑处理
+              <a href="/2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/" rel="next" title="iOS基于CoreGraphics的可变粗细的划线">
+                <i class="fa fa-chevron-left"></i> iOS基于CoreGraphics的可变粗细的划线
               </a>
             
           </div>
@@ -404,10 +402,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/" rel="prev" title="iOS基于CoreGraphics的可变粗细的划线">
-                iOS基于CoreGraphics的可变粗细的划线 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

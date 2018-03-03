@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="Ekulelu's Blog">
 <meta property="og:description" content="状态栏在iOS系统里面高度是固定的20单位。一般改变说的改变它的颜色，其实是改变它的几个图标（信号，电池）的颜色，而且这个颜色系统是做了限制的，只有白色和黑色两种选择，称为两种style。在iOS7之前，一般用来设置style的方法是
 1[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent">
-<meta property="og:updated_time" content="2018-03-03T15:07:02.875Z">
+<meta property="og:updated_time" content="2018-03-03T16:18:32.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS改变状态栏颜色和隐藏">
 <meta name="twitter:description" content="状态栏在iOS系统里面高度是固定的20单位。一般改变说的改变它的颜色，其实是改变它的几个图标（信号，电池）的颜色，而且这个颜色系统是做了限制的，只有白色和黑色两种选择，称为两种style。在iOS7之前，一般用来设置style的方法是
@@ -360,6 +360,7 @@
       
         <p>状态栏在iOS系统里面高度是固定的20单位。一般改变说的改变它的颜色，其实是改变它的几个图标（信号，电池）的颜色，而且这个颜色系统是做了限制的，只有白色和黑色两种选择，称为两种style。在iOS7之前，一般用来设置style的方法是</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[[<span class="built_in">UIApplication</span> sharedApplication] setStatusBarStyle:<span class="built_in">UIStatusBarStyleLightContent</span>];</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>而设置隐藏的方法为：(系统另外还提供了对应的带动画的方法。)</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[[<span class="built_in">UIApplication</span> sharedApplication] setStatusBarHidden:<span class="literal">YES</span>];</div></pre></td></tr></table></figure>
 <p>留意到上面的方法是通过UIApplication来调用的，也就是说这个是针对整个app都会产生效果的方法。</p>

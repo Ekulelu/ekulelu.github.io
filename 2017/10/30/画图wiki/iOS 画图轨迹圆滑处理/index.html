@@ -84,32 +84,20 @@
 
 
 
-<meta name="description" content="用户在画图过程中，系统从屏幕上获取到的是离散的点。而且这个点的获取是有一个最高频率的，当用户在屏幕上滑动速度很快的时候，获取到的两个点就会距离较远。
-
-简单的绘制过程就是将相邻的两个点连接起来。如下图。但是正如上面所说的，如果用户滑动的速度太快，那么两个点的距离就会比较远，当用户画曲线的时候，就会出现很明显的转折角。
-
-为了解决这个问题，我们需要借助于二次贝塞尔曲线。二次贝塞尔曲线的公式如下。当t">
+<meta name="description" content="用户在画图过程中，系统从屏幕上获取到的是离散的点。而且这个点的获取是有一个最高频率的，当用户在屏幕上滑动速度很快的时候，获取到的两个点就会距离较远。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS画图轨迹圆滑处理">
 <meta property="og:url" content="https://ekulelu.github.io/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/index.html">
 <meta property="og:site_name" content="Ekulelu's Blog">
-<meta property="og:description" content="用户在画图过程中，系统从屏幕上获取到的是离散的点。而且这个点的获取是有一个最高频率的，当用户在屏幕上滑动速度很快的时候，获取到的两个点就会距离较远。
-
-简单的绘制过程就是将相邻的两个点连接起来。如下图。但是正如上面所说的，如果用户滑动的速度太快，那么两个点的距离就会比较远，当用户画曲线的时候，就会出现很明显的转折角。
-
-为了解决这个问题，我们需要借助于二次贝塞尔曲线。二次贝塞尔曲线的公式如下。当t">
+<meta property="og:description" content="用户在画图过程中，系统从屏幕上获取到的是离散的点。而且这个点的获取是有一个最高频率的，当用户在屏幕上滑动速度很快的时候，获取到的两个点就会距离较远。">
 <meta property="og:image" content="http://wx2.sinaimg.cn/mw690/804bc176gy1fp02iugf01j20b40b43yj.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/804bc176gy1fp030rbzbqj20b40bnaai.jpg">
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/804bc176gy1fp01kydey5j208t00l741.jpg">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/804bc176gy1fp02izyri8j20dw0dw0sw.jpg">
-<meta property="og:updated_time" content="2018-03-03T16:13:42.348Z">
+<meta property="og:updated_time" content="2018-03-03T16:20:05.395Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS画图轨迹圆滑处理">
-<meta name="twitter:description" content="用户在画图过程中，系统从屏幕上获取到的是离散的点。而且这个点的获取是有一个最高频率的，当用户在屏幕上滑动速度很快的时候，获取到的两个点就会距离较远。
-
-简单的绘制过程就是将相邻的两个点连接起来。如下图。但是正如上面所说的，如果用户滑动的速度太快，那么两个点的距离就会比较远，当用户画曲线的时候，就会出现很明显的转折角。
-
-为了解决这个问题，我们需要借助于二次贝塞尔曲线。二次贝塞尔曲线的公式如下。当t">
+<meta name="twitter:description" content="用户在画图过程中，系统从屏幕上获取到的是离散的点。而且这个点的获取是有一个最高频率的，当用户在屏幕上滑动速度很快的时候，获取到的两个点就会距离较远。">
 <meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/804bc176gy1fp02iugf01j20b40b43yj.jpg">
 
 
@@ -374,6 +362,7 @@
       
         <p>用户在画图过程中，系统从屏幕上获取到的是离散的点。而且这个点的获取是有一个最高频率的，当用户在屏幕上滑动速度很快的时候，获取到的两个点就会距离较远。</p>
 <p><img src="http://wx2.sinaimg.cn/mw690/804bc176gy1fp02iugf01j20b40b43yj.jpg" alt=""></p>
+<a id="more"></a>
 <p>简单的绘制过程就是将相邻的两个点连接起来。如下图。但是正如上面所说的，如果用户滑动的速度太快，那么两个点的距离就会比较远，当用户画曲线的时候，就会出现很明显的转折角。</p>
 <p><img src="http://wx3.sinaimg.cn/mw690/804bc176gy1fp030rbzbqj20b40bnaai.jpg" alt=""></p>
 <p>为了解决这个问题，我们需要借助于二次贝塞尔曲线。二次贝塞尔曲线的公式如下。当t为0的时候，B(t)的值是P0，当t为1的时候，B(t)的值是P2。P1是控制点，用来控制P0和P2之间的弯曲程度。</p>
@@ -410,8 +399,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/30/iOS视频制作/" rel="next" title="iOS视频制作">
-                <i class="fa fa-chevron-left"></i> iOS视频制作
+              <a href="/2017/10/30/画图wiki/iOS基于CoreGraphics的粗细可变且半透明笔画/" rel="next" title="iOS基于CoreGraphics的粗细可变且半透明笔画">
+                <i class="fa fa-chevron-left"></i> iOS基于CoreGraphics的粗细可变且半透明笔画
               </a>
             
           </div>
@@ -420,8 +409,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/30/画图wiki/线段绘制/" rel="prev" title="iOS线段绘制">
-                iOS线段绘制 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/" rel="prev" title="iOS基于CoreGraphics的可变粗细的划线">
+                iOS基于CoreGraphics的可变粗细的划线 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

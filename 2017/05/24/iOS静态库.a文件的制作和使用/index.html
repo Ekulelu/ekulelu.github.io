@@ -86,29 +86,23 @@
 
 <meta name="description" content="网上有很多教程可以参考，但是还是有一些问题的解决方法不正确。现在这里重新介绍一下。制作.a文件的过程是在移植AR库的时候碰到的，这里还使用了opencv的framework，所以还有一些使用上的问题要留意。
 下面介绍.a的制作方法：
-首先新建一个工程，选择Static Library。
-
-创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头">
+首先新建一个工程，选择Static Library。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS静态库.a文件的制作和使用">
 <meta property="og:url" content="https://ekulelu.github.io/2017/05/24/iOS静态库.a文件的制作和使用/index.html">
 <meta property="og:site_name" content="Ekulelu's Blog">
 <meta property="og:description" content="网上有很多教程可以参考，但是还是有一些问题的解决方法不正确。现在这里重新介绍一下。制作.a文件的过程是在移植AR库的时候碰到的，这里还使用了opencv的framework，所以还有一些使用上的问题要留意。
 下面介绍.a的制作方法：
-首先新建一个工程，选择Static Library。
-
-创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头">
+首先新建一个工程，选择Static Library。">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ozub06j20hr0csq4v.jpg">
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00p2gvswj20fa03r0t6.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/804bc176gy1fp00p4we8sj20e605wdgt.jpg">
-<meta property="og:updated_time" content="2018-03-03T15:11:08.740Z">
+<meta property="og:updated_time" content="2018-03-03T16:21:35.274Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS静态库.a文件的制作和使用">
 <meta name="twitter:description" content="网上有很多教程可以参考，但是还是有一些问题的解决方法不正确。现在这里重新介绍一下。制作.a文件的过程是在移植AR库的时候碰到的，这里还使用了opencv的framework，所以还有一些使用上的问题要留意。
 下面介绍.a的制作方法：
-首先新建一个工程，选择Static Library。
-
-创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头">
+首先新建一个工程，选择Static Library。">
 <meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ozub06j20hr0csq4v.jpg">
 
 
@@ -375,9 +369,9 @@
 <p>下面介绍.a的制作方法：</p>
 <p>首先新建一个工程，选择Static Library。</p>
 <p><img src="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ozub06j20hr0csq4v.jpg" alt=""></p>
+<a id="more"></a>
 <p>创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头文件。一般的做法是在它里面引用你库里面的其他头文件，然后使用者只要引用这个头文件就可以引用到库的其他头文件了。这里有个注意的地方，待会儿再讲。</p>
 <p><img src="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00p2gvswj20fa03r0t6.jpg" alt=""></p>
-<a id="more"></a>
 <p>因为我们需要用到opencv的framework，所以把它拖到工程里面，这个时候有一个拖文件的时候是否copy is need的选项，这个最好把它勾选，让xcode把这个framework拷贝到工程的目录中去，否则你需要在Build Settings里面的Framework Search Paths里面添加opencv的framework所在的目录。</p>
 <p>这里顺便添加一个将UIImage转换为Mat的类别进工程。然后工程目录如下：</p>
 <p><img src="http://wx3.sinaimg.cn/mw690/804bc176gy1fp00p4we8sj20e605wdgt.jpg" alt=""></p>

@@ -523,8 +523,6 @@
 <p>下面介绍.a的制作方法：</p>
 <p>首先新建一个工程，选择Static Library。</p>
 <p><img src="http://wx1.sinaimg.cn/mw690/804bc176gy1fp00ozub06j20hr0csq4v.jpg" alt=""></p>
-<p>创建工程之后我们得到了一个这样的工程目录，总的来讲，这个和工程名字一样的.h文件，就是我们以后使用的库的主要头文件。一般的做法是在它里面引用你库里面的其他头文件，然后使用者只要引用这个头文件就可以引用到库的其他头文件了。这里有个注意的地方，待会儿再讲。</p>
-<p><img src="http://wx4.sinaimg.cn/mw690/804bc176gy1fp00p2gvswj20fa03r0t6.jpg" alt=""></p>
           <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/05/24/iOS静态库.a文件的制作和使用/#more" rel="contents">
@@ -679,33 +677,17 @@
 
       
         
-          
-            <p>iOS蓝牙连接其实不难，可以参照官方的例子教程或者使用github的开源库babyBluetooth。</p>
+          <p>iOS蓝牙连接其实不难，可以参照官方的例子教程或者使用github的开源库babyBluetooth。</p>
 <p>iOS蓝牙连接的流程如下：</p>
 <p>通过服务的UUID扫描外部设备 -&gt; 连接外部设备 -&gt; 连接成功后扫描设备的服务 -&gt; 发现服务后，扫描该服务的Characteristics -&gt; 扫描到Characteristics后，进行读、写、订阅 -&gt; 读和订阅后，有数据回来，会回调一个代理方法<code>didUpdateValueForCharacteristic</code>获得数据。</p>
 <p>下面介绍一下官方教程的代码，因为iOS是作为主端，所以只介绍主端的代码，从端的代码示例代码也有，可以参考，并不难。</p>
-<p><a href="https://developer.apple.com/library/content/samplecode/BTLE_Transfer/Introduction/Intro.html#//apple_ref/doc/uid/DTS40012927" target="_blank" rel="external">官方教程的代码下载链接</a></p>
-<p>主端官方的例子主要是参照<code>BTLECentralViewController.m</code>这个文件。iOS原生的蓝牙基本是使用了代理方法的结构来处理蓝牙功能。基本上流程的一步对应一个代理方法。</p>
-<p>创建CBCentralManager对象，并设置好它的代理。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">_centralManager = [[CBCentralManager alloc] initWithDelegate:<span class="keyword">self</span> queue:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
-<p>使用CBCentralManager扫描外部设备,这个需要传递外部设备的服务的UUID，如果不传递的话，那么就会扫描所有设备。代码如下，</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)scan</div><div class="line">&#123;</div><div class="line">    [<span class="keyword">self</span>.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:TRANSFER_SERVICE_UUID]]</div><div class="line">                                                options:@&#123; CBCentralManagerScanOptionAllowDuplicatesKey : @YES &#125;];</div><div class="line">    </div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"Scanning started"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>发现设备后会回调一个代理方法， </p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(<span class="built_in">NSDictionary</span> *)advertisementData RSSI:(<span class="built_in">NSNumber</span> *)RSSI</div></pre></td></tr></table></figure>
-<p>在这个方法里面连接设备</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.centralManager connectPeripheral:peripheral options:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
-<p>设备连接成功后会回调一个方法，先停止扫描，然后在这个方法里面扫描设备的服务。如果不传服务的UUID，那么会扫描所有服务。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"Peripheral Connected"</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// Stop scanning</span></div><div class="line">    [<span class="keyword">self</span>.centralManager stopScan];</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"Scanning stopped"</span>);</div><div class="line">    </div><div class="line">    <span class="comment">// Clear the data that we may already have</span></div><div class="line">    [<span class="keyword">self</span>.data setLength:<span class="number">0</span>];</div><div class="line"></div><div class="line">    <span class="comment">// Make sure we get the discovery callbacks</span></div><div class="line">    peripheral.delegate = <span class="keyword">self</span>;</div><div class="line">    </div><div class="line">    <span class="comment">// Search only for services that match our UUID</span></div><div class="line">    [peripheral discoverServices:@[[CBUUID UUIDWithString:TRANSFER_SERVICE_UUID]]];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>扫描到服务后继续调用另外回调方法，在这个方法扫描Characteristics</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(<span class="built_in">NSError</span> *)error</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (error) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"Error discovering services: %@"</span>, [error localizedDescription]);</div><div class="line">        [<span class="keyword">self</span> cleanup];</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">// Discover the characteristic we want...</span></div><div class="line">    </div><div class="line">    <span class="comment">// Loop through the newly filled peripheral.services array, just in case there's more than one.</span></div><div class="line">    <span class="keyword">for</span> (CBService *service <span class="keyword">in</span> peripheral.services) &#123;</div><div class="line">        [peripheral discoverCharacteristics:@[[CBUUID UUIDWithString:TRANSFER_CHARACTERISTIC_UUID]] forService:service];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>发现Characteristics后继续回调另外一个方法。这里面可以判断一下Characteristics的UUID，对需要订阅的Characteristics进行订阅，或者读写数据。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(<span class="built_in">NSError</span> *)error</div><div class="line">&#123;</div><div class="line">    <span class="comment">// Deal with errors (if any)</span></div><div class="line">    <span class="keyword">if</span> (error) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"Error discovering characteristics: %@"</span>, [error localizedDescription]);</div><div class="line">        [<span class="keyword">self</span> cleanup];</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// Again, we loop through the array, just in case.</span></div><div class="line">    <span class="keyword">for</span> (CBCharacteristic *characteristic <span class="keyword">in</span> service.characteristics) &#123;</div><div class="line">        <span class="comment">// And check if it's the right one</span></div><div class="line">        <span class="keyword">if</span> ([characteristic.UUID isEqual:[CBUUID UUIDWithString:TRANSFER_CHARACTERISTIC_UUID]]) &#123;</div><div class="line">            <span class="comment">//订阅characteristic If it is, subscribe to it</span></div><div class="line">            [peripheral setNotifyValue:<span class="literal">YES</span> forCharacteristic:characteristic];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">//读取characteristic</span></div><div class="line"><span class="comment">//[peripheral readValueForCharacteristic:characteristic];</span></div><div class="line">    <span class="comment">// Once this is complete, we just need to wait for the data to come in.</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果读取或者订阅的Characteristic有更新，那么就会调用下面的方法。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(<span class="built_in">NSError</span> *)error</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (error) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"Error discovering characteristics: %@"</span>, [error localizedDescription]);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//获得数据</span></div><div class="line">    <span class="built_in">NSData</span> *data = characteristic.value;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果要断开连接，调用下面方法</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.centralManager cancelPeripheralConnection:peripheral];</div></pre></td></tr></table></figure>
-
-          
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/05/18/iOS蓝牙连接/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1005,26 +987,15 @@
 
       
         
-          
-            <p>状态栏在iOS系统里面高度是固定的20单位。一般改变说的改变它的颜色，其实是改变它的几个图标（信号，电池）的颜色，而且这个颜色系统是做了限制的，只有白色和黑色两种选择，称为两种style。在iOS7之前，一般用来设置style的方法是</p>
+          <p>状态栏在iOS系统里面高度是固定的20单位。一般改变说的改变它的颜色，其实是改变它的几个图标（信号，电池）的颜色，而且这个颜色系统是做了限制的，只有白色和黑色两种选择，称为两种style。在iOS7之前，一般用来设置style的方法是</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[[<span class="built_in">UIApplication</span> sharedApplication] setStatusBarStyle:<span class="built_in">UIStatusBarStyleLightContent</span>];</div></pre></td></tr></table></figure>
-<p>而设置隐藏的方法为：(系统另外还提供了对应的带动画的方法。)</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[[<span class="built_in">UIApplication</span> sharedApplication] setStatusBarHidden:<span class="literal">YES</span>];</div></pre></td></tr></table></figure>
-<p>留意到上面的方法是通过UIApplication来调用的，也就是说这个是针对整个app都会产生效果的方法。</p>
-<p>但是从iOS7开始，出了一个取代上面两种方法的模式，系统给每个UIViewController都配置了三个新方法用来控制状态栏，通过重写这三个方法来定义每个UIViewController自己的状态栏，这样如果不重写这些方法的UIViewController就会使用默认的值。这样就比改变整个app来得更加有定制化。并且在iOS7之后，你直接使用上面的方法两个老方法来改变状态栏都是没有效果的。如果需要使这两个老方法生效，需要在项目的info.plist里面将下面的属性设置为NO，这个属性默认是YES。但是要注意的是，老方法和新方法是不兼容的，只能只用一种解决方案。</p>
-<p>View controller-based status bar appearance</p>
-<p>下面来介绍新方法，总共有三个方法，分别是：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIStatusBarAnimation</span>)preferredStatusBarUpdateAnimation;</div><div class="line">- (<span class="built_in">UIStatusBarStyle</span>)preferredStatusBarStyle;</div><div class="line">- (<span class="built_in">BOOL</span>)prefersStatusBarHidden;</div></pre></td></tr></table></figure>
-<p>按照方法的名字都可以猜到是做什么用的了。需要说一下的是动画虽然提供了三种样式，但我实在是没看出来有什么区别。这三个方法都是在UIViewController的viewDidload之后，viewWillAppear之前被系统调用一次。次序依次是：</p>
-<p>preferredStatusBarStyle -&gt;<br>prefersStatusBarHidden-&gt;<br>preferredStatusBarUpdateAnimation</p>
-<p>如果你在UIViewController里面想对状态栏进行调节，必须使用下面的方法来刷新状态栏</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[viewController setNeedsStatusBarAppearanceUpdate];</div></pre></td></tr></table></figure>
-<p>总的来讲，我个人建议使用新方法来控制，因为如果你需要修改状态栏的地方少，那么就只在需要变化的UIViewController中重写方法就行了，其他的地方都是系统默认的，这个默认状态可以通过修改工程的配置文件改变。如果你切换状态栏的次数很多，那么就用这种配置方法也和老方法一样使用，而且不会拍影响到其他的UIViewController。</p>
-<p>另外需要提的一点是在UINavigationController里面，上面的新方法的设置style的方法似乎不管用，你会发现系统调用了也没有用，而且变化状态很奇怪。这个时候你需要自定义一个UINavigationController，并且实现下面的方法</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIViewController</span> *)childViewControllerForStatusBarStyle &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.topViewController;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样就可以了，这里虽然也有下面这样一个方法，但是实际测试发现你不重写，Navigation里面的子ViewController的重写方法也是对statusbar的hidden起作用。感觉是iOS的bug。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIViewController</span> *)childViewControllerForStatusBarHidden &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.topViewController;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/03/24/iOS改变状态栏颜色和隐藏/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1799,13 +1770,6 @@
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 1.0 </span></div><div class="line"><span class="meta">#define MIN(A,B) A <span class="meta-string">&lt; B ? A : B</span></span></div></pre></td></tr></table></figure>
 <p>这样写你就惨了，比如遇到下面的情况：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">2</span> * MIN(<span class="number">3</span>, <span class="number">4</span>);  <span class="comment">//输出a=4</span></div></pre></td></tr></table></figure>
-<p>具体自行将宏替换后就知道发生了什么，所以出了下面的版本。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 2.0       </span></div><div class="line"><span class="meta">#define MIN(A,B) (A <span class="meta-string">&lt; B ? A : B)</span></span></div></pre></td></tr></table></figure>
-<p>这个版本你依然继续崩溃吧，比如遇到下面的例子</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = MIN(<span class="number">3</span>, <span class="number">4</span> &lt; <span class="number">5</span> ? <span class="number">4</span> : <span class="number">5</span>);  <span class="comment">//a=4</span></div></pre></td></tr></table></figure>
-<p>好，再来</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 3.0       </span></div><div class="line"><span class="meta">#define MIN(A,B) ((A) <span class="meta-string">&lt; (B) ? (A) : (B))</span></span></div></pre></td></tr></table></figure>
-<p>看似应该完美了，但，总有刁民想害朕！如下：</p>
           <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/02/19/iOS宏/#more" rel="contents">

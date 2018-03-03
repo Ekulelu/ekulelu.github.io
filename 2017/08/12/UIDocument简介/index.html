@@ -92,7 +92,7 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
 <meta property="og:site_name" content="Ekulelu's Blog">
 <meta property="og:description" content="UIDocument是iOS的一个负责文件读取和存储的类，对于文档类的应用，使用这个类可以省去存储和读取时候线程的一些麻烦事情。尤其是和NSUndoManager配合之后，可以做到自动存储，很方便。
 UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取和怎么存储，都是需要你自己去定义的。所以，一般使用UIDocument的做法就是继承它，然后实现它存储和读取相关的方法。首先你需要创建">
-<meta property="og:updated_time" content="2018-03-03T15:12:51.214Z">
+<meta property="og:updated_time" content="2018-03-03T16:21:06.070Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UIDocument简介">
 <meta name="twitter:description" content="UIDocument是iOS的一个负责文件读取和存储的类，对于文档类的应用，使用这个类可以省去存储和读取时候线程的一些麻烦事情。尤其是和NSUndoManager配合之后，可以做到自动存储，很方便。
@@ -360,6 +360,7 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
       
         <p>UIDocument是iOS的一个负责文件读取和存储的类，对于文档类的应用，使用这个类可以省去存储和读取时候线程的一些麻烦事情。尤其是和NSUndoManager配合之后，可以做到自动存储，很方便。</p>
 <p>UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取和怎么存储，都是需要你自己去定义的。所以，一般使用UIDocument的做法就是继承它，然后实现它存储和读取相关的方法。<br>首先你需要创建它，这个url指定的可以是一个文件或文件夹</p>
+<a id="more"></a>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">instancetype</span>)initWithFileURL:(<span class="built_in">NSURL</span> *)url;</div></pre></td></tr></table></figure>
 <p>基本的读写操作涉及到的方法有四个：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)openWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">BOOL</span> success))completionHandler __TVOS_PROHIBITED;</div><div class="line">- (<span class="keyword">void</span>)closeWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">BOOL</span> success))completionHandler __TVOS_PROHIBITED;</div><div class="line">- (<span class="built_in">BOOL</span>)loadFromContents:(<span class="keyword">id</span>)contents ofType:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)typeName error:(<span class="built_in">NSError</span> **)outError __TVOS_PROHIBITED;</div><div class="line">- (<span class="keyword">nullable</span> <span class="keyword">id</span>)contentsForType:(<span class="built_in">NSString</span> *)typeName error:(<span class="built_in">NSError</span> **)outError __TVOS_PROHIBITED;</div></pre></td></tr></table></figure>

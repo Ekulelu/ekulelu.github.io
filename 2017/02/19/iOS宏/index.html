@@ -98,7 +98,7 @@
 12//Version 1.0 #define MIN(A,B) A &amp;lt; B ? A : B
 这样写你就惨了，比如遇到下面的情况：
 1">
-<meta property="og:updated_time" content="2018-03-03T15:10:12.978Z">
+<meta property="og:updated_time" content="2018-03-03T16:22:14.754Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS宏">
 <meta name="twitter:description" content="注明：本篇blog是参考多篇blog后的一个整理汇总，另外加上了自己常用的一些宏定义。如有冒犯，请会知，将删除该部分。
@@ -372,6 +372,7 @@
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 1.0 </span></div><div class="line"><span class="meta">#define MIN(A,B) A <span class="meta-string">&lt; B ? A : B</span></span></div></pre></td></tr></table></figure>
 <p>这样写你就惨了，比如遇到下面的情况：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">2</span> * MIN(<span class="number">3</span>, <span class="number">4</span>);  <span class="comment">//输出a=4</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>具体自行将宏替换后就知道发生了什么，所以出了下面的版本。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 2.0       </span></div><div class="line"><span class="meta">#define MIN(A,B) (A <span class="meta-string">&lt; B ? A : B)</span></span></div></pre></td></tr></table></figure>
 <p>这个版本你依然继续崩溃吧，比如遇到下面的例子</p>
@@ -379,7 +380,6 @@
 <p>好，再来</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Version 3.0       </span></div><div class="line"><span class="meta">#define MIN(A,B) ((A) <span class="meta-string">&lt; (B) ? (A) : (B))</span></span></div></pre></td></tr></table></figure>
 <p>看似应该完美了，但，总有刁民想害朕！如下：</p>
-<a id="more"></a>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">float</span> a = <span class="number">1.0</span>f;       </div><div class="line"><span class="keyword">float</span> b = MIN(a++, <span class="number">1.5</span>f);       </div><div class="line"><span class="comment">// =&gt; float b = ((a++) &lt; (1.5f) ? (a++) : (1.5f))</span></div></pre></td></tr></table></figure>
 <p>此时应该有翻桌子的图。<br>为了解决这个问题，需要用到GNU C的赋值扩展，即({})，会将括号里面的最后一个表达式的赋值返回。例子如下：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = (&#123;       </div><div class="line">    <span class="keyword">int</span> b = <span class="number">1</span>;       </div><div class="line">    <span class="keyword">int</span> c = <span class="number">2</span>;       </div><div class="line">    b + c;       </div><div class="line">&#125;);       </div><div class="line"><span class="comment">// =&gt; a is 3</span></div></pre></td></tr></table></figure>

@@ -90,7 +90,7 @@
 <meta property="og:url" content="https://ekulelu.github.io/2017/10/30/画图wiki/iOS基于CoreGraphics的可变粗细的划线/index.html">
 <meta property="og:site_name" content="Ekulelu's Blog">
 <meta property="og:description" content="之前的文章有提及过现在Drawing里面使用的画图方式：基于系统的CoreGraphics框架的CGContextAddLineToPoint来进行绘制，但是这些都有个问题，你会发现你调用stroke之前，只能设定唯一的宽度，当你调用stroke的时候，该path里面的点都会以这个宽度进行绘制。为了实现宽度可变，原生接口只能采用一个很极端的方式：每两个点就调用一次stroke方法，也就是说每两个点">
-<meta property="og:updated_time" content="2018-03-03T15:20:16.635Z">
+<meta property="og:updated_time" content="2018-03-03T16:20:22.724Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS基于CoreGraphics的可变粗细的划线">
 <meta name="twitter:description" content="之前的文章有提及过现在Drawing里面使用的画图方式：基于系统的CoreGraphics框架的CGContextAddLineToPoint来进行绘制，但是这些都有个问题，你会发现你调用stroke之前，只能设定唯一的宽度，当你调用stroke的时候，该path里面的点都会以这个宽度进行绘制。为了实现宽度可变，原生接口只能采用一个很极端的方式：每两个点就调用一次stroke方法，也就是说每两个点">
@@ -355,7 +355,9 @@
       
 
       
-        <p>之前的文章有提及过现在Drawing里面使用的画图方式：基于系统的CoreGraphics框架的CGContextAddLineToPoint来进行绘制，但是这些都有个问题，你会发现你调用stroke之前，只能设定唯一的宽度，当你调用stroke的时候，该path里面的点都会以这个宽度进行绘制。为了实现宽度可变，原生接口只能采用一个很极端的方式：每两个点就调用一次stroke方法，也就是说每两个点组成一个path，然后改变不同的path的宽度就可以绘制出一条可变宽度的线段。<br>代码如下：<br>注：下面的插值方法已经使用了二次贝塞尔方法。</p>
+        <p>之前的文章有提及过现在Drawing里面使用的画图方式：基于系统的CoreGraphics框架的CGContextAddLineToPoint来进行绘制，但是这些都有个问题，你会发现你调用stroke之前，只能设定唯一的宽度，当你调用stroke的时候，该path里面的点都会以这个宽度进行绘制。为了实现宽度可变，原生接口只能采用一个很极端的方式：每两个点就调用一次stroke方法，也就是说每两个点组成一个path，然后改变不同的path的宽度就可以绘制出一条可变宽度的线段。<br>代码如下：</p>
+<a id="more"></a>
+<p>注：下面的插值方法已经使用了二次贝塞尔方法。</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CGFloat</span> x0 = <span class="keyword">self</span>.lastMidPoint.x;</div><div class="line"><span class="built_in">CGFloat</span> y0 = <span class="keyword">self</span>.lastMidPoint.y;</div><div class="line"><span class="built_in">CGFloat</span> x1 = point.x;</div><div class="line"><span class="built_in">CGFloat</span> y1 = point.y;</div><div class="line"><span class="built_in">CGFloat</span> x2 = midP.x;</div><div class="line"><span class="built_in">CGFloat</span> y2 = midP.y;</div><div class="line"><span class="built_in">CGFloat</span> stepZ = ((<span class="built_in">CGFloat</span>)(midP.z - <span class="keyword">self</span>.lastMidPoint.z)) * increment;</div><div class="line"><span class="built_in">CGFloat</span> stepT = ((<span class="built_in">CGFloat</span>)(midP.t - <span class="keyword">self</span>.lastMidPoint.t)) * increment;</div><div class="line"></div><div class="line"><span class="keyword">int</span> index = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="built_in">CGFloat</span> t = increment; t &lt;=<span class="number">1.0</span>; t += increment) &#123;</div><div class="line">    <span class="comment">//二次贝塞尔曲线</span></div><div class="line">    <span class="built_in">CGFloat</span> x = (<span class="number">1</span>-t) * (<span class="number">1</span>-t) * x0 + <span class="number">2</span>*t*(<span class="number">1</span>-t)*x1 + t*t*x2;</div><div class="line">    <span class="built_in">CGFloat</span> y = (<span class="number">1</span>-t) * (<span class="number">1</span>-t) * y0 + <span class="number">2</span>*t*(<span class="number">1</span>-t)*y1 + t*t*y2;</div><div class="line">    RYPoint3 *insertPoint = [RYPoint3 pointWithX:x y:y z:<span class="keyword">self</span>.lastMidPoint.z + stepZ * index t:<span class="keyword">self</span>.lastMidPoint.t + stepT * index];</div><div class="line">    index++;    </div><div class="line">    [<span class="keyword">self</span> changeLineWidthWithPoint:insertPoint context:context];</div><div class="line">   </div><div class="line">    <span class="built_in">CGContextAddLineToPoint</span>(context, insertPoint.x, insertPoint.y);</div><div class="line">    <span class="built_in">CGContextStrokePath</span>(context);</div><div class="line">    <span class="built_in">CGContextMoveToPoint</span>(context, insertPoint.x, insertPoint.y);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>当然这里使用这样的方法是有很大代价的。每次调用stroke方法，相当于发送一次绘制指令给GPU，每两个点就调用一次，这个十分消耗性能。<br>更好的做法是使用OpenGLES，把绘制指令的发送交给自己管理，且用OpenGLES可以直接使用三角形条来绘制可变粗细的线条。</p>
 
@@ -384,8 +386,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/30/画图wiki/线段绘制/" rel="next" title="iOS线段绘制">
-                <i class="fa fa-chevron-left"></i> iOS线段绘制
+              <a href="/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/" rel="next" title="iOS画图轨迹圆滑处理">
+                <i class="fa fa-chevron-left"></i> iOS画图轨迹圆滑处理
               </a>
             
           </div>
@@ -394,8 +396,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/30/画图wiki/iOS基于CoreGraphics的粗细可变且半透明笔画/" rel="prev" title="iOS基于CoreGraphics的粗细可变且半透明笔画">
-                iOS基于CoreGraphics的粗细可变且半透明笔画 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/30/画图wiki/线段绘制/" rel="prev" title="iOS线段绘制">
+                iOS线段绘制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
