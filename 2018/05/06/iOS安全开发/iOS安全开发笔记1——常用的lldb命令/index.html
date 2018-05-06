@@ -84,19 +84,22 @@
 
 
 
-<meta name="description" content="UIDocument是iOS的一个负责文件读取和存储的类，对于文档类的应用，使用这个类可以省去存储和读取时候线程的一些麻烦事情。尤其是和NSUndoManager配合之后，可以做到自动存储，很方便。
-UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取和怎么存储，都是需要你自己去定义的。所以，一般使用UIDocument的做法就是继承它，然后实现它存储和读取相关的方法。首先你需要创建">
+<meta name="description" content="iOS安全开发笔记1——常用的lldb命令lldb，一个强大的debug调试工具，这里记录一下常用的命令。下面的命令都可以使用 help + 命令+ 子命令 来查看帮助菜单。
+lldb调试的断点是可以在 ~/.lldbinit 里面写入加载的脚本，我们可以将一些通用的命令写进去。
+expressionexpression这个命令应该是最常用的，可以方便地进行打印各种对象信息或者执行代码。一般我们用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="UIDocument简介">
-<meta property="og:url" content="https://ekulelu.github.io/2017/08/12/UIDocument简介/index.html">
+<meta property="og:title" content="iOS安全开发笔记1——常用的lldb命令">
+<meta property="og:url" content="https://ekulelu.github.io/2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/index.html">
 <meta property="og:site_name" content="Ekulelu's Blog">
-<meta property="og:description" content="UIDocument是iOS的一个负责文件读取和存储的类，对于文档类的应用，使用这个类可以省去存储和读取时候线程的一些麻烦事情。尤其是和NSUndoManager配合之后，可以做到自动存储，很方便。
-UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取和怎么存储，都是需要你自己去定义的。所以，一般使用UIDocument的做法就是继承它，然后实现它存储和读取相关的方法。首先你需要创建">
-<meta property="og:updated_time" content="2018-03-03T16:21:06.070Z">
+<meta property="og:description" content="iOS安全开发笔记1——常用的lldb命令lldb，一个强大的debug调试工具，这里记录一下常用的命令。下面的命令都可以使用 help + 命令+ 子命令 来查看帮助菜单。
+lldb调试的断点是可以在 ~/.lldbinit 里面写入加载的脚本，我们可以将一些通用的命令写进去。
+expressionexpression这个命令应该是最常用的，可以方便地进行打印各种对象信息或者执行代码。一般我们用">
+<meta property="og:updated_time" content="2018-05-06T15:10:51.640Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="UIDocument简介">
-<meta name="twitter:description" content="UIDocument是iOS的一个负责文件读取和存储的类，对于文档类的应用，使用这个类可以省去存储和读取时候线程的一些麻烦事情。尤其是和NSUndoManager配合之后，可以做到自动存储，很方便。
-UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取和怎么存储，都是需要你自己去定义的。所以，一般使用UIDocument的做法就是继承它，然后实现它存储和读取相关的方法。首先你需要创建">
+<meta name="twitter:title" content="iOS安全开发笔记1——常用的lldb命令">
+<meta name="twitter:description" content="iOS安全开发笔记1——常用的lldb命令lldb，一个强大的debug调试工具，这里记录一下常用的命令。下面的命令都可以使用 help + 命令+ 子命令 来查看帮助菜单。
+lldb调试的断点是可以在 ~/.lldbinit 里面写入加载的脚本，我们可以将一些通用的命令写进去。
+expressionexpression这个命令应该是最常用的，可以方便地进行打印各种对象信息或者执行代码。一般我们用">
 
 
 
@@ -124,13 +127,13 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
 
 
 
-  <link rel="canonical" href="https://ekulelu.github.io/2017/08/12/UIDocument简介/"/>
+  <link rel="canonical" href="https://ekulelu.github.io/2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/"/>
 
 
 
 
 
-  <title> UIDocument简介 | Ekulelu's Blog </title>
+  <title> iOS安全开发笔记1——常用的lldb命令 | Ekulelu's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -251,7 +254,7 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/08/12/UIDocument简介/">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Ekulelu">
@@ -275,7 +278,7 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
             
             
               
-                UIDocument简介
+                iOS安全开发笔记1——常用的lldb命令
               
             
           </h1>
@@ -288,8 +291,8 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-12T22:16:29+08:00">
-                2017-08-12
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-06T22:25:00+08:00">
+                2018-05-06
               </time>
             
 
@@ -307,8 +310,8 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
               <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS开发技术杂谈</span>
+                  <a href="/categories/iOS安全开发笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS安全开发笔记</span>
                   </a>
                 </span>
 
@@ -322,8 +325,8 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
-                <a href="/2017/08/12/UIDocument简介/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/12/UIDocument简介/" itemprop="commentCount"></span>
+                <a href="/2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -333,7 +336,7 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
 
           
           
-             <span id="/2017/08/12/UIDocument简介/" class="leancloud_visitors" data-flag-title="UIDocument简介">
+             <span id="/2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/" class="leancloud_visitors" data-flag-title="iOS安全开发笔记1——常用的lldb命令">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -358,28 +361,61 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
       
 
       
-        <p>UIDocument是iOS的一个负责文件读取和存储的类，对于文档类的应用，使用这个类可以省去存储和读取时候线程的一些麻烦事情。尤其是和NSUndoManager配合之后，可以做到自动存储，很方便。</p>
-<p>UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取和怎么存储，都是需要你自己去定义的。所以，一般使用UIDocument的做法就是继承它，然后实现它存储和读取相关的方法。<br>首先你需要创建它，这个url指定的可以是一个文件或文件夹</p>
-<a id="more"></a>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">instancetype</span>)initWithFileURL:(<span class="built_in">NSURL</span> *)url;</div></pre></td></tr></table></figure>
-<p>基本的读写操作涉及到的方法有四个：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)openWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">BOOL</span> success))completionHandler __TVOS_PROHIBITED;</div><div class="line">- (<span class="keyword">void</span>)closeWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">BOOL</span> success))completionHandler __TVOS_PROHIBITED;</div><div class="line">- (<span class="built_in">BOOL</span>)loadFromContents:(<span class="keyword">id</span>)contents ofType:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)typeName error:(<span class="built_in">NSError</span> **)outError __TVOS_PROHIBITED;</div><div class="line">- (<span class="keyword">nullable</span> <span class="keyword">id</span>)contentsForType:(<span class="built_in">NSString</span> *)typeName error:(<span class="built_in">NSError</span> **)outError __TVOS_PROHIBITED;</div></pre></td></tr></table></figure>
-<p>前面两个方法就是打开url对应的文件，和关闭打开的文件。<br>当调用文件打开方法后，它就会调用<code>loadFromContents: ofType: error:</code>方法，这个方法默认会读取url对应的文件，然后放到contents里面，这里面你需要自定义怎么去解析这个contents。<br>如果你url对应的是文件夹，那么contents里面是NSFileWrapper对象，用<code>wrapper.fileWrappers</code>得到一个字典，字典的key是文件或文件夹的名字，value仍然是个NSFileWrapper对象。如果NSFileWrapper对应的是一个文件，你可以使用<code>wrap.regularFileContents</code>得到这个文件的data。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSFileWrapper</span> *wrapper = (<span class="built_in">NSFileWrapper</span>*)contents;</div><div class="line"><span class="built_in">NSDictionary</span> *fileWrappers = wrapper.fileWrappers;</div><div class="line"><span class="built_in">NSFileWrapper</span> *imgWrap = [fileWrappers objectForKey:<span class="string">@"imageFileName"</span>];</div><div class="line">page.image = [<span class="built_in">UIImage</span> imageWithData:imgWrap.regularFileContents];</div></pre></td></tr></table></figure>
-<p>当系统需要存储的时候，它会调用<code>contentsForType:error:</code>方法，你需要在这个方法里面封装好你需要保存的数据，改数据会写到创建时候的url下面，如果你url是个文件夹，那么你用NSFileWrapper去封装你的保存的数据，如下</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSFileWrapper</span> *wrapper =[[<span class="built_in">NSFileWrapper</span> alloc]initDirectoryWithFileWrappers:@&#123;&#125;];</div><div class="line"><span class="built_in">NSData</span> *imgData = [<span class="keyword">self</span> getImageData:page.image];</div><div class="line">        <span class="built_in">NSFileWrapper</span> *imgWrap = [[<span class="built_in">NSFileWrapper</span> alloc]initRegularFileWithContents:imgData];</div><div class="line">        [imgWrap setPreferredFilename:page.imageFileName];</div><div class="line">        [wrapper addFileWrapper:imgWrap];</div></pre></td></tr></table></figure>
-<p>那么系统怎么知道什么时候需要存储呢？一个是使用下面的方法。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)updateChangeCount:(<span class="built_in">UIDocumentChangeKind</span>)change</div></pre></td></tr></table></figure>
-<p>另外一个是使用undoManager，如果你设置了document的undoManager，那么对undoManager进行了缓存操作后，它就会自动通知document有了改变。这个操作会影响</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)hasUnsavedChanges;</div></pre></td></tr></table></figure>
-<p>之后系统会自动调用<code>autosaveWithCompletionHandler:</code>，这个方法最终会调用到<code>contentsForType:error:</code>，然后进行文件写入。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)autosaveWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">BOOL</span> success))completionHandler;</div></pre></td></tr></table></figure>
-<p>注意是这个方法文档说不建议子类去调用，除非你想自定义自动存储的一些行为，如果你需要自己调用，请在主线程调用，否则不会进行操作。</p>
-<blockquote>
-<p>在实际的使用过程中遇到几个坑：</p>
-<p>1、如果使用home键后，再点击程序回到程序界面，那么会再次触发加载数据的流程。这里可能会导致一些业务问题。</p>
-<p>2、在某些iPhone6或iPhoneSE上面偶现调用了<code>contentsForType:error:</code>方法后出现卡死的现象。需要重新启动手机才能恢复正常。后面自己按照UIDocument的这套流程写了一个Saver类，实现了基本的读写功能，起码能保证业务逻辑的正常。</p>
-</blockquote>
+        <h1 id="iOS安全开发笔记1——常用的lldb命令"><a href="#iOS安全开发笔记1——常用的lldb命令" class="headerlink" title="iOS安全开发笔记1——常用的lldb命令"></a>iOS安全开发笔记1——常用的lldb命令</h1><p>lldb，一个强大的debug调试工具，这里记录一下常用的命令。下面的命令都可以使用 help + 命令+ 子命令 来查看帮助菜单。</p>
+<p>lldb调试的断点是可以在 ~/.lldbinit 里面写入加载的脚本，我们可以将一些通用的命令写进去。</p>
+<h2 id="expression"><a href="#expression" class="headerlink" title="expression"></a>expression</h2><p>expression这个命令应该是最常用的，可以方便地进行打印各种对象信息或者执行代码。一般我们用到的都是它的简写：p  、 exp  和  po。</p>
+<p>p 或者 exp  后面可以直接接OC的代码</p>
+<p>po 后面则是接需要打印的对象</p>
+<h2 id="breakpoint"><a href="#breakpoint" class="headerlink" title="breakpoint"></a>breakpoint</h2><p>这个可以用来设置和管理断点，就像在代码区左边点一下一样。常用的命令有</p>
+<ol>
+<li><p>设置断点，这个方法会将UIViewController的touchesBegan:withEvent:设置一个断点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint set -n &quot;-[UIViewController touchesBegan:withEvent:]&quot;</div></pre></td></tr></table></figure>
+<p>后面可以带几个-n参数。注意的是这样设置的断点会归为一个组，里面的断点是这个组的第几个断点，比如下面语句会生成断点组1，里面有1.1的断点和1.2的断点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint set -n &quot;-[UIViewController touchesBegan:withEvent:]&quot; -n &quot;-[UIViewController touchesEnded:withEvent:]&quot;</div></pre></td></tr></table></figure>
+<p>带不同参数的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint set -r Game: // 遍历整个项目中满足Game:这个字符的所有方法</div></pre></td></tr></table></figure>
+</li>
+<li><p>删除断点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint delete 1</div></pre></td></tr></table></figure>
+<p>如果不带后面的断点1来指定具体的断点，则会删除全部断点。</p>
+</li>
+<li><p>启用和禁用断点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">breakpoint enable 1.2</div><div class="line">breakpoint disable 1</div></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有断点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint list</div></pre></td></tr></table></figure>
+</li>
+<li><p>想在进入断点的时候执行代码，输入下面的命令之后，就会进入到一个代码编辑的状态，输入完代码之后，输入 ‘DONE’退出这个模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint command add 1</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="watchpoint"><a href="#watchpoint" class="headerlink" title="watchpoint"></a>watchpoint</h2><p>监控某个变量的改变</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watchpoint set variable p1-&gt;_name</div></pre></td></tr></table></figure>
+<p>之后就会打印出它的新值和旧值的内存地址，你可以用<code>po</code>进行查看。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Watchpoint 1 hit:</div><div class="line">old value: 0x0000000000000000</div><div class="line">new value: 0x0000000103cfd118</div></pre></td></tr></table></figure>
+<p>它也有和<code>breakpoint</code>一样的其他enable、list等子命令。</p>
+<h2 id="堆栈信息"><a href="#堆栈信息" class="headerlink" title="堆栈信息"></a>堆栈信息</h2><p>打印当前堆栈，这个命令其实在左边的堆栈表里面就可看到了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">thread backtrace</div></pre></td></tr></table></figure>
+<p>简写是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bt</div></pre></td></tr></table></figure>
+<h3 id="堆栈上下跳转"><a href="#堆栈上下跳转" class="headerlink" title="堆栈上下跳转"></a>堆栈上下跳转</h3><p>最简单的就是使用<code>down</code>或<code>up</code>。</p>
+<p>或者用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">frame select 1</div></pre></td></tr></table></figure>
+<p>那个1在你打印堆栈信息的时候，每个调用栈的最前面都会有个frame #x的信息，那个1就是序号。</p>
+<h3 id="打印当前参数"><a href="#打印当前参数" class="headerlink" title="打印当前参数"></a>打印当前参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">frame variable</div></pre></td></tr></table></figure>
+<p>下面这个命令可以回退执行，但是继续运行之后程序就会停了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">thread return</div></pre></td></tr></table></figure>
+<h2 id="stop-hook"><a href="#stop-hook" class="headerlink" title="stop-hook"></a>stop-hook</h2><p>这个命令会在断点进入lldb的时候，调用你指定的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">target stop-hook add</div></pre></td></tr></table></figure>
+<h2 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h2><p>继续<code>c</code>、单步执行不进入子函数<code>n</code>、单步执行进入子函数<code>s</code>、汇编级别的单步执行<code>ni</code>，或者按住ctrl键去点击XCode的那些按钮。</p>
+<h2 id="image-lookup"><a href="#image-lookup" class="headerlink" title="image lookup"></a>image lookup</h2><p>看内存代码，可以把命令地址转为代码，也就是符号化。这个在奔溃的时候输出的那些内存地址信息特别有用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">image lookup -a 0x2dd33</div></pre></td></tr></table></figure>
+<p>打印头文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">image lookup -t 类名</div></pre></td></tr></table></figure>
+<h2 id="register"><a href="#register" class="headerlink" title="register"></a>register</h2><p>读写寄存器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">register read x0</div><div class="line">register write x0</div></pre></td></tr></table></figure>
+<h2 id="memory-read"><a href="#memory-read" class="headerlink" title="memory read"></a>memory read</h2><p>读内存，这个命令的简写是<code>x</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memory read 0x10460b4aa  //内存开始地址</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -406,8 +442,8 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/14/Swift4学习笔记5——流程控制语句/" rel="next" title="Swift4学习笔记5——流程控制语句">
-                <i class="fa fa-chevron-left"></i> Swift4学习笔记5——流程控制语句
+              <a href="/2017/10/30/iOS视频制作/" rel="next" title="iOS视频制作">
+                <i class="fa fa-chevron-left"></i> iOS视频制作
               </a>
             
           </div>
@@ -416,8 +452,8 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/" rel="prev" title="iOS画图轨迹圆滑处理">
-                iOS画图轨迹圆滑处理 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/05/06/iOS安全开发/iOS安全开发笔记0——工具安装/" rel="prev" title="iOS安全开发笔记0——工具安装">
+                iOS安全开发笔记0——工具安装 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -444,8 +480,8 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/08/12/UIDocument简介/"
-           data-title="UIDocument简介" data-url="https://ekulelu.github.io/2017/08/12/UIDocument简介/">
+      <div class="ds-thread" data-thread-key="2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/"
+           data-title="iOS安全开发笔记1——常用的lldb命令" data-url="https://ekulelu.github.io/2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/">
       </div>
     
   </div>
@@ -469,8 +505,17 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -516,6 +561,22 @@ UIDocument里面只是一套存储和读取的逻辑框架，至于怎么读取�
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS安全开发笔记1——常用的lldb命令"><span class="nav-number">1.</span> <span class="nav-text">iOS安全开发笔记1——常用的lldb命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#expression"><span class="nav-number">1.1.</span> <span class="nav-text">expression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#breakpoint"><span class="nav-number">1.2.</span> <span class="nav-text">breakpoint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#watchpoint"><span class="nav-number">1.3.</span> <span class="nav-text">watchpoint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆栈信息"><span class="nav-number">1.4.</span> <span class="nav-text">堆栈信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#堆栈上下跳转"><span class="nav-number">1.4.1.</span> <span class="nav-text">堆栈上下跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打印当前参数"><span class="nav-number">1.4.2.</span> <span class="nav-text">打印当前参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stop-hook"><span class="nav-number">1.5.</span> <span class="nav-text">stop-hook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流程控制"><span class="nav-number">1.6.</span> <span class="nav-text">流程控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#image-lookup"><span class="nav-number">1.7.</span> <span class="nav-text">image lookup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#register"><span class="nav-number">1.8.</span> <span class="nav-text">register</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#memory-read"><span class="nav-number">1.9.</span> <span class="nav-text">memory read</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
