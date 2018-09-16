@@ -360,59 +360,20 @@
 
       
         
-          
-            <h1 id="iOS安全开发笔记0——工具安装"><a href="#iOS安全开发笔记0——工具安装" class="headerlink" title="iOS安全开发笔记0——工具安装"></a>iOS安全开发笔记0——工具安装</h1><h3 id="1、将终端换成iTerm"><a href="#1、将终端换成iTerm" class="headerlink" title="1、将终端换成iTerm"></a>1、将终端换成iTerm</h3><p>下载地址 <a href="https://www.iterm2.com/downloads.html" target="_blank" rel="external">https://www.iterm2.com/downloads.html</a></p>
+          <h1 id="iOS安全开发笔记0——工具安装"><a href="#iOS安全开发笔记0——工具安装" class="headerlink" title="iOS安全开发笔记0——工具安装"></a>iOS安全开发笔记0——工具安装</h1><h3 id="1、将终端换成iTerm"><a href="#1、将终端换成iTerm" class="headerlink" title="1、将终端换成iTerm"></a>1、将终端换成iTerm</h3><p>下载地址 <a href="https://www.iterm2.com/downloads.html">https://www.iterm2.com/downloads.html</a></p>
 <p>安装zsh，在终端输入命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</div></pre></td></tr></table></figure>
 <p>使用下面的命令启用zsh</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chsh -s /bin/zsh</div></pre></td></tr></table></figure>
 <p>打开 ~/.zshrc文件，将主题改为<code>agnoster</code>. </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZSH_THEME=&quot;agnoster&quot;</div></pre></td></tr></table></figure>
-<p>但是这个主题的前缀是用户名@host名，所以会有点长，建议找到这个主题文件，在<code>~/.oh-my-zsh/themes/agnoster.zsh-theme</code>，将它copy一份后取个另外的名字，然后打开，在</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Context: user@hostname (who am I and where am I)</div><div class="line">prompt_context() &#123;</div><div class="line">  if [[ &quot;$USER&quot; != &quot;$DEFAULT_USER&quot; || -n &quot;$SSH_CLIENT&quot; ]]; then</div><div class="line">    prompt_segment black default &quot;%(!.%&#123;%F&#123;yellow&#125;%&#125;.)$USER@%m&quot;</div><div class="line">  fi</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>留意到<code>$USER@%m</code>，将后面的<code>@%m</code>去掉之后就只显示用户名了。然后把主题设置为这个文件。</p>
-<p>另外，使用这个主题需要安装Meslo字体文件，否则会出现符号乱码。下载地址：<a href="https://github.com/powerline/fonts/blob/master/Meslo%20Slashed/Meslo%20LG%20M%20Regular%20for%20Powerline.ttf" target="_blank" rel="external">Meslo LG M Regular for Powerline.ttf</a></p>
-<p>按<code>command + ,</code>打开iTerm的配置界面，在<code>Profiles -&gt; Text -&gt; Font -&gt; Chanage Font</code>，选择 Meslo LG M Regular for Powerline 字体。 </p>
-<h4 id="安装其他的插件"><a href="#安装其他的插件" class="headerlink" title="安装其他的插件"></a>安装其他的插件</h4><p>1、声明高亮</p>
-<p>使用 Homebrew 安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew install zsh-syntax-highlighting</div></pre></td></tr></table></figure>
-<p>安装成功之后，编辑<code>vim ~/.zshrc</code>文件，在最后一行增加下面配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh</div></pre></td></tr></table></figure>
-<p>2、自动填充</p>
-<p>先clone<code>zsh-autosuggestions</code>项目到指定目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions</div></pre></td></tr></table></figure>
-<p>然后编辑<code>vim ~/.zshrc</code>文件，找到<code>plugins</code>配置，增加<code>zsh-autosuggestions</code> 和 <code>zsh-syntax-highlighting</code>插件插件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plugins=(</div><div class="line">  git zsh-autosuggestions zsh-syntax-highlighting</div><div class="line">)</div></pre></td></tr></table></figure>
-<h4 id="设置编辑的快捷键"><a href="#设置编辑的快捷键" class="headerlink" title="设置编辑的快捷键"></a>设置编辑的快捷键</h4><p>打开 iTerm2，按<code>Command + ,</code>键，打开 Preferences 配置界面，然后<code>Profiles → Keys → Load Preset... → Natural Text Editing</code>，就可以了。这样的操作和xcode就差不多了。</p>
-<blockquote>
-<p>建议打开<code>~/.zshrc</code> 在文件的最后加上<code>source ~/.bash_profile</code> 以便另zsh可以加载bash的path路径。</p>
-</blockquote>
-<h3 id="2、安装ida"><a href="#2、安装ida" class="headerlink" title="2、安装ida"></a>2、安装ida</h3><p>这个请自己去找安装包吧。。。</p>
-<h3 id="3、安装cycript"><a href="#3、安装cycript" class="headerlink" title="3、安装cycript"></a>3、安装cycript</h3><p>下载地址  <a href="http://www.cycript.org/" target="_blank" rel="external">http://www.cycript.org/</a>  下载后，建议新建目录<code>/opt</code> 把越狱工具都放里面。 我们记得在<code>~/.bash_profile</code>上加上这个目录，否则会找不到可执行文件。</p>
-<p>cycript安装后，在新的Mac系统上会有问题，因为ruby是2.3的。可以用下面命令查看ruby版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ruby -v</div></pre></td></tr></table></figure>
-<p>如果是2.3之后的版本，那么运行cycript就会出问题。因为它需要2.0.0版本的ruby。但其实我们并不需要安装2.0.0的ruby，只需要将2.3的ruby拷贝一份，然后命名为2.0.0就可以了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dyld: Library not loaded: /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/libruby.2.0.0.dylib</div><div class="line">  Referenced from: /opt/cycript_0.9.594/Cycript.lib/cycript-apl</div><div class="line">  Reason: image not found</div></pre></td></tr></table></figure>
-<p>但是在新MacOS系统下有一个跟安全相关的模式叫 SIP（System Integrity Protection ），它禁止让软件以 root 身份来在 Mac 上运行，在升级到 OS X 10.11 中或许你就会看到部分应用程序被禁用了，这些或许是你通过终端或者第三方软件安装。</p>
-<p>我们需要进入恢复模式更改这个设定</p>
-<ol>
-<li><p>电脑重启，开始时候按住command+R，进入恢复模式</p>
-</li>
-<li><p>打开终端，输入 <code>csrutil disable</code> 重启系统</p>
-</li>
-<li><p>执行下面代码建立2.0的软链接到2.3。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo mkdir -p /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/</div><div class="line">sudo ln -s /System/Library/Frameworks/Ruby.framework/Versions/2.3/usr/lib/libruby.2.3.0.dylib /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/libruby.2.0.0.dylib</div></pre></td></tr></table></figure>
-<blockquote>
-<p>注：根据每个人ruby版本不同，将上面第二条命令的<code>/System/Library/Frameworks/Ruby.framework/Versions/2.3/usr/lib/libruby.2.3.0.dylib</code>中的2.3改成本机的ruby版本。</p>
-</blockquote>
-</li>
-<li><p>如果想打开SIP，重复上两步，命令改为<code>csrutil enable</code>.</p>
-</li>
-</ol>
-<h3 id="4、安装class-dump"><a href="#4、安装class-dump" class="headerlink" title="4、安装class-dump"></a>4、安装class-dump</h3><p>下载地址 <a href="http://stevenygard.com/projects/class-dump/" target="_blank" rel="external">http://stevenygard.com/projects/class-dump/</a>  打开后，将class-dump 可执行文件添加到<code>/opt</code> </p>
-<h3 id="5、其他工具"><a href="#5、其他工具" class="headerlink" title="5、其他工具"></a>5、其他工具</h3><p>Alfred、gotoShell、Reveal</p>
-
-          
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2018/05/06/iOS安全开发/iOS安全开发笔记0——工具安装/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -560,8 +521,7 @@
 
       
         
-          
-            <h1 id="iOS安全开发笔记1——常用的lldb命令"><a href="#iOS安全开发笔记1——常用的lldb命令" class="headerlink" title="iOS安全开发笔记1——常用的lldb命令"></a>iOS安全开发笔记1——常用的lldb命令</h1><p>lldb，一个强大的debug调试工具，这里记录一下常用的命令。下面的命令都可以使用 help + 命令+ 子命令 来查看帮助菜单。</p>
+          <h1 id="iOS安全开发笔记1——常用的lldb命令"><a href="#iOS安全开发笔记1——常用的lldb命令" class="headerlink" title="iOS安全开发笔记1——常用的lldb命令"></a>iOS安全开发笔记1——常用的lldb命令</h1><p>lldb，一个强大的debug调试工具，这里记录一下常用的命令。下面的命令都可以使用 help + 命令+ 子命令 来查看帮助菜单。</p>
 <p>lldb调试的断点是可以在 ~/.lldbinit 里面写入加载的脚本，我们可以将一些通用的命令写进去。</p>
 <h2 id="expression"><a href="#expression" class="headerlink" title="expression"></a>expression</h2><p>expression这个命令应该是最常用的，可以方便地进行打印各种对象信息或者执行代码。一般我们用到的都是它的简写：p  、 exp  和  po。</p>
 <p>p 或者 exp  后面可以直接接OC的代码</p>
@@ -573,357 +533,11 @@
 <p>后面可以带几个-n参数。注意的是这样设置的断点会归为一个组，里面的断点是这个组的第几个断点，比如下面语句会生成断点组1，里面有1.1的断点和1.2的断点。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint set -n &quot;-[UIViewController touchesBegan:withEvent:]&quot; -n &quot;-[UIViewController touchesEnded:withEvent:]&quot;</div></pre></td></tr></table></figure>
 <p>带不同参数的时候</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint set -r Game: // 遍历整个项目中满足Game:这个字符的所有方法</div></pre></td></tr></table></figure>
-</li>
-<li><p>删除断点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint delete 1</div></pre></td></tr></table></figure>
-<p>如果不带后面的断点1来指定具体的断点，则会删除全部断点。</p>
-</li>
-<li><p>启用和禁用断点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">breakpoint enable 1.2</div><div class="line">breakpoint disable 1</div></pre></td></tr></table></figure>
-</li>
-<li><p>列出所有断点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint list</div></pre></td></tr></table></figure>
-</li>
-<li><p>想在进入断点的时候执行代码，输入下面的命令之后，就会进入到一个代码编辑的状态，输入完代码之后，输入 ‘DONE’退出这个模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint command add 1</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="watchpoint"><a href="#watchpoint" class="headerlink" title="watchpoint"></a>watchpoint</h2><p>监控某个变量的改变</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">watchpoint set variable p1-&gt;_name</div></pre></td></tr></table></figure>
-<p>之后就会打印出它的新值和旧值的内存地址，你可以用<code>po</code>进行查看。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Watchpoint 1 hit:</div><div class="line">old value: 0x0000000000000000</div><div class="line">new value: 0x0000000103cfd118</div></pre></td></tr></table></figure>
-<p>它也有和<code>breakpoint</code>一样的其他enable、list等子命令。</p>
-<h2 id="堆栈信息"><a href="#堆栈信息" class="headerlink" title="堆栈信息"></a>堆栈信息</h2><p>打印当前堆栈，这个命令其实在左边的堆栈表里面就可看到了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">thread backtrace</div></pre></td></tr></table></figure>
-<p>简写是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bt</div></pre></td></tr></table></figure>
-<h3 id="堆栈上下跳转"><a href="#堆栈上下跳转" class="headerlink" title="堆栈上下跳转"></a>堆栈上下跳转</h3><p>最简单的就是使用<code>down</code>或<code>up</code>。</p>
-<p>或者用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">frame select 1</div></pre></td></tr></table></figure>
-<p>那个1在你打印堆栈信息的时候，每个调用栈的最前面都会有个frame #x的信息，那个1就是序号。</p>
-<h3 id="打印当前参数"><a href="#打印当前参数" class="headerlink" title="打印当前参数"></a>打印当前参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">frame variable</div></pre></td></tr></table></figure>
-<p>下面这个命令可以回退执行，但是继续运行之后程序就会停了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">thread return</div></pre></td></tr></table></figure>
-<h2 id="stop-hook"><a href="#stop-hook" class="headerlink" title="stop-hook"></a>stop-hook</h2><p>这个命令会在断点进入lldb的时候，调用你指定的代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">target stop-hook add</div></pre></td></tr></table></figure>
-<h2 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h2><p>继续<code>c</code>、单步执行不进入子函数<code>n</code>、单步执行进入子函数<code>s</code>、汇编级别的单步执行<code>ni</code>，或者按住ctrl键去点击XCode的那些按钮。</p>
-<h2 id="image-lookup"><a href="#image-lookup" class="headerlink" title="image lookup"></a>image lookup</h2><p>看内存代码，可以把命令地址转为代码，也就是符号化。这个在奔溃的时候输出的那些内存地址信息特别有用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">image lookup -a 0x2dd33</div></pre></td></tr></table></figure>
-<p>打印头文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">image lookup -t 类名</div></pre></td></tr></table></figure>
-<h2 id="register"><a href="#register" class="headerlink" title="register"></a>register</h2><p>读写寄存器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">register read x0</div><div class="line">register write x0</div></pre></td></tr></table></figure>
-<h2 id="memory-read"><a href="#memory-read" class="headerlink" title="memory read"></a>memory read</h2><p>读内存，这个命令的简写是<code>x</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memory read 0x10460b4aa  //内存开始地址</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/iOS视频制作/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Ekulelu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Ekulelu's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/30/iOS视频制作/" itemprop="url">
-                  iOS视频制作
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
-                2017-10-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS开发技术杂谈</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2017/10/30/iOS视频制作/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/iOS视频制作/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/10/30/iOS视频制作/" class="leancloud_visitors" data-flag-title="iOS视频制作">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">Visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>#<br>这里说的视频制作并不是从摄像头录制视频，而是如何将一帧一帧的图片合成一个视频文件。这里我们所使用到的类是AVAssetWriter，它的使用方式比较固定，且代码也比较多。<br>首先是设定好AVAssetWriter</p>
           <!--noindex-->
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/10/30/iOS视频制作/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/画图wiki/线段绘制/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Ekulelu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Ekulelu's Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/30/画图wiki/线段绘制/" itemprop="url">
-                  iOS线段绘制
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
-                2017-10-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS-CoreGraphics画图/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS CoreGraphics画图</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2017/10/30/画图wiki/线段绘制/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/画图wiki/线段绘制/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2017/10/30/画图wiki/线段绘制/" class="leancloud_visitors" data-flag-title="iOS线段绘制">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">Visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="1、简单粗暴的drawInRect-（Android的OnDraw）"><a href="#1、简单粗暴的drawInRect-（Android的OnDraw）" class="headerlink" title="1、简单粗暴的drawInRect （Android的OnDraw）"></a>1、简单粗暴的drawInRect （Android的OnDraw）</h2><p>在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。</p>
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/10/30/画图wiki/线段绘制/#more" rel="contents">
+            <a class="btn" href="/2018/05/06/iOS安全开发/iOS安全开发笔记1——常用的lldb命令/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1275,6 +889,161 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/画图wiki/线段绘制/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/30/画图wiki/线段绘制/" itemprop="url">
+                  iOS线段绘制
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS-CoreGraphics画图/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS CoreGraphics画图</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/10/30/画图wiki/线段绘制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/画图wiki/线段绘制/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/30/画图wiki/线段绘制/" class="leancloud_visitors" data-flag-title="iOS线段绘制">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="1、简单粗暴的drawInRect-（Android的OnDraw）"><a href="#1、简单粗暴的drawInRect-（Android的OnDraw）" class="headerlink" title="1、简单粗暴的drawInRect （Android的OnDraw）"></a>1、简单粗暴的drawInRect （Android的OnDraw）</h2><p>在iOS平台，drawInRect是重绘一个控件的方法，在这里可以拿到这个控件的一个上下文对象，可以往这个上下文对象里面画线或者其他一些简单图形。所以最开始做的简单方法就是在onTouch事件中收集到点的数据，然后在drawInRect方法里面绘制每一帧的时候，从第0个点重新绘制到最新的点。</p>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/10/30/画图wiki/线段绘制/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1391,6 +1160,161 @@
           <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/10/30/画图wiki/iOS 画图轨迹圆滑处理/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://ekulelu.github.io/2017/10/30/iOS视频制作/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ekulelu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ekulelu's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ekulelu's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/30/iOS视频制作/" itemprop="url">
+                  iOS视频制作
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-30T17:43:00+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发技术杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发技术杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/10/30/iOS视频制作/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/30/iOS视频制作/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/10/30/iOS视频制作/" class="leancloud_visitors" data-flag-title="iOS视频制作">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">Visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>#<br>这里说的视频制作并不是从摄像头录制视频，而是如何将一帧一帧的图片合成一个视频文件。这里我们所使用到的类是AVAssetWriter，它的使用方式比较固定，且代码也比较多。<br>首先是设定好AVAssetWriter</p>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/10/30/iOS视频制作/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>

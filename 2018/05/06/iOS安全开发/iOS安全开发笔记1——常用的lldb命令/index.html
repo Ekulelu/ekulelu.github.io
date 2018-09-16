@@ -94,7 +94,7 @@ expressionexpression这个命令应该是最常用的，可以方便地进行打
 <meta property="og:description" content="iOS安全开发笔记1——常用的lldb命令lldb，一个强大的debug调试工具，这里记录一下常用的命令。下面的命令都可以使用 help + 命令+ 子命令 来查看帮助菜单。
 lldb调试的断点是可以在 ~/.lldbinit 里面写入加载的脚本，我们可以将一些通用的命令写进去。
 expressionexpression这个命令应该是最常用的，可以方便地进行打印各种对象信息或者执行代码。一般我们用">
-<meta property="og:updated_time" content="2018-05-06T15:10:51.640Z">
+<meta property="og:updated_time" content="2018-05-06T15:44:37.745Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS安全开发笔记1——常用的lldb命令">
 <meta name="twitter:description" content="iOS安全开发笔记1——常用的lldb命令lldb，一个强大的debug调试工具，这里记录一下常用的命令。下面的命令都可以使用 help + 命令+ 子命令 来查看帮助菜单。
@@ -373,8 +373,11 @@ expressionexpression这个命令应该是最常用的，可以方便地进行打
 <p>后面可以带几个-n参数。注意的是这样设置的断点会归为一个组，里面的断点是这个组的第几个断点，比如下面语句会生成断点组1，里面有1.1的断点和1.2的断点。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint set -n &quot;-[UIViewController touchesBegan:withEvent:]&quot; -n &quot;-[UIViewController touchesEnded:withEvent:]&quot;</div></pre></td></tr></table></figure>
 <p>带不同参数的时候</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint set -r Game: // 遍历整个项目中满足Game:这个字符的所有方法</div></pre></td></tr></table></figure>
 </li>
+</ol>
+<a id="more"></a>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint set -r Game: // 遍历整个项目中满足Game:这个字符的所有方法</div></pre></td></tr></table></figure>
+<ol>
 <li><p>删除断点</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">breakpoint delete 1</div></pre></td></tr></table></figure>
 <p>如果不带后面的断点1来指定具体的断点，则会删除全部断点。</p>
@@ -442,8 +445,8 @@ expressionexpression这个命令应该是最常用的，可以方便地进行打
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/30/iOS视频制作/" rel="next" title="iOS视频制作">
-                <i class="fa fa-chevron-left"></i> iOS视频制作
+              <a href="/2017/10/30/画图wiki/iOS基于CoreGraphics的粗细可变且半透明笔画/" rel="next" title="iOS基于CoreGraphics的粗细可变且半透明笔画">
+                <i class="fa fa-chevron-left"></i> iOS基于CoreGraphics的粗细可变且半透明笔画
               </a>
             
           </div>

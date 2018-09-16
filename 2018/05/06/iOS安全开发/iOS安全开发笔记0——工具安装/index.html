@@ -96,7 +96,7 @@
 安装zsh，在终端输入命令
 1sh -c &amp;quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&amp;quot;
 使用下面的命令启用zsh">
-<meta property="og:updated_time" content="2018-05-06T14:26:02.187Z">
+<meta property="og:updated_time" content="2018-09-16T09:50:53.518Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS安全开发笔记0——工具安装">
 <meta name="twitter:description" content="iOS安全开发笔记0——工具安装1、将终端换成iTerm下载地址 https://www.iterm2.com/downloads.html
@@ -371,6 +371,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chsh -s /bin/zsh</div></pre></td></tr></table></figure>
 <p>打开 ~/.zshrc文件，将主题改为<code>agnoster</code>. </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZSH_THEME=&quot;agnoster&quot;</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>但是这个主题的前缀是用户名@host名，所以会有点长，建议找到这个主题文件，在<code>~/.oh-my-zsh/themes/agnoster.zsh-theme</code>，将它copy一份后取个另外的名字，然后打开，在</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Context: user@hostname (who am I and where am I)</div><div class="line">prompt_context() &#123;</div><div class="line">  if [[ &quot;$USER&quot; != &quot;$DEFAULT_USER&quot; || -n &quot;$SSH_CLIENT&quot; ]]; then</div><div class="line">    prompt_segment black default &quot;%(!.%&#123;%F&#123;yellow&#125;%&#125;.)$USER@%m&quot;</div><div class="line">  fi</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>留意到<code>$USER@%m</code>，将后面的<code>@%m</code>去掉之后就只显示用户名了。然后把主题设置为这个文件。</p>
